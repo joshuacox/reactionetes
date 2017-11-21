@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for Kubernetes to run Reaction Commerce
+name: reactionetes
+version: 0.1.0
