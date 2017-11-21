@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
-  name: mongo
+  name: {{ .Release.Name }}-mongo
 spec:
   serviceName: "mongo"
   replicas: 3
@@ -32,4 +32,4 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: "mongo-init"
+          name: {{ .Release.Name }}-mongo-init

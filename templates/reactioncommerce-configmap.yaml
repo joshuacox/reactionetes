@@ -1,11 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: reaction-config
+  name: {{ .Release.Name }}-reaction-config
 data:
-  reaction:
-    email: {{ .Values.reaction.email }}
-    user:  {{ .Values.reaction.user }}
-    auth:  {{ .Values.reaction.auth }}
-    root_url:  {{ .Values.reaction.root_url }}
-    mongo_url:  {{ .Values.reaction.mongo_url }}
+  reaction.email: {{ .Values.reactionEmail }}
+  reaction.user: {{ .Values.reactionUser }}
+  reaction.auth: {{ .Values.reactionAuth }}
+  reaction.root_url: {{ .Values.reactionRoot_url }}
+  reaction.mongo_url: {{ .Values.reactionMongo_url }}

@@ -37,9 +37,8 @@ resources: {}
   #  memory: 128Mi
 
 # reaction specific values
-reaction:
-  email: admin@localhost
-  user: admin
-  auth: r3@cti0n
-  root_url:  reactioncommerce.local
-  mongo_url:  mongodb://$MONGO_SERVICE_HOST:$MONGO_SERVICE_PORT
+reactionEmail: 'admin@localhost'
+reactionUser: 'admin'
+reactionAuth: 'r3@cti0n'
+reactionRoot_url:  'reactioncommerce.local'
+reactionMongo_url:  'mongodb://$MONGO_SERVICE_HOST:$MONGO_SERVICE_PORT'
