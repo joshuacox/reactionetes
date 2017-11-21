@@ -21,6 +21,32 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
+          env:
+            - name: ROOT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: reaction-config
+                  key: reaction.root_url
+            - name: MONGO_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: reaction-config
+                  key: reaction.mongo_url
+            - name: REACTION_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: reaction-config
+                  key: reaction.user
+            - name: REACTION_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  name: reaction-config
+                  key: reaction.email
+            - name: REACTION_AUTH
+              valueFrom:
+                configMapKeyRef:
+                  name: reaction-config
+                  key: reaction.auth
           livenessProbe:
             httpGet:
               path: /
