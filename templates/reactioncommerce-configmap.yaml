@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reaction-config
+data:
+  reaction:
+    email: {{ .Values.reaction.email }}
+    user:  {{ .Values.reaction.user }}
+    auth:  {{ .Values.reaction.auth }}
