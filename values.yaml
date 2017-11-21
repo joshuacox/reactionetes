@@ -41,3 +41,5 @@ reaction:
   email: admin@localhost
   user: admin
   auth: r3@cti0n
+  root_url:  reactioncommerce.local
+  mongo_url:  mongodb://$MONGO_SERVICE_HOST:$MONGO_SERVICE_PORT

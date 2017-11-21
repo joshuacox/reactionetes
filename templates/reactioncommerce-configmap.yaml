@@ -7,3 +7,5 @@ data:
     email: {{ .Values.reaction.email }}
     user:  {{ .Values.reaction.user }}
     auth:  {{ .Values.reaction.auth }}
+    root_url:  {{ .Values.reaction.root_url }}
+    mongo_url:  {{ .Values.reaction.mongo_url }}
