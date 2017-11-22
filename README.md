@@ -41,7 +41,7 @@ helm install --dry-run --debug . > /tmp/manifest
 ```
 
 
-### Makefile
+## Makefile
 
 #### install minikube
 
@@ -61,7 +61,7 @@ make
 ```
 
 
-#### debug
+#### Debug
 
 you can also save a debug copy of what manifest file will be generated
 using:
@@ -81,7 +81,8 @@ ls -lh /tmp/tmp.zZGCOwCCoqDOCKERTMP/manifest
 /tmp/tmp.zZGCOwCCoqDOCKERTMP/manifest
 ```
 
-### branches
+
+## branches
 
 The master branch should work fine to test out Reaction on a local
 minikube setup.  There will be other branches for other setups
@@ -96,7 +97,7 @@ This branch will use a SSD GCE persistent disk on the google cloud platform
 This branch will use a HDD GCE persistent disk on the google cloud platform
 
 
-### notes:
+## Notes:
 
 Kubernetes blog [post](http://blog.kubernetes.io/2017/01/running-mongodb-on-kubernetes-with-statefulsets.html) from  January 2017
 
