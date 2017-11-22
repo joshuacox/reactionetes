@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
@@ -9,27 +10,29 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-mongo
+        role: mongo
+        environment: {{ .Release.Name }}-mongo
     spec:
+      terminationGracePeriodSeconds: 10
       containers:
-      - name: mongodb
-        image: mongo:3.4.1
-        command:
-        - mongod
-        - --replSet
-        - {{ .Release.Name }}-rs
-        ports:
-        - containerPort: 27017
-          name: web
-      # This container initializes the mongodb, then sleeps.
-      - name: init-mongo
-        image: mongo:3.4.1
-        command:
-        - bash
-        - /config/init.sh
-        volumeMounts:
-        - name: config
-          mountPath: /config
+        - name: mongo
+          image: mongo:3.4
+          command:
+            - mongod
+            - "--replSet"
+            - {{ .Release.Name }}-rs
+            - "--smallfiles"
+            - "--noprealloc"
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: {{ .Release.Name }}-mongo-pv
+              mountPath: /data/db
+        - name: mongo-sidecar
+          image: cvallance/mongo-k8s-sidecar
+          env:
+            - name: MONGO_SIDECAR_POD_LABELS
+              value: "role=mongo,environment={{ .Release.Name }}-mongo"
       volumes:
-      - name: config
-        configMap:
-          name: {{ .Release.Name }}-mongo-init
+        - name: {{ .Release.Name }}-mongo-pv
+          emptyDir: {}
