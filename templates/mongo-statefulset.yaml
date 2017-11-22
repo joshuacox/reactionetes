@@ -33,6 +33,13 @@ spec:
           env:
             - name: MONGO_SIDECAR_POD_LABELS
               value: "role=mongo,environment={{ .Release.Name }}-mongo"
-      volumes:
-        - name: {{ .Release.Name }}-mongo-pv
-          emptyDir: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-mongo-pv
+      annotations:
+        volume.beta.kubernetes.io/storage-class: "fast"
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
