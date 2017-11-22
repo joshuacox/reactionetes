@@ -1,6 +1,7 @@
-# reactionetes
+# Reactionetes
 
 Spin up a Kubernetes stack dedicated to Reaction Commerce PDQ
+
 
 ## Requirements
 
@@ -13,17 +14,32 @@ with tiller initialized by
 helm should be able to talk to your k8s cluster
 and install freely
 
+
 ## Install
 
 ```
 helm install .
 ```
 
+## [values.yaml](./values.yaml) Config
+
+You can easily swap out your image by altering these lines:
+[image settings](https://github.com/joshuacox/reactionetes/blob/master/values.yaml#L5-L7)
+
+And the external host using these lines:
+[host setting](https://github.com/joshuacox/reactionetes/blob/master/values.yaml#L17-L18)
+
+These values can be overridden on the command line usingi the `--set` and
+`--values` flags for helm, more info
+[here](https://docs.helm.sh/using_helm/#using-helm)
+
+
 ## Debug
 
 ```
 helm install --dry-run --debug . > /tmp/manifest
 ```
+
 
 ### Makefile
 
@@ -35,6 +51,7 @@ minikube is updated often, it can't hurt to run this often
 make minikube
 ```
 
+
 #### helm install .
 
 this is the default for this makefile
@@ -42,6 +59,7 @@ this is the default for this makefile
 ```
 make
 ```
+
 
 #### debug
 
@@ -63,7 +81,22 @@ ls -lh /tmp/tmp.zZGCOwCCoqDOCKERTMP/manifest
 /tmp/tmp.zZGCOwCCoqDOCKERTMP/manifest
 ```
 
-notes:
+### branches
+
+The master branch should work fine to test out Reaction on a local
+minikube setup.  There will be other branches for other setups
+and cloud providers.
+
+#### [gce-ssd](https://github.com/joshuacox/reactionetes/tree/gce-ssd)
+
+This branch will use a SSD GCE persistent disk on the google cloud platform
+
+#### [gce-hdd](https://github.com/joshuacox/reactionetes/tree/gce-hdd)
+
+This branch will use a HDD GCE persistent disk on the google cloud platform
+
+
+### notes:
 
 Kubernetes blog [post](http://blog.kubernetes.io/2017/01/running-mongodb-on-kubernetes-with-statefulsets.html) from  January 2017
 
