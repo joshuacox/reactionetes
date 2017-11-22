@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-mongo
 spec:
-  serviceName: "mongo"
+  serviceName: {{ .Release.Name }}-mongo
   replicas: 3
   template:
     metadata:
