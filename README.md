@@ -45,7 +45,7 @@ helm install --dry-run --debug . > /tmp/manifest
 
 #### install minikube
 
-minikube is updated often, it can't hurt to run this often
+minikube is updated often, it can't hurt to run this accordingly
 
 ```
 make minikube
@@ -104,3 +104,19 @@ Kubernetes blog [post](http://blog.kubernetes.io/2017/01/running-mongodb-on-kube
 Mongodb blog [post](https://www.mongodb.com/blog/post/running-mongodb-as-a-microservice-with-docker-and-kubernetes)
 
 KubernetesUpAndRunning examples [repo](https://github.com/kubernetes-up-and-running/examples)
+
+
+### todo
+
+add aws support
+
+add openebs support
+
+add a production setup that utilizes a pre-existing mongo stack and has
+many different reaction deployments
+
+add kadira
+
+add snowplow
+
+add benchmarking
