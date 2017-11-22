@@ -8,4 +8,4 @@ data:
   reaction.auth: {{ .Values.reactionAuth }}
   reaction.root_url: {{ .Values.reactionRoot_url }}
   reaction.hostname: {{ .Values.reactionHostname }}
-  reaction.mongo_url: mongodb://{{ .Release.Name }}-mongo:27017
+  reaction.mongo_url: mongodb://{{ .Release.Name }}-mongo:27017,{{ .Release.Name }}-mongo-0,{{ .Release.Name }}-mongo-1,{{ .Release.Name }}-mongo-2:27017/?replicaSet={{ .Release.Name }}-rs&readPreference=secondary

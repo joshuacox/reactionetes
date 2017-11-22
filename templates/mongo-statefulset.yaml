@@ -16,7 +16,7 @@ spec:
         command:
         - mongod
         - --replSet
-        - rs0
+        - {{ .Release.Name }}-rs
         ports:
         - containerPort: 27017
           name: web
