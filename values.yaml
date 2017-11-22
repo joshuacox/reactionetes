@@ -40,5 +40,7 @@ resources: {}
 reactionEmail: 'admin@localhost'
 reactionUser: 'admin'
 reactionAuth: 'r3@cti0n'
-reactionRoot_url:  'reactioncommerce.local'
+# No 'https://' on this it will be added later
+reactionHostname:  'reactioncommerce.example.com'
+reactionRoot_url:  'http://reactioncommerce.example.com'
 reactionMongo_url:  'mongodb://$MONGO_SERVICE_HOST:$MONGO_SERVICE_PORT'

@@ -7,4 +7,5 @@ data:
   reaction.user: {{ .Values.reactionUser }}
   reaction.auth: {{ .Values.reactionAuth }}
   reaction.root_url: {{ .Values.reactionRoot_url }}
-  reaction.mongo_url: {{ .Values.reactionMongo_url }}
+  reaction.hostname: {{ .Values.reactionHostname }}
+  reaction.mongo_url: mongodb://{{ .Release.Name }}-mongo:27017

@@ -8,7 +8,7 @@ spec:
   template:
     metadata:
       labels:
-        app: mongo
+        app: {{ .Release.Name }}-mongo
     spec:
       containers:
       - name: mongodb
