@@ -6,6 +6,9 @@ Spin up a Kubernetes stack dedicated to Reaction Commerce PDQ
 A running kubernetes stack with tiller initialized by
 [helm](https://helm.sh/)
 
+helm should be able to talk to your k8s cluster
+and install freely
+
 ### Install
 
 ```
