@@ -37,7 +37,7 @@ spec:
   - metadata:
       name: {{ .Release.Name }}-mongo-pv
       annotations:
-        volume.beta.kubernetes.io/storage-class: "fast"
+        volume.beta.kubernetes.io/storage-class: "slow"
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
