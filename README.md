@@ -45,7 +45,7 @@ helm install --dry-run --debug . > /tmp/manifest
 
 #### install minikube
 
-minikube is updated often, it can't hurt to run this often
+minikube is updated often, it can't hurt to run this accordingly
 
 ```
 make minikube
