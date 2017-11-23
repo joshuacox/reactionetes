@@ -45,10 +45,10 @@ helm install --dry-run --debug . > /tmp/manifest
 
 #### install minikube
 
-minikube is updated often, it can't hurt to run this accordingly
+minikube and kubctl are updated often, it can't hurt to run this accordingly
 
 ```
-make minikube
+make reqs
 ```
 
 
@@ -120,3 +120,5 @@ add kadira
 add snowplow
 
 add benchmarking
+
+combine all branches using go templating conditionals
