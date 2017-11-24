@@ -5,7 +5,7 @@ KUBECONFIG=$(HOME)/.kube/config
 MY_KUBE_VERSION=v1.8.0
 
 install:
-	helm install reactionetes
+	helm install ./reactionetes
 
 reqs: /usr/local/bin/minikube /usr/local/bin/kubectl
 
@@ -33,7 +33,6 @@ autopilot: reqs
 	rmdir $(TMP)
 
 /usr/local/bin/kubectl:
-	echo "kube $(MY_KUBE_VERSION)"
 	$(eval TMP := $(shell mktemp -d --suffix=KUBECTLTMP))
 	cd $(TMP) \
 	&& curl -LO https://storage.googleapis.com/kubernetes-release/release/$(MY_KUBE_VERSION)/bin/linux/amd64/kubectl \
@@ -46,4 +45,3 @@ clean:
 	-minikube delete
 	-sudo rm  -f /usr/local/bin/minikube
 	-sudo rm  -f /usr/local/bin/kubectl
-	-sudo rm  -f KUBE_VERSION:
