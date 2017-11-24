@@ -19,7 +19,7 @@ debug:
 
 autopilot: reqs
 	minikube start
-	sh ./w8s.sh
+	sh ./w8s
 	helm init
 	sleep 120
 	make
