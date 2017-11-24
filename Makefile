@@ -2,8 +2,7 @@ MINIKUBE_WANTUPDATENOTIFICATION=false
 MINIKUBE_WANTREPORTERRORPROMPT=false
 CHANGE_MINIKUBE_NONE_USER=false
 KUBECONFIG=$(HOME)/.kube/config
-KUBE_VERSION:
-	curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt > KUBE_VERSION
+MY_KUBE_VERSION=v1.8.4
 
 install:
 	helm install reactionetes
@@ -11,7 +10,7 @@ install:
 reqs: /usr/local/bin/minikube /usr/local/bin/kubectl
 
 debug:
-	$(eval TMP := $(shell mktemp -d --suffix=DOCKERTMP))
+	$(eval TMP := $(shell mktemp -d --suffix=DDEBUGTMP))
 	helm install --dry-run --debug reactionetes > $(TMP)/manifest
 	less $(TMP)/manifest
 	ls -lh $(TMP)/manifest
@@ -33,8 +32,7 @@ autopilot: reqs
 	&& curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
 	rmdir $(TMP)
 
-/usr/local/bin/kubectl: KUBE_VERSION
-	$(eval MY_KUBE_VERSION := $(shell cat KUBE_VERSION))
+/usr/local/bin/kubectl:
 	echo "kube $(MY_KUBE_VERSION)"
 	$(eval TMP := $(shell mktemp -d --suffix=KUBECTLTMP))
 	cd $(TMP) \
