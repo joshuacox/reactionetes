@@ -2,6 +2,16 @@
 
 Spin up a Kubernetes stack dedicated to Reaction Commerce PDQ
 
+## Oneliner
+
+The oneliner:
+```
+curl -L https://git.io/reactionetes | bash
+```
+
+That merely performs the
+[autopilot](#autopilot)
+recipe using the [bootstrap](./bootstrap) file
 
 ## Requirements
 
@@ -33,7 +43,7 @@ and finally spin up the reaction cluster
 make autopilot
 ```
 
-or it can be done in a one-off sort of manner:
+or it can be done in a one-off sort of manner using the oneliner:
 ```
 curl -L https://git.io/reactionetes | bash
 ```
@@ -41,10 +51,10 @@ curl -L https://git.io/reactionetes | bash
 ## [values.yaml](./reactionetes/values.yaml) Config
 
 You can easily swap out your image by altering these lines:
-[image settings](https://github.com/joshuacox/reactionetes/blob/master/reactionetes/values.yaml#L5-L7)
+[image settings](./reactionetes/values.yaml#L5-L7)
 
 And the external host using these lines:
-[host setting](https://github.com/joshuacox/reactionetes/blob/master/reactionetes/values.yaml#L17-L18)
+[host setting](./reactionetes/values.yaml#L17-L18)
 
 These values can be overridden on the command line usingi the `--set` and
 `--values` flags for helm, more info
