@@ -18,7 +18,7 @@ debug:
 	@echo "   $(TMP)/manifest"
 
 autopilot: reqs
-	minikube start
+	minikube --kubernetes-version $(MY_KUBE_VERSION) $(MINIKUBE_OPTS) start
 	sh ./w8s
 	helm init
 	sleep 120

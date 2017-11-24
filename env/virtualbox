@@ -1,0 +1,1 @@
+export MINIKUBE_OPTS=--vm-driver=virtualbox
