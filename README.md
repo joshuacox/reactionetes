@@ -38,7 +38,7 @@ or it can be done in a one-off sort of manner:
 curl -L https://git.io/reactionetes | bash
 ```
 
-## [values.yaml](./values.yaml) Config
+## [values.yaml](./reactionetes/values.yaml) Config
 
 You can easily swap out your image by altering these lines:
 [image settings](https://github.com/joshuacox/reactionetes/blob/master/values.yaml#L5-L7)
