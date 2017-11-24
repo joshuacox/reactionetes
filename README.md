@@ -41,10 +41,10 @@ curl -L https://git.io/reactionetes | bash
 ## [values.yaml](./reactionetes/values.yaml) Config
 
 You can easily swap out your image by altering these lines:
-[image settings](https://github.com/joshuacox/reactionetes/blob/master/values.yaml#L5-L7)
+[image settings](https://github.com/joshuacox/reactionetes/blob/master/reactionetes/values.yaml#L5-L7)
 
 And the external host using these lines:
-[host setting](https://github.com/joshuacox/reactionetes/blob/master/values.yaml#L17-L18)
+[host setting](https://github.com/joshuacox/reactionetes/blob/master/reactionetes/values.yaml#L17-L18)
 
 These values can be overridden on the command line usingi the `--set` and
 `--values` flags for helm, more info
