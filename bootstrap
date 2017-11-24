@@ -21,7 +21,7 @@ check_cmd git
 echo Reactionetes
 TMP_DIR=$(mktemp -d --suffix='.reactionetes')
 cd $TMP_DIR
-git clone https://github.com/joshuacox/reactionetes.git
+git clone --depth 1 https://github.com/joshuacox/reactionetes.git
 cd reactionetes
 make autopilot
 
