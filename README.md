@@ -23,6 +23,21 @@ helm install ./reactionetes
 
 ## Autopilot
 
+This will install
+minikube kubectl,
+startup a cluster,
+initialize helm,
+and finally spin up the reaction cluster
+
+```
+make autopilot
+```
+
+or it can be done in a one-off sort of manner:
+```
+curl -L https://git.io/reactionetes | bash
+```
+
 ## [values.yaml](./values.yaml) Config
 
 You can easily swap out your image by altering these lines:
