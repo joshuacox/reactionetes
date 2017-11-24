@@ -48,6 +48,12 @@ or it can be done in a one-off sort of manner using the oneliner:
 curl -L https://git.io/reactionetes | bash
 ```
 
+or specify your own minikube opts:
+```
+export MINIKUBE_OPTS=--vm-driver=kvm
+curl -L https://git.io/reactionetes | bash
+```
+
 ## [values.yaml](./reactionetes/values.yaml) Config
 
 You can easily swap out your image by altering these lines:
