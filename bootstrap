@@ -1,7 +1,7 @@
 #!/bin/sh
-echo -n "Warning"
+echo "Warning!"
 sleep 1
-echo ", this will install reactionetes into a minikube cluster locally"
+echo "This script will install minikube and kubectl, and then reactionetes into a minikube cluster locally"
 sleep 1
 echo -n "(ctrl-c now to stop if this not what you intend)."
 sleep 1; echo  -n "."; sleep 1; echo  -n "."

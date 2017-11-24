@@ -32,7 +32,6 @@ autopilot: reqs
 	cd $(TMP) \
 	&& curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
 	rmdir $(TMP)
-	minikube version
 
 /usr/local/bin/kubectl: KUBE_VERSION
 	$(eval MY_KUBE_VERSION := $(shell cat KUBE_VERSION))
@@ -43,7 +42,6 @@ autopilot: reqs
 	&& chmod +x kubectl \
  	&& sudo mv -v kubectl /usr/local/bin/
 	rmdir $(TMP)
-	kubectl version
 
 clean:
 	-minikube stop
