@@ -18,8 +18,10 @@ and install freely
 ## Install
 
 ```
-helm install .
+helm install ./reactionetes
 ```
+
+## Autopilot
 
 ## [values.yaml](./values.yaml) Config
 
