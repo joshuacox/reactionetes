@@ -11,9 +11,12 @@ curl -L https://git.io/reactionetes | bash
 
 That merely performs the
 [autopilot](#autopilot)
-recipe using the [bootstrap](./bootstrap) file
+recipe using the [bootstrap](./bootstrap) file.
 
-At the end of which you'll get some notes if everything went
+This script automagically attempts to determine your OS and tries to
+install the minikube and kubectl appropriate for your OS.
+
+At the end of which you will get some notes if everything went
 successfully.  Here is some example output:
 
 ```
@@ -70,13 +73,23 @@ make autopilot
 ```
 
 or it can be done in a one-off sort of manner using the oneliner:
+
 ```
 curl -L https://git.io/reactionetes | bash
 ```
 
 or specify your own minikube opts:
+
 ```
 export MINIKUBE_OPTS=--vm-driver=kvm
+curl -L https://git.io/reactionetes | bash
+```
+
+or on a VM that has docker installed you can run without the
+virtualization driver
+
+```
+export MINIKUBE_OPTS=--vm-driver=none
 curl -L https://git.io/reactionetes | bash
 ```
 
@@ -90,13 +103,14 @@ And the external host using these lines:
 
 These values can be overridden on the command line usingi the `--set` and
 `--values` flags for helm, more info
-[here](https://docs.helm.sh/using_helm/#using-helm)
+[here](https://docs.helm.sh/helm/#helm-install)
+and [here](https://docs.helm.sh/using_helm/#using-helm)
 
 
 ## Debug
 
 ```
-helm install --dry-run --debug . > /tmp/manifest
+helm install --dry-run --debug ./reactionetes > /tmp/manifest
 ```
 
 
