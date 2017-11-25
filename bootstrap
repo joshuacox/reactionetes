@@ -1,4 +1,72 @@
 #!/bin/sh
+# Installs minikube, kubectl, and reactionetes into a minikube cluster
+
+# Check if a command exists
+check_cmd () {
+  if ! type "$1" > /dev/null; then
+      echo "$1 not found"
+      echo "please install $1"
+  fi
+}
+
+# taking some cues directly from the meteor install script
+
+# We wrap this whole script in a function, so that we won't execute
+# until the entire script is downloaded.
+# That's good because it prevents our output overlapping with curl's.
+# It also means that we can't run a partially downloaded script.
+# We don't indent because it would be really confusing with the heredocs.
+run_it () {
+
+# Now, on to the actual installer!
+
+## NOTE sh NOT bash. This script should be POSIX sh only, since we don't
+## know what shell the user has. Debian uses 'dash' for 'sh', for
+## example.
+
+PREFIX="/usr/local"
+
+set -e
+set -u
+
+# Let's display everything on stderr.
+exec 1>&2
+
+UNAME=$(uname)
+# Check to see if it starts with MINGW.
+if [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
+    echo "Windows is not supported for this installer at this time"
+    exit 1
+fi
+if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" ] ; then
+    echo "Sorry, this OS is not supported yet via this installer."
+    exit 1
+fi
+
+
+if [ "$UNAME" = "Darwin" ] ; then
+  check_cmd brew
+  ### OSX ###
+  if [ "i386" != "$(uname -p)" -o "1" != "$(sysctl -n hw.cpu64bit_capable 2>/dev/null || echo 0)" ] ; then
+    # Can't just test uname -m = x86_64, because Snow Leopard can
+    # return other values.
+    echo "Only 64-bit Intel processors are supported at this time in OSX."
+    exit 1
+  fi
+
+  PLATFORM="os.osx.x86_64"
+elif [ "$UNAME" = "Linux" ] ; then
+  ### Linux ###
+  LINUX_ARCH=$(uname -m)
+  if [ "${LINUX_ARCH}" = "x86_64" ] ; then
+    PLATFORM="os.linux.x86_64"
+  else
+    echo "Unusable architecture: ${LINUX_ARCH}"
+    echo "Reactionetes only supports x86_64 for now."
+    exit 1
+  fi
+fi
+
 echo "Warning!"
 sleep 1
 echo "This script will install minikube and kubectl, and then reactionetes into a minikube cluster locally"
@@ -8,22 +76,32 @@ sleep 1; echo  -n "."; sleep 1; echo  -n "."
 sleep 1; echo "."
 sleep 1
 
-check_cmd () {
-  if ! type "$1" > /dev/null; then
-      echo "$1 not found"
-      echo "please install $1"
-  fi
-}
-
-check_cmd make
-check_cmd git
-
-echo Reactionetes
 TMP_DIR=$(mktemp -d --suffix='.reactionetes')
 cd $TMP_DIR
+echo 'Cloning the latest reactionetes repo'
 git clone --depth 1 https://github.com/joshuacox/reactionetes.git
 cd reactionetes
+
+if [ "$PLATFORM" = "os.linux.x86_64" ] ; then
+  make linuxreqs
+elif [ "$PLATFORM" = "os.osx.x86_64" ] ; then
+  make osxreqs
+fi
+
 make autopilot
 
 cd
 rm -Rf $TMP_DIR
+
+
+trap - EXIT
+# End run it wrapper
+}
+
+
+check_cmd make
+check_cmd mktemp
+check_cmd git
+check_cmd curl
+
+run_it

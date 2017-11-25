@@ -7,7 +7,9 @@ MY_KUBE_VERSION=v1.8.0
 install:
 	helm install ./reactionetes
 
-reqs: /usr/local/bin/minikube /usr/local/bin/kubectl
+linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl
+
+osxreqs: macminikube mackubectl
 
 debug:
 	$(eval TMP := $(shell mktemp -d --suffix=DDEBUGTMP))
@@ -17,7 +19,8 @@ debug:
 	@echo "you can find the manifest here:"
 	@echo "   $(TMP)/manifest"
 
-autopilot: reqs
+autopilot:
+	@echo 'Autopilot engaged'
 	minikube --kubernetes-version $(MY_KUBE_VERSION) $(MINIKUBE_OPTS) start
 	sh ./w8s
 	helm init
@@ -25,6 +28,7 @@ autopilot: reqs
 	make
 
 /usr/local/bin/minikube:
+	@echo 'Installing minikube'
 	$(eval TMP := $(shell mktemp -d --suffix=MINIKUBETMP))
 	mkdir $HOME/.kube || true
 	touch $HOME/.kube/config
@@ -33,6 +37,7 @@ autopilot: reqs
 	rmdir $(TMP)
 
 /usr/local/bin/kubectl:
+	@echo 'Installing kubectl'
 	$(eval TMP := $(shell mktemp -d --suffix=KUBECTLTMP))
 	cd $(TMP) \
 	&& curl -LO https://storage.googleapis.com/kubernetes-release/release/$(MY_KUBE_VERSION)/bin/linux/amd64/kubectl \
@@ -40,8 +45,14 @@ autopilot: reqs
  	&& sudo mv -v kubectl /usr/local/bin/
 	rmdir $(TMP)
 
+macminikube:
+	@echo 'Installing minikube'
+	brew cask install minikube
+
+mackubectl:
+	@echo 'Installing kubectl'
+	brew install kubectl
+
 clean:
 	-minikube stop
 	-minikube delete
-	-sudo rm  -f /usr/local/bin/minikube
-	-sudo rm  -f /usr/local/bin/kubectl

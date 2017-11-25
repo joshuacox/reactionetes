@@ -2,7 +2,7 @@
 
 Spin up a Kubernetes stack dedicated to Reaction Commerce PDQ
 
-## Oneliner
+## Oneliner Autopilot
 
 The oneliner:
 ```
@@ -13,7 +13,33 @@ That merely performs the
 [autopilot](#autopilot)
 recipe using the [bootstrap](./bootstrap) file
 
-## Requirements
+At the end of which you'll get some notes if everything went
+successfully.  Here is some example output:
+
+```
+NOTES:
+1. Get the ReactionCommerce URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l
+"app=reactionetes,release=youngling-beetle" -o
+jsonpath="{.items[0].metadata.name}")
+  echo "Visit http://127.0.0.1:3001 to use your application"
+  kubectl port-forward $POD_NAME 3001:3000
+```
+
+It should be noted that you can then paste those last three lines
+directly into your terminal and you will be able to access the reaction
+commerce site once all the pods spin up at:
+
+[127.0.0.1:3001](http://127.0.0.1:3001)
+
+it may take some time depending mainly on your internet connection and
+how fast you can download all the necessary images.  The first time
+being the worst as you have to download kubectl and minikube, AND all
+the docker images to spin up kubernetes.
+
+## Manual Installation
+
+### Requirements
 
 A running kubernetes stack, perhap using
 [minikube](https://github.com/kubernetes/minikube)
@@ -25,7 +51,7 @@ helm should be able to talk to your k8s cluster
 and install freely
 
 
-## Install
+### Install
 
 ```
 helm install ./reactionetes
