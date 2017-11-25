@@ -66,3 +66,6 @@ windowskubectl:
 clean:
 	-minikube stop
 	-minikube delete
+
+timeme:
+	/usr/bin/time -v ./bootstrap
