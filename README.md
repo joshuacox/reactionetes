@@ -150,19 +150,19 @@ this is the default for this makefile
 make
 ```
 
-# Linux Reqs
+#### Linux Reqs
 
 ```
 make linuxreqs
 ```
 
-# Windows Reqs
+#### Windows Reqs
 
 ```
 make windowsreqs
 ```
 
-# OSX Reqs
+#### OSX Reqs
 
 ```
 make osxreqs
