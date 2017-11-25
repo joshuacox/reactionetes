@@ -11,6 +11,8 @@ linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl
 
 osxreqs: macminikube mackubectl
 
+windowsreqs:  windowsminikube windowskubectl
+
 debug:
 	$(eval TMP := $(shell mktemp -d --suffix=DDEBUGTMP))
 	helm install --dry-run --debug reactionetes > $(TMP)/manifest
@@ -52,6 +54,14 @@ macminikube:
 mackubectl:
 	@echo 'Installing kubectl'
 	brew install kubectl
+
+windowsminikube:
+	@echo 'Installing minikube'
+	choco install minikube
+
+windowskubectl:
+	@echo 'Installing kubectl'
+	choco install kubernetes-cli
 
 clean:
 	-minikube stop

@@ -9,6 +9,15 @@ check_cmd () {
   fi
 }
 
+warrrn () {
+  sleep 1
+  echo -n "(ctrl-c now to stop if this is not what you intend)!"
+  sleep 1; echo  -n "!"; sleep 1; echo  -n "!"
+  sleep 1; echo  -n "!"
+  sleep 1; echo "!"
+  sleep 1
+}
+
 # taking some cues directly from the meteor install script
 
 # We wrap this whole script in a function, so that we won't execute
@@ -35,8 +44,10 @@ exec 1>&2
 UNAME=$(uname)
 # Check to see if it starts with MINGW.
 if [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
-    echo "Windows is not supported for this installer at this time"
-    exit 1
+    check_cmd choco
+    PLATFORM="os.windows.x86_64"
+    echo "WARNING: Windows is not supported for this installer at this time!"
+    warrrn
 fi
 if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" ] ; then
     echo "Sorry, this OS is not supported yet via this installer."
@@ -55,6 +66,7 @@ if [ "$UNAME" = "Darwin" ] ; then
   fi
 
   PLATFORM="os.osx.x86_64"
+  echo "WARNING: OSX is experimental for this installer at this time!"
 elif [ "$UNAME" = "Linux" ] ; then
   ### Linux ###
   LINUX_ARCH=$(uname -m)
@@ -70,11 +82,7 @@ fi
 echo "Warning!"
 sleep 1
 echo "This script will install minikube and kubectl, and then reactionetes into a minikube cluster locally"
-sleep 1
-echo -n "(ctrl-c now to stop if this not what you intend)."
-sleep 1; echo  -n "."; sleep 1; echo  -n "."
-sleep 1; echo "."
-sleep 1
+warrrn
 
 TMP_DIR=$(mktemp -d --suffix='.reactionetes')
 cd $TMP_DIR
@@ -86,6 +94,8 @@ if [ "$PLATFORM" = "os.linux.x86_64" ] ; then
   make linuxreqs
 elif [ "$PLATFORM" = "os.osx.x86_64" ] ; then
   make osxreqs
+elif [ "$PLATFORM" = "os.windows.x86_64" ] ; then
+  make windowsreqs
 fi
 
 make autopilot
