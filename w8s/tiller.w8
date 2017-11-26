@@ -1,14 +1,21 @@
 #!/bin/sh
 
-echo "wait on Tiller to become available"
+echo -n "wait on Tiller to become available"
+sleep 5
 
 for i in {1..150}; do # timeout for 5 minutes
-  RESULT=$(kubectl get po --namespace=kube-systemi | grep tiller)
-  if [ $(RESULT) -ne 1 ]; then
+  echo -n '.'
+  RESULT=$(kubectl get po --namespace=kube-system | grep tiller | grep Running)
+  if [ "$RESULT" ]; then
+      sleep 3
+      echo "$RESULT"
       break
   fi
-  sleep 2
+  sleep 3
 done
 
-echo "kubectl commands are now able to interact with Minikube cluster"
-kubectl get po
+sleep 3
+echo -e "\nTiller is now up and running. Helm commands are now able to interact with Minikube cluster"
+sleep 3
+kubectl get po --namespace=kube-system | grep tiller
+sleep 3

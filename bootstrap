@@ -103,13 +103,14 @@ fi
 
 echo "Warning!"
 sleep 1
-echo "This script will install minikube and kubectl, and then reactionetes into a minikube cluster locally"
-echo "this is not for production use, but the elements within can be adapted for such"
-echo "DISCLAIMER: this software is highly experimental"
-echo "it can set fire to your computer,"
-echo "and might possibly open an interdimensional portal of unknown origin"
-echo "you are responsible for what comes through the portal"
-echo "software bugs should be noted in a github issue at https://github.com/joshuacox/reactionetes/issues"
+echo -e "This script will install minikube and kubectl,
+and then reactionetes into a minikube cluster locally.
+This is not for production use, but the elements within can be adapted for such.
+\n\nDISCLAIMER: This software is highly experimental!
+It can set fire to your computer.
+And might possibly open an interdimensional portal of unknown origin.
+You are responsible for what comes through the portal.
+\n\nSoftware bugs should be noted in a github issue at https://github.com/joshuacox/reactionetes/issues"
 warrrn
 
 TMP_DIR=$(mktemp -d --suffix='.reactionetes')
