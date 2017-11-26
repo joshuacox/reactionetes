@@ -3,7 +3,7 @@
 echo -n "wait on Tiller to become available"
 sleep 5
 
-for i in {1..150}; do # timeout for 5 minutes
+for i in {1..150}; do # timeout for 15 minutes
   echo -n '.'
   RESULT=$(kubectl get po --namespace=kube-system | grep tiller | grep Running)
   if [ "$RESULT" ]; then
@@ -11,7 +11,7 @@ for i in {1..150}; do # timeout for 5 minutes
       echo "$RESULT"
       break
   fi
-  sleep 3
+  sleep 6
 done
 
 sleep 3
