@@ -3,7 +3,8 @@ services:
 - docker
 language: bash
 before_install:
+  - env
   - sudo apt-get update
-  - sudo apt-get -y make git curl
+  - sudo apt-get -qq make git curl
 script:
   - curl -L https://git.io/reactionetes | bash
