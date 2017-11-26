@@ -7,7 +7,7 @@ MY_KUBE_VERSION=v1.8.0
 install:
 	helm install ./reactionetes
 
-linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl
+linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl /usr/local/bin/helm
 
 osxreqs: macminikube mackubectl
 
@@ -28,6 +28,9 @@ autopilot:
 	helm init
 	sleep 120
 	make
+
+/usr/local/bin/helm:
+	curl -L https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
 
 /usr/local/bin/minikube:
 	@echo 'Installing minikube'
