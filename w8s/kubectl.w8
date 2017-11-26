@@ -6,9 +6,12 @@ for i in {1..150}; do # timeout for 15 minutes
    echo -n '.'
    kubectl get po &> /dev/null
    if [ $? -ne 1 ]; then
+      sleep 6
       break
   fi
   sleep 6
 done
 
+sleep 3
 echo -e "\nkubectl commands are now able to interact with Minikube cluster"
+sleep 3
