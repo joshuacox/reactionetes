@@ -105,6 +105,10 @@ elif [ "$PLATFORM" = "os.windows.x86_64" ] ; then
   make windowsreqs
 fi
 
+check_cmd helm
+check_cmd kubectl
+check_cmd minikube
+
 make autopilot
 
 cd
