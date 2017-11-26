@@ -7,6 +7,6 @@ language: bash
 before_install:
   - env
   - sudo apt-get update
-  - sudo apt-get install -qq make git curl
+  - sudo apt-get install -qq make git curl socat
 script:
   - curl -L https://git.io/reactionetes | bash
