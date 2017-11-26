@@ -144,6 +144,7 @@ chkdir /usr/local
 chkdir /usr/local/bin
 chkdir /etc/kubernetes
 chkdir /var/lib/localkube
+chkdir /var/lib/localkube/certs
 
 check_cmd make
 check_cmd mktemp
