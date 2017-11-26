@@ -1,3 +1,4 @@
+dist: trusty
 sudo: required
 services:
 - docker
@@ -5,7 +6,8 @@ env:
   - MINIKUBE_OPTS=--vm-driver=none
 language: bash
 before_install:
-  - env
+# install nsenter which is required for port forwarding
+  - .travis/ubuntu-compile-nsenter.sh && sudo cp .tmp/util-linux-2.30.2/nsenter /usr/bin
   - sudo apt-get update
   - sudo apt-get install -qq make git curl socat
 script:
