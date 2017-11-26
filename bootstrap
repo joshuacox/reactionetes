@@ -142,6 +142,8 @@ trap - EXIT
 
 chkdir /usr/local
 chkdir /usr/local/bin
+chkdir /etc/kubernetes
+chkdir /etc/kubernetes/addons
 
 check_cmd make
 check_cmd mktemp
