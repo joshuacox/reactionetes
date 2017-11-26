@@ -1,13 +1,19 @@
 #!/bin/sh
 # Installs minikube, kubectl, and reactionetes into a minikube cluster
 
+errror () {
+  echo "-------------------------------------------------------------"
+  echo -e "\n \n  "
+  echo "ERROR!!!  --  "
+}
+
 # Check if a command exists
 check_cmd () {
   if ! type "$1" > /dev/null; then
-      echo -e "\n \n \n "
-      echo "ERROR!!!  --  "
+      errror
       echo "$1 was not found in your path!"
       echo "To proceed please install $1 to your path and try again!"
+      exit 1
   fi
 }
 
@@ -19,6 +25,18 @@ warrrn () {
   sleep 1; echo "!"
   sleep 1
 }
+
+chkdir () {
+  if [ ! -w $1 ] ; then
+    sudo chown $USER. $1
+  fi
+  if [ ! -w $1 ] ; then
+    errror
+    echo "Cannot write to $1, please check your permissions"
+    exit 2
+  fi
+}
+
 
 # taking some cues directly from the meteor install script
 
@@ -121,6 +139,8 @@ trap - EXIT
 # End run it wrapper
 }
 
+chkdir /usr/local
+chkdir /usr/local/bin
 
 check_cmd make
 check_cmd mktemp
