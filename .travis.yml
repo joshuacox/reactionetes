@@ -1,0 +1,10 @@
+sudo: required
+services:
+- docker
+language: bash
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - sudo apt-get -y make git curl
+script:
+  - curl -L https://git.io/reactionetes | bash
