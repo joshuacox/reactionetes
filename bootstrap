@@ -35,7 +35,7 @@ run_it () {
 ## know what shell the user has. Debian uses 'dash' for 'sh', for
 ## example.
 
-PREFIX="/usr/local"
+PREFIX="$(HOME)"
 
 set -e
 set -u

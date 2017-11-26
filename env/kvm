@@ -1,1 +1,2 @@
+export PATH="$HOME/.kube/bin:$PATH"
 export MINIKUBE_OPTS=--vm-driver=kvm

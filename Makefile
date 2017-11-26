@@ -3,19 +3,20 @@ MINIKUBE_WANTREPORTERRORPROMPT=false
 CHANGE_MINIKUBE_NONE_USER=false
 KUBECONFIG=$(HOME)/.kube/config
 MY_KUBE_VERSION=v1.8.0
+PREFIX=$(HOME)/.kube/bin
 
 install:
-	helm install ./reactionetes
+	$(PREFIX)/helm install ./reactionetes
 
-linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl /usr/local/bin/helm
+linuxreqs: $(PREFIX)/minikube $(PREFIX)/kubectl $(PREFIX)/helm dotfiles
 
 osxreqs: macminikube mackubectl machelm
 
-windowsreqs:  windowsminikube windowskubectl
+windowsreqs: windowsminikube windowskubectl
 
 debug:
 	$(eval TMP := $(shell mktemp -d --suffix=DDEBUGTMP))
-	helm install --dry-run --debug reactionetes > $(TMP)/manifest
+	$(PREFIX)/helm install --dry-run --debug reactionetes > $(TMP)/manifest
 	less $(TMP)/manifest
 	ls -lh $(TMP)/manifest
 	@echo "you can find the manifest here:"
@@ -23,31 +24,33 @@ debug:
 
 autopilot:
 	@echo 'Autopilot engaged'
-	minikube --kubernetes-version $(MY_KUBE_VERSION) $(MINIKUBE_OPTS) start
+	$(PREFIX)/minikube --kubernetes-version $(MY_KUBE_VERSION) $(MINIKUBE_OPTS) start
 	sh ./w8s
-	helm init
+	$(PREFIX)/helm init
 	sleep 120
 	make
 
-/usr/local/bin/helm:
-	curl -L https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
+$(PREFIX)/helm:
+	$(eval TMP := $(shell mktemp -d --suffix=HELMTMP))
+	curl -Lo $(TMP)/helmget https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get
+	HELM_INSTALL_DIR="$(PREFIX)" bash $(TMP)/helmget
 
-/usr/local/bin/minikube:
+$(PREFIX)/minikube:
 	@echo 'Installing minikube'
 	$(eval TMP := $(shell mktemp -d --suffix=MINIKUBETMP))
-	mkdir $(HOME)/.kube || true
+	mkdir -p $(HOME)/.kube/bin || true
 	touch $(HOME)/.kube/config
-	cd $(TMP) \
-	&& curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+	curl -Lo $(TMP)/minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+	chmod +x $(TMP)/minikube
+	sudo mv $(TMP)/minikube $(PREFIX)/minikube
 	rmdir $(TMP)
 
-/usr/local/bin/kubectl:
+$(PREFIX)/kubectl:
 	@echo 'Installing kubectl'
 	$(eval TMP := $(shell mktemp -d --suffix=KUBECTLTMP))
-	cd $(TMP) \
-	&& curl -LO https://storage.googleapis.com/kubernetes-release/release/$(MY_KUBE_VERSION)/bin/linux/amd64/kubectl \
-	&& chmod +x kubectl \
- 	&& sudo mv -v kubectl /usr/local/bin/
+	curl -Lo $(TMP)/kubectl https://storage.googleapis.com/kubernetes-release/release/$(MY_KUBE_VERSION)/bin/linux/amd64/kubectl
+	chmod +x $(TMP)/kubectl
+	sudo mv $(TMP)/kubectl $(PREFIX)/kubectl
 	rmdir $(TMP)
 
 macminikube:
@@ -76,3 +79,6 @@ clean:
 
 timeme:
 	/usr/bin/time -v ./bootstrap
+
+dotfiles:
+	bash dotfiles.bash
