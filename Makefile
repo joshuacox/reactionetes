@@ -24,9 +24,9 @@ debug:
 autopilot:
 	@echo 'Autopilot engaged'
 	minikube --kubernetes-version $(MY_KUBE_VERSION) $(MINIKUBE_OPTS) start
-	sh ./w8s
+	sh ./w8s/kubectl.w8
 	helm init
-	sleep 120
+	sh ./w8s/tiller.w8
 	make
 
 /usr/local/bin/helm:
