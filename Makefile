@@ -9,7 +9,7 @@ install:
 
 linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl /usr/local/bin/helm
 
-osxreqs: macminikube mackubectl
+osxreqs: macminikube mackubectl machelm
 
 windowsreqs:  windowsminikube windowskubectl
 
@@ -57,6 +57,10 @@ macminikube:
 mackubectl:
 	@echo 'Installing kubectl'
 	brew install kubectl
+
+machelm:
+	@echo 'Installing kubectl'
+	brew install kubernetes-helm
 
 windowsminikube:
 	@echo 'Installing minikube'

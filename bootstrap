@@ -45,6 +45,7 @@ UNAME=$(uname)
 # Check to see if it starts with MINGW.
 if [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
     check_cmd choco
+    check_cmd helm
     PLATFORM="os.windows.x86_64"
     echo "WARNING: Windows is not supported for this installer at this time!"
     warrrn
