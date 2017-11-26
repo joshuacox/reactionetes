@@ -1,6 +1,8 @@
 sudo: required
 services:
 - docker
+env:
+  - MINIKUBE_OPTS=--vm-driver=none
 language: bash
 before_install:
   - env
