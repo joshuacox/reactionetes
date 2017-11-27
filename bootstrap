@@ -69,11 +69,18 @@ if [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
     check_cmd helm
     PLATFORM="os.windows.x86_64"
     echo "WARNING: Windows is not supported for this installer at this time!"
-    warrrn
+    exit 1
 fi
-if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" ] ; then
+if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" -a "$UNAME" != "CYGWIN_NT-10.0" ] ; then
     echo "Sorry, this OS is not supported yet via this installer."
     exit 1
+fi
+if [ "$UNAME" = "CYGWIN_NT-10.0" ] ; then
+    check_cmd choco
+    check_cmd helm
+    PLATFORM="os.cygwin.x86_64"
+    echo "WARNING: Cygwin is highly experimental for this installer at this time!"
+    warrrn
 fi
 
 
