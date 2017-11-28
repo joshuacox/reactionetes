@@ -72,9 +72,9 @@ if [ "$UNAME" = "CYGWIN_NT-10.0" ] ; then
     exit 1
 fi
 #if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" -a "$UNAME" != "CYGWIN_NT-10.0" ] ; then
-if [ "$UNAME" = "Linux" ] ; then
+if [ "$UNAME" == "Linux" ] ; then
     echo " $UNAME is a Supported OS"
-elif [ "$UNAME" = "Darwin" ] ; then
+elif [ "$UNAME" == "Darwin" ] ; then
     echo " $UNAME is a Supported OS"
 elif [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
     echo " $UNAME is a Supported OS"
