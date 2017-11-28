@@ -28,6 +28,8 @@ autopilot:
 	helm init
 	@sh ./w8s/tiller.w8
 	make
+	@sh ./w8s/mongo.w8
+	@sh ./w8s/reactionetes.w8
 
 /usr/local/bin/helm: installhelm
 
