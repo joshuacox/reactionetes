@@ -17,10 +17,11 @@ addons:
     packages:
       - curl
       - socat
+      - time
 
 before_install:
 # install nsenter which is required for port forwarding
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then .travis/ubuntu-compile-nsenter.sh && sudo cp .tmp/util-linux-2.30.2/nsenter /usr/bin; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
 script:
-  - curl -L https://git.io/reactionetes | bash
+  - make test

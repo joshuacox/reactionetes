@@ -80,3 +80,5 @@ clean:
 
 timeme:
 	/usr/bin/time -v ./bootstrap
+
+test: timeme
