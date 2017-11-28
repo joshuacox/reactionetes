@@ -1,4 +1,4 @@
-dist: trusty
+oist: trusty
 sudo: required
 services:
 - docker

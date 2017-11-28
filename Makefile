@@ -29,7 +29,9 @@ autopilot:
 	@sh ./w8s/tiller.w8
 	make
 
-/usr/local/bin/helm:
+/usr/local/bin/helm: installhelm
+
+installhelm:
 	curl -L https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
 
 /usr/local/bin/minikube:

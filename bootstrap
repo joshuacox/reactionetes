@@ -64,25 +64,29 @@ exec 1>&2
 
 UNAME=$(uname)
 # Check to see if it starts with MINGW.
-if [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
-    check_cmd choco
-    check_cmd helm
-    PLATFORM="os.windows.x86_64"
-    echo "WARNING: Windows is not supported for this installer at this time!"
-    exit 1
-fi
-if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" -a "$UNAME" != "CYGWIN_NT-10.0" ] ; then
-    echo "Sorry, this OS is not supported yet via this installer."
-    exit 1
-fi
 if [ "$UNAME" = "CYGWIN_NT-10.0" ] ; then
     check_cmd choco
     check_cmd helm
     PLATFORM="os.cygwin.x86_64"
-    echo "WARNING: Cygwin is highly experimental for this installer at this time!"
-    warrrn
+    echo "WARNING: Cygwin is not supported for this installer at this time!"
+    exit 1
+fi
+#if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" -a "$UNAME" != "CYGWIN_NT-10.0" ] ; then
+if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" -a ] ; then
+    echo "Supported OS"
+elif [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
+    echo "Supported OS"
+else
+    echo "Sorry, this OS is not supported yet via this installer."
+    exit 1
 fi
 
+if [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
+    check_cmd choco
+    check_cmd helm
+    PLATFORM="os.windows.x86_64"
+    echo "WARNING: Windows is experimental for this installer at this time!"
+fi
 
 if [ "$UNAME" = "Darwin" ] ; then
   check_cmd brew
@@ -159,5 +163,7 @@ check_cmd mktemp
 check_cmd git
 check_cmd curl
 check_cmd uname
+check_cmd socat
+check_cmd nsenter
 
 run_it
