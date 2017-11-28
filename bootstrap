@@ -72,10 +72,10 @@ if [ "$UNAME" = "CYGWIN_NT-10.0" ] ; then
     exit 1
 fi
 #if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" -a "$UNAME" != "CYGWIN_NT-10.0" ] ; then
-if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" -a ] ; then
-    echo "Supported OS"
+if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" ] ; then
+    echo " $UNAME is a Supported OS"
 elif [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
-    echo "Supported OS"
+    echo " $UNAME is a Supported OS"
 else
     echo "Sorry, this OS is not supported yet via this installer."
     exit 1
