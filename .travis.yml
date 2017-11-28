@@ -7,6 +7,7 @@ matrix:
       - docker
       env:
         - MINIKUBE_OPTS=--vm-driver=none
+# Possible os x support in the future
     #- os: osx
     #  osx_image: xcode7.2
 
@@ -22,8 +23,11 @@ addons:
 before_install:
 # install nsenter which is required for port forwarding
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then .travis/ubuntu-compile-nsenter.sh && sudo cp .tmp/util-linux-2.30.2/nsenter /usr/bin; fi
+# Possible os x support in the future
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
 
-# /bin/sh points to dash on trusty, which can cause some of the tests to fail, switching to bash
 script:
+# /bin/sh points to dash on trusty, which can cause some of the tests to fail
+  - ls -alh `which sh`
+# switching to bash
   - /usr/bin/time -v bash ./bootstrap
