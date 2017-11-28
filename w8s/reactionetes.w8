@@ -1,15 +1,20 @@
 #!/bin/sh
 echo -n "wait on Reactionetes to become available"
 
-for i in {1..150}; do # timeout for 15 minutes
+# while loop
+countone=1
+# timeout for 15 minutes
+while [ $countone -lt 151 ]
+do
   echo -n '.'
   RESULT=$(kubectl get po | grep reactionetes | grep Running)
   if [ "$RESULT" ]; then
+      echo ""
       echo "$RESULT"
       break
   fi
+  countone=`expr $countone + 1`
   sleep 6
 done
 
-echo -e "\nReactionetes is now up and running."
-kubectl get po | grep reactionetes
+echo "Reactionetes is now up and running."

@@ -4,19 +4,29 @@ echo "Wait on at least three nodes of the mongo cluster settle"
 mongow8 () {
   echo -n "waiting on mongo-$1"
 
-  for i in {1..150}; do # timeout for 15 minutes
+  # while loop
+  countone=1
+  # timeout for 15 minutes
+  while [ $countone -lt 151 ]
+  do
     echo -n '.'
     RESULT=$(kubectl get po | grep mongo-$1 | grep Running)
     if [ "$RESULT" ]; then
         echo "$RESULT"
         break
     fi
+    countone=`expr $countone + 1`
     sleep 6
   done
 
-  echo -e "\nmongo-$1 is now up and running."
+  echo "mongo-$1 is now up and running."
 }
 
-for i in {0..2}; do
-  mongow8 $i
+# while loop
+countzero=0
+
+while [ $countzero -lt 3 ]
+do
+   mongow8 $countzero
+   countzero=`expr $countzero + 1`
 done
