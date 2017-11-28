@@ -1,5 +1,8 @@
 # Reactionetes
 
+[![Build
+Status](https://travis-ci.org/joshuacox/reactionetes.svg?branch=master)](https://travis-ci.org/joshuacox/reactionetes)
+
 Spin up a Kubernetes stack dedicated to Reaction Commerce PDQ
 
 ## Oneliner Autopilot
