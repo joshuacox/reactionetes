@@ -1,5 +1,5 @@
 #!/bin/sh
-echo "Wait on at least three nodes of the mongo cluster settle"
+echo "Wait on the mongo cluster to settle"
 
 mongow8 () {
   echo -n "waiting on mongo-$1"

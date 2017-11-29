@@ -1,5 +1,5 @@
 #!/bin/sh
-echo -n "wait on Reactionetes to become available"
+echo -n "Wait on Reactionetes to become available"
 
 # while loop
 countone=1
