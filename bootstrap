@@ -23,6 +23,7 @@ warrrn () {
   sleep 1; echo  -n "!"; sleep 1; echo  -n "!"
   sleep 1; echo  -n "!"
   sleep 1; echo "!"
+  sleep 1; echo "--"
   sleep 1
 }
 
@@ -146,7 +147,6 @@ make autopilot
 
 cd
 rm -Rf $TMP_DIR
-
 
 trap - EXIT
 # End run it wrapper
