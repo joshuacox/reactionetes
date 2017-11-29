@@ -1,0 +1,123 @@
+#!/bin/sh
+# Check reqs for reactionetes
+
+errror () {
+  echo "-------------------------------------------------------------"
+  echo -e "\n \n  "
+  echo "ERROR!!!  --  "
+}
+
+# Check if a command exists
+check_cmd () {
+  if ! type "$1" > /dev/null; then
+      errror
+      echo "$1 was not found in your path!"
+      echo "To proceed please install $1 to your path and try again!"
+      exit 1
+  fi
+}
+
+warrrn () {
+  sleep 1
+  echo -n "(ctrl-c now to stop if this is not what you intend)!"
+  sleep 1; echo  -n "!"; sleep 1; echo  -n "!"
+  sleep 1; echo  -n "!"
+  sleep 1; echo "!"
+  sleep 1
+}
+
+chkdir () {
+  if [ ! -w $1 ] ; then
+    sudo mkdir -p $1
+    sudo chown $USER. $1
+  fi
+  if [ ! -w $1 ] ; then
+    errror
+    echo "Cannot write to $1, please check your permissions"
+    exit 2
+  fi
+}
+
+
+# taking some cues directly from the meteor install script
+
+# We wrap this whole script in a function, so that we won't execute
+# until the entire script is downloaded.
+# That's good because it prevents our output overlapping with curl's.
+# It also means that we can't run a partially downloaded script.
+# We don't indent because it would be really confusing with the heredocs.
+run_it () {
+
+# Now, on to the actual installer!
+
+## NOTE sh NOT bash. This script should be POSIX sh only, since we don't
+## know what shell the user has. Debian uses 'dash' for 'sh', for
+## example.
+
+PREFIX="/usr/local"
+
+set -e
+set -u
+
+# Let's display everything on stderr.
+exec 1>&2
+
+UNAME=$(uname)
+# Check to see if it starts with MINGW.
+if [ "$UNAME" = "CYGWIN_NT-10.0" ] ; then
+    check_cmd choco
+    check_cmd helm
+    PLATFORM="os.cygwin.x86_64"
+    echo "WARNING: Cygwin is not supported for this installer at this time!"
+    exit 1
+fi
+if [ "$UNAME" == "Linux" -o "$UNAME" == "Darwin" ] ; then
+    check_cmd make
+    check_cmd curl
+elif [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
+    check_cmd curl
+    check_cmd choco
+    check_cmd helm
+    PLATFORM="os.windows.x86_64"
+else
+    echo " $UNAME is not a Supported OS"
+    echo "Sorry, this OS is not supported yet via this installer."
+    exit 1
+fi
+
+if [ "$UNAME" = "Darwin" ] ; then
+  check_cmd brew
+  ### OSX ###
+  if [ "i386" != "$(uname -p)" -o "1" != "$(sysctl -n hw.cpu64bit_capable 2>/dev/null || echo 0)" ] ; then
+    # Can't just test uname -m = x86_64, because Snow Leopard can
+    # return other values.
+    echo "Only 64-bit Intel processors are supported at this time in OSX."
+    exit 1
+  fi
+
+  PLATFORM="os.osx.x86_64"
+elif [ "$UNAME" = "Linux" ] ; then
+  ### Linux ###
+  LINUX_ARCH=$(uname -m)
+  if [ "${LINUX_ARCH}" = "x86_64" ] ; then
+    PLATFORM="os.linux.x86_64"
+  else
+    echo "Unusable architecture: ${LINUX_ARCH}"
+    echo "Reactionetes only supports x86_64 for now."
+    exit 1
+  fi
+fi
+
+if [ "$PLATFORM" = "os.linux.x86_64" ] ; then
+  make linuxreqs
+elif [ "$PLATFORM" = "os.osx.x86_64" ] ; then
+  make osxreqs
+elif [ "$PLATFORM" = "os.windows.x86_64" ] ; then
+  make windowsreqs
+fi
+
+trap - EXIT
+# End run it wrapper
+}
+
+run_it
