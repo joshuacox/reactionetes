@@ -3,7 +3,11 @@
 echo -n "wait on Tiller to become available"
 sleep 5
 
-for i in {1..150}; do # timeout for 15 minutes
+# while loop
+countone=1
+# timeout for 15 minutes
+while [ $countone -lt 151 ]
+do
   echo -n '.'
   RESULT=$(kubectl get po --namespace=kube-system | grep tiller | grep Running)
   if [ "$RESULT" ]; then
@@ -15,7 +19,7 @@ for i in {1..150}; do # timeout for 15 minutes
 done
 
 sleep 3
-echo -e "\nTiller is now up and running. Helm commands are now able to interact with Minikube cluster"
+echo "Tiller is now up and running. Helm commands are now able to interact with Minikube cluster"
 sleep 3
 kubectl get po --namespace=kube-system | grep tiller
 sleep 3
