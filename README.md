@@ -198,50 +198,40 @@ ls -lh /tmp/tmp.zZGCOwCCoqDOCKERTMP/manifest
 make timeme
 ```
 
-How long to spin up the cluster?  Or at least for the bootstrap to
-run?  After running this a few times (caching a few things)
-my machine can spin up a cluster with helm and make the initial
-request for reactioncommerce to assembled in just over 3 minutes:
+How long to spin up the cluster?
+Travis-CI builds it in just over two minutes:
 
 ```
-        Command being timed: "./bootstrap"
-        User time (seconds): 7.10
-        System time (seconds): 6.64
-        Percent of CPU this job got: 7%
-        Elapsed (wall clock) time (h:mm:ss or m:ss): 3:04.60
-        Average shared text size (kbytes): 0
-        Average unshared data size (kbytes): 0
-        Average stack size (kbytes): 0
-        Average total size (kbytes): 0
-        Maximum resident set size (kbytes): 35476
-        Average resident set size (kbytes): 0
-        Major (requiring I/O) page faults: 4
-        Minor (reclaiming a frame) page faults: 125388
-        Voluntary context switches: 293968
-        Involuntary context switches: 710
-        Swaps: 0
-        File system inputs: 744
-        File system outputs: 287216
-        Socket messages sent: 0
-        Socket messages received: 0
-        Signals delivered: 0
-        Page size (bytes): 4096
-        Exit status: 0
+Wait on Reactionetes to become available.....
+hissing-manta-reactionetes-75ccf68d59-jsdrc   0/1       Running   3          1m
+Reactionetes is now up and running.
+	Command being timed: "bash ./bootstrap"
+	User time (seconds): 11.17
+	System time (seconds): 1.78
+	Percent of CPU this job got: 9%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:18.34
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 50612
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 118
+	Minor (reclaiming a frame) page faults: 172368
+	Voluntary context switches: 19451
+	Involuntary context switches: 16907
+	Swaps: 0
+	File system inputs: 25184
+	File system outputs: 1280448
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
 ```
 
-After that it took another 5 minutes for the mongo cluster to assemble
-and reaction to spin up:
-
-```
-$ kubectl get po
-NAME                                                READY     STATUS
-RESTARTS   AGE
-solitary-hummingbird-mongo-0                        2/2       Running  0          5m
-solitary-hummingbird-mongo-1                        2/2       Running  0          1m
-solitary-hummingbird-mongo-2                        2/2       Running  0          1m
-solitary-hummingbird-reactionetes-d5c7c7b79-7df4q   1/1       Running  2          5m
-```
-
+This now waits on all three mongo containers to spin up and the
+reactionetes container to be 'Running'.
 
 ## branches
 
