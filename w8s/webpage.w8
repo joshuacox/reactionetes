@@ -1,0 +1,11 @@
+#!/bin/sh
+export POD_NAME=$(kubectl get pods --namespace default -l "app=reactionetes,release=reactionetes-test" -o jsonpath="{.items[0].metadata.name}")
+kubectl port-forward $POD_NAME 3001:3000
+
+echo -n "Wait on Reactionetes to become available and serve a page"
+until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:3001); do
+    printf '.'
+    sleep 5
+done
+
+echo "Reactionetes is now fully up and running and serving webpages on port 3001."
