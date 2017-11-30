@@ -12,6 +12,7 @@ do
   RESULT=$(kubectl get po --namespace=kube-system | grep tiller | grep Running)
   if [ "$RESULT" ]; then
       sleep 3
+      echo '.'
       echo "$RESULT"
       break
   fi
