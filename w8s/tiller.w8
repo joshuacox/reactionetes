@@ -22,5 +22,3 @@ done
 sleep 3
 echo "Tiller is now up and running. Helm commands are now able to interact with Minikube cluster"
 sleep 3
-kubectl get po --namespace=kube-system | grep tiller
-sleep 3
