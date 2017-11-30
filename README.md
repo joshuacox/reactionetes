@@ -84,11 +84,14 @@ helm install ./reactionetes
 
 ## Autopilot
 
-This will install
-minikube kubectl,
-startup a cluster,
-initialize helm,
-and finally spin up the reaction cluster
+This will
+1. install minikube, kubectl, and helm
+1. startup a cluster minikube,
+1. config kubectl to use the cluster,
+1. initialize tiller using helm,
+1. spin up the mongo cluster
+1. finally run a reaction pod and connect it to the mongo cluster
+
 
 ```
 make autopilot
@@ -140,7 +143,7 @@ helm install --dry-run --debug ./reactionetes > /tmp/manifest
 
 #### install minikube
 
-minikube and kubctl are updated often, it can't hurt to run this accordingly
+minikube, kubctl, and helm are updated often, it can't hurt to run this accordingly
 
 ```
 make reqs
@@ -153,24 +156,6 @@ this is the default for this makefile
 
 ```
 make
-```
-
-#### Linux Reqs
-
-```
-make linuxreqs
-```
-
-#### Windows Reqs
-
-```
-make windowsreqs
-```
-
-#### OSX Reqs
-
-```
-make osxreqs
 ```
 
 #### Debug
