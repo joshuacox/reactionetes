@@ -1,5 +1,6 @@
 #!/bin/sh
-export POD_NAME=$(kubectl get pods --namespace default -l "app=reactionetes,release=reactionetes-test" -o jsonpath="{.items[0].metadata.name}")
+export POD_NAME=$(kubectl get pods --namespace default -l "app=reactionetes,release=raucous-reactionetes" -o jsonpath="{.items[0].metadata.name}")
+echo "Visit http://127.0.0.1:3001 to use your application"
 kubectl port-forward $POD_NAME 3001:3000
 
 echo -n "Wait on Reactionetes to become available and serve a page"

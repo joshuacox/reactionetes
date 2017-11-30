@@ -46,6 +46,7 @@ autopilot: reqs
 	@sh ./w8s/mongo.w8
 	@sh ./w8s/reactionetes.w8
 	make dnstest
+	@sh ./w8s/webpage.w8
 
 /usr/local/bin/helm:
 	curl -L https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
