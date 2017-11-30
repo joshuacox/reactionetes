@@ -1,9 +1,10 @@
 # Reactionetes
 
-[![Build
-Status](https://travis-ci.org/joshuacox/reactionetes.svg?branch=master)](https://travis-ci.org/joshuacox/reactionetes)
+[![Build Status](https://travis-ci.org/joshuacox/reactionetes.svg?branch=master)](https://travis-ci.org/joshuacox/reactionetes)
 
 [![CircleCI](https://circleci.com/gh/joshuacox/reactionetes/tree/master.svg?style=svg)](https://circleci.com/gh/joshuacox/reactionetes/tree/master)
+
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/joshuacox/reactionetes.svg?columns=all)](https://waffle.io/joshuacox/reactionetes)
 
 Spin up a Kubernetes stack dedicated to Reaction Commerce PDQ
 
@@ -46,6 +47,18 @@ it may take some time depending mainly on your internet connection and
 how fast you can download all the necessary images.  The first time
 being the worst as you have to download kubectl and minikube, AND all
 the docker images to spin up kubernetes.
+
+### ENV VARS
+
+there are a few environment variable you can set beforehand as well
+
+```
+export MINIKUBE_OPTS=--vm-driver=none
+export REACTIONETES_NAME=my-release-name
+export REPLICAS=3
+export MONGO_REPLICAS=5
+curl -L https://git.io/reactionetes | bash
+```
 
 ## Manual Installation
 
@@ -152,10 +165,14 @@ kubectl scale --replicas=3 deployment/RELEASE-NAME-reactionetes
 or you can specify a larger scale on `helm install`
 
 ```
-helm install --set replicaCount=30 --set mongoReplicaCount=100 ./reactionetes
+helm install --name my-release-name --set replicaCount=30 --set mongoReplicaCount=100 ./reactionetes
 ```
 
+or even as environment variables before calling make:
 
+```
+REACTIONETES_NAME=my-release-name REPLICAS=3 MONGO_REPLICAS=5 make
+```
 
 ## Debug
 

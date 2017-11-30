@@ -37,6 +37,9 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+#reactionetes specific values
+reactionetesClusterDomain: reaction.local
+
 # reaction specific values
 reactionEmail: 'admin@localhost'
 reactionUser: 'admin'

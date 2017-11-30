@@ -120,4 +120,18 @@ trap - EXIT
 # End run it wrapper
 }
 
+chkdir /usr/local
+chkdir /usr/local/bin
+chkdir /etc/kubernetes
+chkdir /var/lib/localkube
+chkdir /var/lib/localkube/certs
+
+check_cmd make
+check_cmd mktemp
+check_cmd git
+check_cmd curl
+check_cmd uname
+check_cmd socat
+check_cmd nsenter
+
 run_it
