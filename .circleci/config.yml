@@ -11,4 +11,4 @@ jobs:
 
       - run: .circleci/install.sh
 
-      - run: /usr/bin/time -v bash ./bootstrap
+      - run: /usr/bin/time -v make autopilot

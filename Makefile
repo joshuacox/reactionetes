@@ -30,7 +30,7 @@ debug:
 	@echo "you can find the manifest here:"
 	@echo "   $(TMP)/manifest"
 
-autopilot:
+autopilot: reqs
 	@echo 'Autopilot engaged'
 	$(eval REACTIONETES_CLUSTER_DOMAIN := "cluster.local")
 	minikube \
