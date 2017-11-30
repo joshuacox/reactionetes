@@ -3,6 +3,8 @@
 [![Build
 Status](https://travis-ci.org/joshuacox/reactionetes.svg?branch=master)](https://travis-ci.org/joshuacox/reactionetes)
 
+[![CircleCI](https://circleci.com/gh/joshuacox/reactionetes/tree/master.svg?style=svg)](https://circleci.com/gh/joshuacox/reactionetes/tree/master)
+
 Spin up a Kubernetes stack dedicated to Reaction Commerce PDQ
 
 ## Oneliner Autopilot
