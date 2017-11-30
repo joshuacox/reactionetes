@@ -2,8 +2,6 @@ version: 2
 
 jobs:
   build:
-    working_directory: /home/reactionetes
-
     machine: true
     environment:
       CHANGE_MINIKUBE_NONE_USER: true
