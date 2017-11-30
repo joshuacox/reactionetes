@@ -1,6 +1,6 @@
 #!/bin/sh
 sleep 8
-export POD_NAME=$(kubectl get pods --namespace default -l "app=reactionetes,release=raucous-reactionetes" -o jsonpath="{.items[0].metadata.name}")
+export POD_NAME=$(kubectl get pods --namespace default -l "app=reactionetes,release=raucous-reactionetes" -o jsonpath='{.items[0].metadata.name}')
 kubectl port-forward $POD_NAME 3001:3000 &
 sleep 8
 
