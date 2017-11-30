@@ -31,3 +31,4 @@ script:
   - ls -alh `which sh`
 # switching to bash
   - /usr/bin/time -v make autopilot
+  - bash ./w8s/webpage.w8

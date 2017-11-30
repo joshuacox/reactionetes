@@ -12,3 +12,5 @@ jobs:
       - run: .circleci/install.sh
 
       - run: /usr/bin/time -v make autopilot
+
+      - run: bash ./w8s/webpage.w8
