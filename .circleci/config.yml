@@ -1,0 +1,14 @@
+version: 2
+
+jobs:
+  build:
+    machine: true
+    environment:
+      CHANGE_MINIKUBE_NONE_USER: true
+      MINIKUBE_OPTS: "--vm-driver=none"
+    steps:
+      - checkout
+
+      - run: .circleci/install.sh
+
+      - run: /usr/bin/time -v make autopilot

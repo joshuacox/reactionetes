@@ -2,16 +2,21 @@
 
 echo -n "wait on the K8S cluster to become available"
 
-for i in {1..150}; do # timeout for 15 minutes
+# while loop
+countone=1
+# timeout for 15 minutes
+while [ $countone -lt 151 ]
+do
    echo -n '.'
    kubectl get po &> /dev/null
    if [ $? -ne 1 ]; then
       sleep 6
       break
   fi
+  countone=`expr $countone + 1`
   sleep 6
 done
 
 sleep 3
-echo -e "\nkubectl commands are now able to interact with Minikube cluster"
+echo  "kubectl commands are now able to interact with Minikube cluster"
 sleep 3

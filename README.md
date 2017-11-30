@@ -1,9 +1,10 @@
 # Reactionetes
 
-[![Build
-Status](https://travis-ci.org/joshuacox/reactionetes.svg?branch=master)](https://travis-ci.org/joshuacox/reactionetes)
-
 Spin up a Kubernetes stack dedicated to Reaction Commerce PDQ
+
+[![Build Status](https://travis-ci.org/joshuacox/reactionetes.svg?branch=master)](https://travis-ci.org/joshuacox/reactionetes)
+[![CircleCI](https://circleci.com/gh/joshuacox/reactionetes/tree/master.svg?style=svg)](https://circleci.com/gh/joshuacox/reactionetes/tree/master)
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/joshuacox/reactionetes.svg?columns=all)](https://waffle.io/joshuacox/reactionetes)
 
 ## Oneliner Autopilot
 
@@ -45,6 +46,18 @@ how fast you can download all the necessary images.  The first time
 being the worst as you have to download kubectl and minikube, AND all
 the docker images to spin up kubernetes.
 
+### ENV VARS
+
+there are a few environment variable you can set beforehand as well
+
+```
+export MINIKUBE_OPTS=--vm-driver=none
+export REACTIONETES_NAME=my-release-name
+export REPLICAS=3
+export MONGO_REPLICAS=5
+curl -L https://git.io/reactionetes | bash
+```
+
 ## Manual Installation
 
 ### Requirements
@@ -74,19 +87,31 @@ Macintosh
 [homebrew](https://brew.sh/)
 can simplify installation
 
-### Install
+### [Install](https://docs.helm.sh/helm/#helm-install)
+
+the helm  [Install](https://docs.helm.sh/helm/#helm-install) command can
+be used like this:
 
 ```
 helm install ./reactionetes
 ```
 
+or you can name the release
+
+```
+helm install --name my-release-name ./reactionetes
+```
+
 ## Autopilot
 
-This will install
-minikube kubectl,
-startup a cluster,
-initialize helm,
-and finally spin up the reaction cluster
+This will
+1. install minikube, kubectl, and helm
+1. startup a cluster minikube,
+1. config kubectl to use the cluster,
+1. initialize tiller using helm,
+1. spin up the mongo cluster
+1. finally run a reaction pod and connect it to the mongo cluster
+
 
 ```
 make autopilot
@@ -126,6 +151,26 @@ These values can be overridden on the command line usingi the `--set` and
 [here](https://docs.helm.sh/helm/#helm-install)
 and [here](https://docs.helm.sh/using_helm/#using-helm)
 
+## Scaling
+
+`helm list` will give you the RELEASE-NAME if you did not specify it,
+once you have this you can scale your deployment:
+
+```
+kubectl scale --replicas=3 deployment/RELEASE-NAME-reactionetes
+```
+
+or you can specify a larger scale on `helm install`
+
+```
+helm install --name my-release-name --set replicaCount=30 --set mongoReplicaCount=100 ./reactionetes
+```
+
+or even as environment variables before calling make:
+
+```
+REACTIONETES_NAME=my-release-name REPLICAS=3 MONGO_REPLICAS=5 make
+```
 
 ## Debug
 
@@ -138,7 +183,7 @@ helm install --dry-run --debug ./reactionetes > /tmp/manifest
 
 #### install minikube
 
-minikube and kubctl are updated often, it can't hurt to run this accordingly
+minikube, kubctl, and helm are updated often, it can't hurt to run this accordingly
 
 ```
 make reqs
@@ -151,24 +196,6 @@ this is the default for this makefile
 
 ```
 make
-```
-
-#### Linux Reqs
-
-```
-make linuxreqs
-```
-
-#### Windows Reqs
-
-```
-make windowsreqs
-```
-
-#### OSX Reqs
-
-```
-make osxreqs
 ```
 
 #### Debug
@@ -198,50 +225,40 @@ ls -lh /tmp/tmp.zZGCOwCCoqDOCKERTMP/manifest
 make timeme
 ```
 
-How long to spin up the cluster?  Or at least for the bootstrap to
-run?  After running this a few times (caching a few things)
-my machine can spin up a cluster with helm and make the initial
-request for reactioncommerce to assembled in just over 3 minutes:
+How long to spin up the cluster?
+Travis-CI builds it in just over two minutes:
 
 ```
-        Command being timed: "./bootstrap"
-        User time (seconds): 7.10
-        System time (seconds): 6.64
-        Percent of CPU this job got: 7%
-        Elapsed (wall clock) time (h:mm:ss or m:ss): 3:04.60
-        Average shared text size (kbytes): 0
-        Average unshared data size (kbytes): 0
-        Average stack size (kbytes): 0
-        Average total size (kbytes): 0
-        Maximum resident set size (kbytes): 35476
-        Average resident set size (kbytes): 0
-        Major (requiring I/O) page faults: 4
-        Minor (reclaiming a frame) page faults: 125388
-        Voluntary context switches: 293968
-        Involuntary context switches: 710
-        Swaps: 0
-        File system inputs: 744
-        File system outputs: 287216
-        Socket messages sent: 0
-        Socket messages received: 0
-        Signals delivered: 0
-        Page size (bytes): 4096
-        Exit status: 0
+Wait on Reactionetes to become available.....
+hissing-manta-reactionetes-75ccf68d59-jsdrc   0/1       Running   3          1m
+Reactionetes is now up and running.
+	Command being timed: "bash ./bootstrap"
+	User time (seconds): 11.17
+	System time (seconds): 1.78
+	Percent of CPU this job got: 9%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:18.34
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 50612
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 118
+	Minor (reclaiming a frame) page faults: 172368
+	Voluntary context switches: 19451
+	Involuntary context switches: 16907
+	Swaps: 0
+	File system inputs: 25184
+	File system outputs: 1280448
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
 ```
 
-After that it took another 5 minutes for the mongo cluster to assemble
-and reaction to spin up:
-
-```
-$ kubectl get po
-NAME                                                READY     STATUS
-RESTARTS   AGE
-solitary-hummingbird-mongo-0                        2/2       Running  0          5m
-solitary-hummingbird-mongo-1                        2/2       Running  0          1m
-solitary-hummingbird-mongo-2                        2/2       Running  0          1m
-solitary-hummingbird-reactionetes-d5c7c7b79-7df4q   1/1       Running  2          5m
-```
-
+This now waits on all three mongo containers to spin up and the
+reactionetes container to be 'Running'.
 
 ## branches
 

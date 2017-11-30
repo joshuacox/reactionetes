@@ -1,7 +1,7 @@
 #!/bin/sh
 
-echo -n "wait on Tiller to become available"
-sleep 5
+echo -n "wait on Kube-DNS to become available"
+sleep 1
 
 # while loop
 countone=1
@@ -9,7 +9,7 @@ countone=1
 while [ $countone -lt 151 ]
 do
   echo -n '.'
-  RESULT=$(kubectl get po --namespace=kube-system | grep tiller | grep Running)
+  RESULT=$(kubectl get po --namespace kube-system |grep kube-dns|grep Running)
   if [ "$RESULT" ]; then
       sleep 3
       echo '.'
@@ -20,6 +20,5 @@ do
   sleep 6
 done
 
-sleep 3
-echo "Tiller is now up and running. Helm commands are now able to interact with Minikube cluster"
+echo "Kube-DNS is now up and running"
 sleep 3

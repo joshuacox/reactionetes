@@ -7,7 +7,7 @@ countone=1
 while [ $countone -lt 151 ]
 do
   echo -n '.'
-  RESULT=$(kubectl get po | grep reactionetes | grep Running)
+  RESULT=$(kubectl get po | grep reactionetes-reactionetes | grep Running)
   if [ "$RESULT" ]; then
       echo ""
       echo "$RESULT"

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Installs minikube, kubectl, and reactionetes into a minikube cluster
+# Check reqs for reactionetes
 
 errror () {
   echo "-------------------------------------------------------------"
@@ -10,10 +10,10 @@ errror () {
 # Check if a command exists
 check_cmd () {
   if ! type "$1" > /dev/null; then
-    errror
-    echo "$1 was not found in your path!"
-    echo "To proceed please install $1 to your path and try again!"
-    exit 1
+      errror
+      echo "$1 was not found in your path!"
+      echo "To proceed please install $1 to your path and try again!"
+      exit 1
   fi
 }
 
@@ -23,7 +23,6 @@ warrrn () {
   sleep 1; echo  -n "!"; sleep 1; echo  -n "!"
   sleep 1; echo  -n "!"
   sleep 1; echo "!"
-  sleep 1; echo "--"
   sleep 1
 }
 
@@ -66,27 +65,24 @@ exec 1>&2
 UNAME=$(uname)
 # Check to see if it starts with MINGW.
 if [ "$UNAME" = "CYGWIN_NT-10.0" ] ; then
-  check_cmd choco
-  check_cmd helm
-  PLATFORM="os.cygwin.x86_64"
-  echo "WARNING: Cygwin is not supported for this installer at this time!"
-  exit 1
+    check_cmd choco
+    check_cmd helm
+    PLATFORM="os.cygwin.x86_64"
+    echo "WARNING: Cygwin is not supported for this installer at this time!"
+    exit 1
 fi
 if [ "$UNAME" == "Linux" -o "$UNAME" == "Darwin" ] ; then
-  echo " $UNAME is a Supported OS"
+    check_cmd make
+    check_cmd curl
 elif [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
-  echo " $UNAME is a Supported OS"
+    check_cmd curl
+    check_cmd choco
+    check_cmd helm
+    PLATFORM="os.windows.x86_64"
 else
-  echo " $UNAME is not a Supported OS"
-  echo "Sorry, this OS is not supported yet via this installer."
-  exit 1
-fi
-
-if [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
-  check_cmd choco
-  check_cmd helm
-  PLATFORM="os.windows.x86_64"
-  echo "WARNING: Windows is experimental for this installer at this time!"
+    echo " $UNAME is not a Supported OS"
+    echo "Sorry, this OS is not supported yet via this installer."
+    exit 1
 fi
 
 if [ "$UNAME" = "Darwin" ] ; then
@@ -100,7 +96,6 @@ if [ "$UNAME" = "Darwin" ] ; then
   fi
 
   PLATFORM="os.osx.x86_64"
-  echo "WARNING: OSX is experimental for this installer at this time!"
 elif [ "$UNAME" = "Linux" ] ; then
   ### Linux ###
   LINUX_ARCH=$(uname -m)
@@ -113,24 +108,6 @@ elif [ "$UNAME" = "Linux" ] ; then
   fi
 fi
 
-echo "Warning!"
-sleep 1
-echo -e "This script will install minikube, kubectl and helm,
-and then install reactionetes into the local minikube cluster.
-This is not for production use, but the elements within can be adapted for such.
-\nDISCLAIMER: This software is highly experimental!
-It can set fire to your computer, and might possibly open an interdimensional portal of unknown origin.
-\nYou are responsible for what comes through the portal.
-\nSoftware bugs should be noted in a github issue at https://github.com/joshuacox/reactionetes/issues"
-warrrn
-
-TMP_DIR=$(mktemp -d --suffix='.reactionetes')
-cd $TMP_DIR
-echo 'Cloning the latest reactionetes repo'
-git clone --depth 1 https://github.com/joshuacox/reactionetes.git
-cd reactionetes
-
-# make reqs
 if [ "$PLATFORM" = "os.linux.x86_64" ] ; then
   make linuxreqs
 elif [ "$PLATFORM" = "os.osx.x86_64" ] ; then
@@ -138,15 +115,6 @@ elif [ "$PLATFORM" = "os.osx.x86_64" ] ; then
 elif [ "$PLATFORM" = "os.windows.x86_64" ] ; then
   make windowsreqs
 fi
-
-check_cmd helm
-check_cmd kubectl
-check_cmd minikube
-
-make autopilot
-
-cd
-rm -Rf $TMP_DIR
 
 trap - EXIT
 # End run it wrapper

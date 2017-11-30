@@ -12,6 +12,7 @@ mongow8 () {
     echo -n '.'
     RESULT=$(kubectl get po | grep mongo-$1 | grep Running)
     if [ "$RESULT" ]; then
+        echo "."
         echo "$RESULT"
         break
     fi
