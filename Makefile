@@ -86,3 +86,7 @@ test: timeme
 
 reqs:
 	bash ./check_reqs
+
+.git/hooks/pre-commit:
+	cp .circleci/pre-commit .git/hooks/pre-commit
+
