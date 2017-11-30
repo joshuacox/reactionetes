@@ -8,4 +8,5 @@ data:
   reaction.auth: {{ .Values.reactionAuth }}
   reaction.root_url: {{ .Values.reactionRoot_url }}
   reaction.hostname: {{ .Values.reactionHostname }}
-  reaction.mongo_url: mongodb://{{ .Release.Name }}-mongo:27017/{{ .Release.Name }}?replicaSet={{ .Release.Name }}-rs
+  reaction.mongo_url: mongodb://{{ .Release.Name }}-mongo/{{ .Release.Name }}?replicaSet={{ .Release.Name }}-rs
+  reaction.mongo_url_big: mongodb://{{ .Release.Name }}-mongo.{{ .Release.Name }}-mongo.default.svc.{{ .Values.reactionetesClusterDomain }},{{ .Release.Name }}-mongo-0.{{ .Release.Name }}-mongo.default.svc.{{ .Values.reactionetesClusterDomain }}:27017/{{ .Release.Name }}?replicaSet={{ .Release.Name }}-rs

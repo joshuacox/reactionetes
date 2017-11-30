@@ -5,7 +5,16 @@ KUBECONFIG=$(HOME)/.kube/config
 MY_KUBE_VERSION=v1.8.0
 
 install:
-	helm install ./reactionetes
+	$(eval TMP := $(shell mktemp -d --suffix=MINIKUBETMP))
+	$(eval REACTIONETES_NAME := "raucous-reactionetes")
+	$(eval REACTIONETES_CLUSTER_DOMAIN := "cluster.local")
+	$(eval REPLICAS := 1)
+	$(eval MONGO_REPLICAS := 3)
+	helm install --name $(REACTIONETES_NAME) \
+		--set replicaCount=$(REPLICAS) \
+		--set mongoReplicaCount=$(MONGO_REPLICAS) \
+		--set reactionetesClusterDomain=$(REACTIONETES_CLUSTER_DOMAIN) \
+		./reactionetes
 
 linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl /usr/local/bin/helm
 
@@ -23,13 +32,20 @@ debug:
 
 autopilot:
 	@echo 'Autopilot engaged'
-	minikube --kubernetes-version $(MY_KUBE_VERSION) $(MINIKUBE_OPTS) start
+	$(eval REACTIONETES_CLUSTER_DOMAIN := "cluster.local")
+	minikube \
+		--kubernetes-version $(MY_KUBE_VERSION) \
+		--dns-domain $(REACTIONETES_CLUSTER_DOMAIN) \
+		$(MINIKUBE_OPTS) \
+		start
 	@sh ./w8s/kubectl.w8
 	helm init
 	@sh ./w8s/tiller.w8
+	@sh ./w8s/kube-dns.w8
 	make
 	@sh ./w8s/mongo.w8
 	@sh ./w8s/reactionetes.w8
+	make dnstest
 
 /usr/local/bin/helm:
 	curl -L https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
@@ -79,6 +95,12 @@ clean:
 	-minikube stop
 	-minikube delete
 
+d: delete
+
+delete:
+	$(eval REACTIONETES_NAME := "raucous-reactionetes")
+	helm delete --purge $(REACTIONETES_NAME)
+
 timeme:
 	/usr/bin/time -v ./bootstrap
 
@@ -90,3 +112,9 @@ reqs:
 .git/hooks/pre-commit:
 	cp .circleci/pre-commit .git/hooks/pre-commit
 
+busybox:
+	kubectl apply -f debug/busybox.yaml
+
+dnstest: busybox
+	kubectl exec -ti busybox -- nslookup raucous-reactionetes-mongo
+	kubectl exec -ti busybox -- nslookup raucous-reactionetes-reactionetes
