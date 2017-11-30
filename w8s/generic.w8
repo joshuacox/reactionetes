@@ -1,6 +1,11 @@
 #!/bin/sh
+if [ $# -ne 1 ]; then
+  # Print usage
+  echo 'w8/generic.w8 what-to-wait-for'
+  exit 1
+fi
 
-echo -n "wait on Kube-DNS to become available"
+echo -n "wait on $1 to become available"
 sleep 1
 
 # while loop
@@ -9,9 +14,8 @@ countone=1
 while [ $countone -lt 151 ]
 do
   echo -n '.'
-  RESULT=$(kubectl get po --namespace kube-system |grep kube-dns|grep Running)
+  RESULT=$(kubectl get po | grep $1 | grep Running)
   if [ "$RESULT" ]; then
-      sleep 3
       echo '.'
       echo "$RESULT"
       break
@@ -20,5 +24,4 @@ do
   sleep 6
 done
 
-echo "Kube-DNS is now up and running"
-sleep 3
+echo "$1 is now up and running"

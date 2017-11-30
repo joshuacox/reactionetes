@@ -114,6 +114,8 @@ reqs:
 
 busybox:
 	kubectl apply -f debug/busybox.yaml
+	@sh ./w8s/generic.w8 busybox
+
 
 dnstest: busybox
 	kubectl exec -ti busybox -- nslookup raucous-reactionetes-mongo

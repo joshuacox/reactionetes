@@ -13,6 +13,7 @@ do
       sleep 6
       break
   fi
+  countone=`expr $countone + 1`
   sleep 6
 done
 

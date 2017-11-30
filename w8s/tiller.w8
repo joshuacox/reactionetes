@@ -16,6 +16,7 @@ do
       echo "$RESULT"
       break
   fi
+  countone=`expr $countone + 1`
   sleep 6
 done
 
