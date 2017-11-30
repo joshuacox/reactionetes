@@ -76,10 +76,19 @@ Macintosh
 [homebrew](https://brew.sh/)
 can simplify installation
 
-### Install
+### [Install](https://docs.helm.sh/helm/#helm-install)
+
+the helm  [Install](https://docs.helm.sh/helm/#helm-install) command can
+be used like this:
 
 ```
 helm install ./reactionetes
+```
+
+or you can name the release
+
+```
+helm install --name my-release-name ./reactionetes
 ```
 
 ## Autopilot
@@ -130,6 +139,22 @@ These values can be overridden on the command line usingi the `--set` and
 `--values` flags for helm, more info
 [here](https://docs.helm.sh/helm/#helm-install)
 and [here](https://docs.helm.sh/using_helm/#using-helm)
+
+## Scaling
+
+`helm list` will give you the RELEASE-NAME if you did not specify it,
+once you have this you can scale your deployment:
+
+```
+kubectl scale --replicas=3 deployment/RELEASE-NAME-reactionetes
+```
+
+or you can specify a larger scale on `helm install`
+
+```
+helm install --set replicaCount=30 --set mongoReplicaCount=100 ./reactionetes
+```
+
 
 
 ## Debug

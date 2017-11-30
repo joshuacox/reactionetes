@@ -5,7 +5,7 @@ metadata:
   name: {{ .Release.Name }}-mongo
 spec:
   serviceName: {{ .Release.Name }}-mongo
-  replicas: 3
+  replicas: {{ .Values.mongoReplicaCount }}
   template:
     metadata:
       labels:
