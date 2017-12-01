@@ -13,4 +13,6 @@ jobs:
 
       - run: /usr/bin/time -v make autopilot
 
+      - run: kubectl get pods --namespace default -l app=reactionetes,release=raucous-reactionetes
+
       - run: bash ./w8s/webpage.w8
