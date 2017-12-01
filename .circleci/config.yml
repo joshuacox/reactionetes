@@ -6,6 +6,11 @@ jobs:
     environment:
       CHANGE_MINIKUBE_NONE_USER: true
       MINIKUBE_OPTS: "--vm-driver=none"
+      REACTIONETES_NAME: "circleci-build-test"
+      REACTIONETES_REPO: "reactioncommerce/reaction"
+      REACTIONETES_TAG: "latest"
+      REPLICAS: 3
+      MONGO_REPLICAS: 5
     steps:
       - checkout
 
