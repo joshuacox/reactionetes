@@ -7,12 +7,16 @@ MY_KUBE_VERSION=v1.8.0
 install:
 	$(eval TMP := $(shell mktemp -d --suffix=MINIKUBETMP))
 	$(eval REACTIONETES_NAME := "raucous-reactionetes")
+	$(eval REACTIONETES_REPO := "reactioncommerce/reaction")
+	$(eval REACTIONETES_TAG := "latest")
 	$(eval REACTIONETES_CLUSTER_DOMAIN := "cluster.local")
 	$(eval REPLICAS := 1)
 	$(eval MONGO_REPLICAS := 3)
 	helm install --name $(REACTIONETES_NAME) \
 		--set replicaCount=$(REPLICAS) \
 		--set mongoReplicaCount=$(MONGO_REPLICAS) \
+		--set image.tag=$(REACTIONETES_TAG) \
+		--set image.repository=$(REACTIONETES_REPO) \
 		--set reactionetesClusterDomain=$(REACTIONETES_CLUSTER_DOMAIN) \
 		./reactionetes
 

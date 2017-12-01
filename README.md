@@ -53,6 +53,8 @@ there are a few environment variable you can set beforehand as well
 ```
 export MINIKUBE_OPTS=--vm-driver=none
 export REACTIONETES_NAME=my-release-name
+export REACTIONETES_REPO=reactioncommerce/reaction
+export REACTIONETES_TAG=latest
 export REPLICAS=3
 export MONGO_REPLICAS=5
 curl -L https://git.io/reactionetes | bash
@@ -87,7 +89,7 @@ Macintosh
 [homebrew](https://brew.sh/)
 can simplify installation
 
-### [Install](https://docs.helm.sh/helm/#helm-install)
+### [helm Install](https://docs.helm.sh/helm/#helm-install)
 
 the helm  [Install](https://docs.helm.sh/helm/#helm-install) command can
 be used like this:
@@ -100,6 +102,18 @@ or you can name the release
 
 ```
 helm install --name my-release-name ./reactionetes
+```
+
+Or using the `--set` option to set some of the values:
+
+```
+helm install \
+  --name my-release-name \
+  --set replicaCount=1 \
+  --set mongoReplicaCount=10 \
+  --set image.repository=joshuacox/mycustom \
+  --set image.tag=v1.5.8.2-leahlovise \
+  ./reactionetes
 ```
 
 ## Autopilot
@@ -169,7 +183,12 @@ helm install --name my-release-name --set replicaCount=30 --set mongoReplicaCoun
 or even as environment variables before calling make:
 
 ```
-REACTIONETES_NAME=my-release-name REPLICAS=3 MONGO_REPLICAS=5 make
+REACTIONETES_REPO=reactioncommerce/reaction \
+REACTIONETES_NAME=my-release-name \
+REACTIONETES_TAG=latest \
+MONGO_REPLICAS=5 \
+REPLICAS=3 \
+make
 ```
 
 ## Debug
