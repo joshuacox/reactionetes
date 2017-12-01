@@ -109,6 +109,7 @@ test: timeme
 reqs:
 	bash ./check_reqs
 
+# Install this to verify circleCI throught the CLI before commits
 .git/hooks/pre-commit:
 	cp .circleci/pre-commit .git/hooks/pre-commit
 
