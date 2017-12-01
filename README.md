@@ -277,6 +277,20 @@ This branch will use a SSD GCE persistent disk on the google cloud platform
 
 This branch will use a HDD GCE persistent disk on the google cloud platform
 
+### Discussion
+
+Feel free to open an
+[issue](https://github.com/joshuacox/reactionetes/issues)
+here at github.
+
+There is also a
+[forum post](https://forums.reactioncommerce.com/t/kubernetes-and-reaction/648)
+at the reaction commerce forums.
+
+I appreciate feedback and suggestions!
+
+Don't forget the waffle page:
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/joshuacox/reactionetes.svg?columns=all)](https://waffle.io/joshuacox/reactionetes)
 
 ## Notes:
 
