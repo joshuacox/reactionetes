@@ -11,8 +11,4 @@ jobs:
 
       - run: .circleci/install.sh
 
-      - run: /usr/bin/time -v make autopilot
-
-      - run: kubectl get pods --namespace default -l app=reactionetes,release=raucous-reactionetes
-
-      - run: bash ./w8s/webpage.w8
+      - run: /usr/bin/time -v make ci
