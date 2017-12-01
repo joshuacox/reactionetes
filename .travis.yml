@@ -30,4 +30,4 @@ script:
 # /bin/sh points to dash on trusty, which can cause some of the tests to fail
   - ls -alh `which sh`
 # switching to bash
-  - /usr/bin/time -v make autopilot
+  - /usr/bin/time -v make ci

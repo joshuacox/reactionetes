@@ -1,6 +1,7 @@
 #!/bin/sh
 
 echo -n "wait on the K8S cluster to become available"
+sleep 3
 
 # while loop
 countone=1

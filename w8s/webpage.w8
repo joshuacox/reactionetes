@@ -1,0 +1,22 @@
+#!/bin/bash
+sleep 8
+export TARGET_KUBE_CMD_OPTS='--namespace default -l app=reactionetes,release=raucous-reactionetes -o jsonpath="{ .items[0].metadata.name }"'
+echo  "kubectl get pods $TARGET_KUBE_CMD_OPTS"
+export POD_NAME=$(echo "kubectl get pods $TARGET_KUBE_CMD_OPTS" | bash)
+echo "kubectl port-forward $POD_NAME 3001:3000 &"
+kubectl port-forward $POD_NAME 3001:3000 &
+sleep 8
+
+echo -n "Wait on Reactionetes to become available and serve a page"
+sleep 8
+printf '.'
+sleep 8
+printf '.'
+
+until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:3001); do
+    printf '.'
+    sleep 8
+done
+
+echo '.'
+echo "Reactionetes is now fully up and running and serving webpages on port 3001."
