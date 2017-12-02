@@ -18,6 +18,7 @@ do
   sleep 6
 done
 
-sleep 3
+echo  "."
+sleep 1
 echo  "kubectl commands are now able to interact with Minikube cluster"
 sleep 3

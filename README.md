@@ -51,12 +51,14 @@ the docker images to spin up kubernetes.
 there are a few environment variable you can set beforehand as well
 
 ```
+export MINIKUBE_CPU=24
+export MINIKUBE_MEMORY=49480
 export MINIKUBE_OPTS=--vm-driver=virtualbox
 export REACTIONETES_NAME=my-release-name
 export REACTIONETES_REPO=reactioncommerce/reaction
 export REACTIONETES_TAG=latest
-export REPLICAS=3
-export MONGO_REPLICAS=5
+export REPLICAS=33
+export MONGO_REPLICAS=108
 curl -L https://git.io/reactionetes | bash
 ```
 
@@ -186,8 +188,10 @@ or even as environment variables before calling make:
 REACTIONETES_REPO=reactioncommerce/reaction \
 REACTIONETES_NAME=my-release-name \
 REACTIONETES_TAG=latest \
-MONGO_REPLICAS=5 \
-REPLICAS=3 \
+MINIKUBE_MEMORY=60180 \
+MINIKUBE_CPU=32 \
+MONGO_REPLICAS=225 \
+REPLICAS=33 \
 make -e
 ```
 

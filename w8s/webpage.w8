@@ -1,6 +1,8 @@
 #!/bin/bash
 if [ $# -ne 1 ]; then
   # Print usage
+  echo 'Error! wrong number of arguments'
+  echo 'usage:'
   echo 'w8/webpage.w8 what-release-name-to-wait-for'
   exit 1
 fi

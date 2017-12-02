@@ -36,19 +36,25 @@ debug:
 
 autopilot: reqs
 	@echo 'Autopilot engaged'
+	$(eval MONGO_REPLICAS := 3)
+	$(eval MINIKUBE_MEMORY := 4096)
+	$(eval MINIKUBE_CPU := 4)
 	$(eval REACTIONETES_CLUSTER_DOMAIN := "cluster.local")
 	minikube \
 		--kubernetes-version $(MY_KUBE_VERSION) \
 		--dns-domain $(REACTIONETES_CLUSTER_DOMAIN) \
+		--memory $(MINIKUBE_MEMORY) \
+		--cpus $(MINIKUBE_CPU) \
 		$(MINIKUBE_OPTS) \
 		start
 	@sh ./w8s/kubectl.w8
 	helm init
 	@sh ./w8s/tiller.w8
 	@sh ./w8s/kube-dns.w8
-	make -e install
-	@sh ./w8s/mongo.w8
+	$(MAKE) -e install
+	@sh ./w8s/mongo.w8 $(MONGO_REPLICAS)
 	@sh ./w8s/reactionetes.w8
+	@sh ./w8s/CrashLoopBackOff.w8
 	make -e dnstest
 
 /usr/local/bin/helm:
@@ -134,3 +140,4 @@ ci: autopilot
 	kubectl get ep
 	-@ echo 'Memory consumption of all that:'
 	free -m
+	@sh ./w8s/CrashLoopBackOff.w8
