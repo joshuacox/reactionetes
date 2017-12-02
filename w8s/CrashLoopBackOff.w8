@@ -17,4 +17,5 @@ do
   sleep 6
 done
 
-echo -n "CrashLoopBackOff is now clear"
+echo '.'
+echo "CrashLoopBackOff is now clear"
