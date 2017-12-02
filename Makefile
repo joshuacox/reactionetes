@@ -128,3 +128,7 @@ dnstest: busybox
 
 ci: autopilot
 	./w8s/webpage.w8
+	kubectl get all
+	kubectl get ep
+	-@ echo 'Memory consumption of all that:"
+	free -m
