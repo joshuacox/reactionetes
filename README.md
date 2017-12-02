@@ -51,7 +51,7 @@ the docker images to spin up kubernetes.
 there are a few environment variable you can set beforehand as well
 
 ```
-export MINIKUBE_OPTS=--vm-driver=none
+export MINIKUBE_OPTS=--vm-driver=virtualbox
 export REACTIONETES_NAME=my-release-name
 export REACTIONETES_REPO=reactioncommerce/reaction
 export REACTIONETES_TAG=latest
@@ -188,7 +188,7 @@ REACTIONETES_NAME=my-release-name \
 REACTIONETES_TAG=latest \
 MONGO_REPLICAS=5 \
 REPLICAS=3 \
-make
+make -e
 ```
 
 ## Debug

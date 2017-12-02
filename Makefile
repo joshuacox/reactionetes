@@ -123,8 +123,9 @@ busybox:
 
 
 dnstest: busybox
-	kubectl exec -ti busybox -- nslookup raucous-reactionetes-mongo
-	kubectl exec -ti busybox -- nslookup raucous-reactionetes-reactionetes
+	$(eval REACTIONETES_NAME := "raucous-reactionetes")
+	kubectl exec -ti busybox -- nslookup $(REACTIONETES_NAME)-mongo
+	kubectl exec -ti busybox -- nslookup $(REACTIONETES_NAME)-reactionetes
 
 ci: autopilot
 	./w8s/webpage.w8
