@@ -6,9 +6,16 @@ jobs:
     environment:
       CHANGE_MINIKUBE_NONE_USER: true
       MINIKUBE_OPTS: "--vm-driver=none"
+      REACTIONETES_NAME: "circleci-build-test"
+      REACTIONETES_REPO: "reactioncommerce/reaction"
+      REACTIONETES_TAG: "latest"
+      REPLICAS: 2
+      MONGO_REPLICAS: 3
     steps:
       - checkout
 
       - run: .circleci/install.sh
 
-      - run: /usr/bin/time -v make ci
+      - run: /usr/bin/time -v make -e linuxreqs
+
+      - run: /usr/bin/time -v make -e ci

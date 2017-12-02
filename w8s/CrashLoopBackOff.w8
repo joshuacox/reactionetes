@@ -1,0 +1,21 @@
+#!/bin/sh
+
+echo -n "waiting for no CrashLoopBackOff"
+sleep 5
+
+# while loop
+countone=1
+# timeout for 15 minutes
+while [ $countone -lt 151 ]
+do
+  echo -n '.'
+  RESULT=$(kubectl get po | grep CrashLoopBackOff)
+  if [ ! "$RESULT" ]; then
+      break
+  fi
+  countone=`expr $countone + 1`
+  sleep 6
+done
+
+echo '.'
+echo "CrashLoopBackOff is now clear"
