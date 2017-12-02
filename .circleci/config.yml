@@ -9,11 +9,13 @@ jobs:
       REACTIONETES_NAME: "circleci-build-test"
       REACTIONETES_REPO: "reactioncommerce/reaction"
       REACTIONETES_TAG: "latest"
-      REPLICAS: 2
-      MONGO_REPLICAS: 3
+      REPLICAS: 1
+      MONGO_REPLICAS: 1
     steps:
       - checkout
 
       - run: .circleci/install.sh
+
+      - run: /usr/bin/time -v make -e linuxreqs
 
       - run: /usr/bin/time -v make -e ci

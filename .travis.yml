@@ -10,8 +10,8 @@ matrix:
         - REACTIONETES_NAME=travis-build-test
         - REACTIONETES_REPO=reactioncommerce/reaction
         - REACTIONETES_TAG=latest
-        - REPLICAS=5
-        - MONGO_REPLICAS=11
+        - REPLICAS=3
+        - MONGO_REPLICAS=7
 # Possible os x support in the future
     #- os: osx
     #  osx_image: xcode7.2
@@ -35,11 +35,6 @@ script:
 # /bin/sh points to dash on trusty, which can cause some of the tests to fail
   - ls -alh `which sh`
 # switching to bash
-  - echo "MINIKUBE_OPTS= $MINIKUBE_OPTS \
-          REACTIONETES_NAME= $REACTIONETES_NAME \
-          REACTIONETES_REPO= $REACTIONETES_REPO \
-          REACTIONETES_TAG= $REACTIONETES_TAG \
-          REPLICAS= $REPLICAS \
-          MONGO_REPLICAS= $MONGO_REPLICAS "
+  - /usr/bin/time -v make -e linuxreqs
 
   - /usr/bin/time -v make -e ci
