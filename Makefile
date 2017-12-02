@@ -128,7 +128,8 @@ dnstest: busybox
 	kubectl exec -ti busybox -- nslookup $(REACTIONETES_NAME)-reactionetes
 
 ci: autopilot
-	./w8s/webpage.w8
+	$(eval REACTIONETES_NAME := "raucous-reactionetes")
+	./w8s/webpage.w8 $(REACTIONETES_NAME)
 	kubectl get all
 	kubectl get ep
 	-@ echo 'Memory consumption of all that:'

@@ -1,6 +1,11 @@
 #!/bin/bash
+if [ $# -ne 1 ]; then
+  # Print usage
+  echo 'w8/webpage.w8 what-release-name-to-wait-for'
+  exit 1
+fi
 sleep 8
-export TARGET_KUBE_CMD_OPTS='--namespace default -l app=reactionetes,release=raucous-reactionetes -o jsonpath="{ .items[0].metadata.name }"'
+export TARGET_KUBE_CMD_OPTS="--namespace default -l app=reactionetes,release=$1 -o jsonpath='{ .items[0].metadata.name }'"
 echo  "kubectl get pods $TARGET_KUBE_CMD_OPTS"
 export POD_NAME=$(echo "kubectl get pods $TARGET_KUBE_CMD_OPTS" | bash)
 echo "kubectl port-forward $POD_NAME 3001:3000 &"
