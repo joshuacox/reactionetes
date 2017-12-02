@@ -11,7 +11,7 @@ matrix:
         - REACTIONETES_REPO=reactioncommerce/reaction
         - REACTIONETES_TAG=latest
         - REPLICAS=1
-        - MONGO_REPLICAS=5
+        - MONGO_REPLICAS=3
 # Possible os x support in the future
     #- os: osx
     #  osx_image: xcode7.2

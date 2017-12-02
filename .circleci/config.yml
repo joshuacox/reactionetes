@@ -10,7 +10,7 @@ jobs:
       REACTIONETES_REPO: "reactioncommerce/reaction"
       REACTIONETES_TAG: "latest"
       REPLICAS: 1
-      MONGO_REPLICAS: 5
+      MONGO_REPLICAS: 3
     steps:
       - checkout
 
