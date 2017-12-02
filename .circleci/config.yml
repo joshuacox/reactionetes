@@ -9,8 +9,8 @@ jobs:
       REACTIONETES_NAME: "circleci-build-test"
       REACTIONETES_REPO: "reactioncommerce/reaction"
       REACTIONETES_TAG: "latest"
-      REPLICAS: 3
-      MONGO_REPLICAS: 9
+      REPLICAS: 2
+      MONGO_REPLICAS: 3
     steps:
       - checkout
 

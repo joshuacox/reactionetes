@@ -10,8 +10,8 @@ matrix:
         - REACTIONETES_NAME=travis-build-test
         - REACTIONETES_REPO=reactioncommerce/reaction
         - REACTIONETES_TAG=latest
-        - REPLICAS=3
-        - MONGO_REPLICAS=9
+        - REPLICAS=5
+        - MONGO_REPLICAS=11
 # Possible os x support in the future
     #- os: osx
     #  osx_image: xcode7.2
