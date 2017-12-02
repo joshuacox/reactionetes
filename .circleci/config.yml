@@ -16,4 +16,4 @@ jobs:
 
       - run: .circleci/install.sh
 
-      - run: /usr/bin/time -v make ci
+      - run: /usr/bin/time -v make -e ci

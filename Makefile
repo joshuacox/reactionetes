@@ -46,10 +46,10 @@ autopilot: reqs
 	helm init
 	@sh ./w8s/tiller.w8
 	@sh ./w8s/kube-dns.w8
-	make
+	make -e install
 	@sh ./w8s/mongo.w8
 	@sh ./w8s/reactionetes.w8
-	make dnstest
+	make -e dnstest
 
 /usr/local/bin/helm:
 	curl -L https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash

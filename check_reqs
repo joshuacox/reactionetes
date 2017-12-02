@@ -109,11 +109,11 @@ elif [ "$UNAME" = "Linux" ] ; then
 fi
 
 if [ "$PLATFORM" = "os.linux.x86_64" ] ; then
-  make linuxreqs
+  make -e linuxreqs
 elif [ "$PLATFORM" = "os.osx.x86_64" ] ; then
-  make osxreqs
+  make -e osxreqs
 elif [ "$PLATFORM" = "os.windows.x86_64" ] ; then
-  make windowsreqs
+  make -e windowsreqs
 fi
 
 trap - EXIT
