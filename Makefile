@@ -184,7 +184,8 @@ busybox:
 
 dnstest: busybox
 	$(eval REACTIONETES_NAME := "raucous-reactionetes")
-	kubectl exec -ti busybox -- nslookup $(REACTIONETES_NAME)-mongodb
+	$(eval MONGO_RELEASE_NAME := "massive-mongonetes")
+	kubectl exec -ti busybox -- nslookup $(MONGO_RELEASE_NAME)-mongodb
 	kubectl exec -ti busybox -- nslookup $(REACTIONETES_NAME)-reactionetes
 
 ci: autopilot
