@@ -1,5 +1,12 @@
 #!/bin/sh
-echo -n "Wait on Reaction Commerce to become available"
+if [ $# -ne 1 ]; then
+  # Print usage
+  echo 'Error! wrong number of arguments'
+  echo 'usage:'
+  echo 'w8/reactioncommerce.w8 reactionetes-release-name'
+  exit 1
+fi
+echo -n "Wait on $1 Reaction Commerce to become available"
 
 # while loop
 countone=1
@@ -7,7 +14,7 @@ countone=1
 while [ $countone -lt 151 ]
 do
   echo -n '.'
-  RESULT=$(kubectl get po | grep reactionetes-reactioncommerce | grep Running)
+  RESULT=$(kubectl get po | grep $1-reactioncommerce | grep Running)
   if [ "$RESULT" ]; then
       echo ""
       echo "$RESULT"
@@ -17,4 +24,4 @@ do
   sleep 6
 done
 
-echo "Reaction Commerce is now up and running."
+echo "$1 Reaction Commerce is now up and running."
