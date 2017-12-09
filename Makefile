@@ -184,7 +184,7 @@ reqs:
 	cp .circleci/pre-commit .git/hooks/pre-commit
 
 busybox:
-	kubectl apply -f debug/busybox.yaml
+	kubectl apply -f busybox/busybox.yaml
 	@sh ./w8s/generic.w8 busybox
 
 dnstest: busybox
