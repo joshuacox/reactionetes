@@ -92,7 +92,6 @@ autopilot: reqs .minikube.made
 	$(eval MONGO_RELEASE_NAME := "massive-mongonetes")
 	$(MAKE) -e mongoinstall
 	$(MAKE) -e install
-	make -e dnstest
 
 .minikube.made:
 	$(eval MINIKUBE_MEMORY := 4096)
@@ -190,6 +189,8 @@ dnstest: busybox
 
 ci: autopilot
 	$(eval REACTIONETES_NAME := "raucous-reactionetes")
+	kubectl get ep
+	make -e dnstest
 	./w8s/webpage.w8 $(REACTIONETES_NAME)
 	kubectl get all
 	kubectl get ep
