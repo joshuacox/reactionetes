@@ -7,6 +7,7 @@ jobs:
       CHANGE_MINIKUBE_NONE_USER: true
       MINIKUBE_OPTS: "--vm-driver=none"
       REACTIONETES_NAME: "circleci-build-test"
+      MONGO_RELEASE_NAME: "circleci-mongodb-test"
       REACTIONETES_REPO: "reactioncommerce/reaction"
       REACTIONETES_TAG: "latest"
       REPLICAS: 2
