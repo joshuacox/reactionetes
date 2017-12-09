@@ -21,7 +21,7 @@ install:
 		--set image.repository=$(REACTIONETES_REPO) \
 		--set reactioncommerceClusterDomain=$(REACTIONETES_CLUSTER_DOMAIN) \
 		./reactioncommerce
-	@sh ./w8s/reactioncommerce.w8
+	@sh ./w8s/reactioncommerce.w8 $(REACTIONETES_NAME)
 	@sh ./w8s/CrashLoopBackOff.w8
 
 mongodefaultinstall:
