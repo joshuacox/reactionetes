@@ -28,13 +28,13 @@ spec:
           ports:
             - containerPort: {{ .Values.service.internalPort }}
           volumeMounts:
-            - name: {{ .Release.Name }}-mongo-pv
+            - name: {{ .Release.Name }}-mongodb-pv
               mountPath: /data/db
         - name: mongo-sidecar
           image: cvallance/mongo-k8s-sidecar
           env:
             - name: MONGO_SIDECAR_POD_LABELS
-              value: "role=mongo,environment={{ .Release.Name }}-mongo"
+              value: "role=mongodb,environment={{ .Release.Name }}-mongodb"
       volumes:
-        - name: {{ .Release.Name }}-mongo-pv
+        - name: {{ .Release.Name }}-mongodb-pv
           emptyDir: {}

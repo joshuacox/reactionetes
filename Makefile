@@ -45,7 +45,7 @@ mongoinstall:
 		--set image.tag=$(MONGONETES_TAG) \
 		--set image.repository=$(MONGONETES_REPO) \
 		--set mongonetesClusterDomain=$(MONGONETES_CLUSTER_DOMAIN) \
-		./mongonetes
+		./mongostateful
 	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
 
 gymongonasiuminstall:

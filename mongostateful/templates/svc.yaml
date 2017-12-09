@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-mongodb
   labels:
-    name: mongo
+    name: mongodb
     app: {{ template "mongostateful.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
