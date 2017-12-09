@@ -1,0 +1,101 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "gymongonasium.fullname" . }}
+  labels:
+    app: {{ template "gymongonasium.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "gymongonasium.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+          env:
+            - name: GYMONGODB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.mongo_url
+            - name: GYMONGODB_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.mongo_db
+            - name: GYMONGODB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.mongo_host
+            - name: GYMONGODB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.mongo_port
+            - name: VERBOSITY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.verbosity
+            - name: TIME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.TIME
+            - name: SLEEP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.SLEEP
+            - name: TABLES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.TABLES
+            - name: TABLE_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.TABLE_SIZE
+            - name: RANGE_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.RANGE_SIZE
+            - name: THREADS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.THREADS
+            - name: SUM_RANGES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-gymongonasium-config
+                  key: gymongonasium.SUM_RANGES
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.internalPort }}
+            initialDelaySeconds: 240
+            periodSeconds: 5
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.internalPort }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-reaction-config
+data:
+  reaction.email: {{ .Values.reactionEmail }}
+  reaction.user: {{ .Values.reactionUser }}
+  reaction.auth: {{ .Values.reactionAuth }}
+  reaction.root_url: {{ .Values.reactionRoot_url }}
+  reaction.hostname: {{ .Values.reactionHostname }}
+  reaction.mongo_url: mongodb://{{ .Values.mongodbName }}-mongodb/{{ .Release.Name }}?replicaSet=mongodb-rs
+  reaction.mongo_oplog_url: mongodb://{{ .Values.mongodbName }}-mongodb/{{ .Release.Name }}-oplog?replicaSet=mongodb-rs

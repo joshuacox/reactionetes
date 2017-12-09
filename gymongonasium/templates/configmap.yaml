@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-gymongonasium-config
+data:
+  gymongonasium.mongo_url: mongodb://{{ .Values.mongodbName }}-mongodb/{{ .Release.Name }}?replicaSet=mongodb-rs
+  gymongonasium.mongo_host: {{ .Values.mongodbName }}-mongodb
+  gymongonasium.mongo_port: {{ .Values.mongodb_port }}
+  gymongonasium.mongo_db: {{ .Values.mongodb_db }}
+  gymongonasium.mongo_TIME: {{ .Values.mongodbTIME }}
+  gymongonasium.mongo_SLEEP: {{ .Values.mongodbSLEEP }}
+  gymongonasium.mongo_TABLES: {{ .Values.mongodbTABLES }}
+  gymongonasium.mongo_THREADS: {{ .Values.mongodbTHREADS }}
+  gymongonasium.mongo_TABLE_SIZE: {{ .Values.mongodbTABLE_SIZE }}
+  gymongonasium.mongo_RANGE_SIZE: {{ .Values.mongodbRANGE_SIZE }}
+  gymongonasium.mongo_SUM_RANGES: {{ .Values.mongodbSUM_RANGES }}

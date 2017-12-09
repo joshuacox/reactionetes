@@ -1,8 +1,7 @@
-# Default values for reactionetes.
+# Default values for reactioncommerce
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
-mongoReplicaCount: 3
 image:
   repository: reactioncommerce/reaction
   tag: latest
@@ -37,8 +36,9 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
-#reactionetes specific values
-reactionetesClusterDomain: reaction.local
+#reactioncommerce specific values
+reactioncommerceClusterDomain: cluster.local
+mongodbName: 'massive-mongonetes'
 
 # reaction specific values
 reactionEmail: 'admin@localhost'

@@ -1,5 +1,5 @@
 #!/bin/sh
-echo -n "Wait on Reactionetes to become available"
+echo -n "Wait on Reaction Commerce to become available"
 
 # while loop
 countone=1
@@ -7,7 +7,7 @@ countone=1
 while [ $countone -lt 151 ]
 do
   echo -n '.'
-  RESULT=$(kubectl get po | grep reactionetes-reactionetes | grep Running)
+  RESULT=$(kubectl get po | grep reactionetes-reactioncommerce | grep Running)
   if [ "$RESULT" ]; then
       echo ""
       echo "$RESULT"
@@ -17,4 +17,4 @@ do
   sleep 6
 done
 
-echo "Reactionetes is now up and running."
+echo "Reaction Commerce is now up and running."

@@ -1,0 +1,48 @@
+# Default values for reactioncommerce
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+image:
+  repository: joshuacox/gymongonasium
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  name: gymongonasium
+  type: ClusterIP
+  externalPort: 8008
+  internalPort: 8008
+ingress:
+  enabled: false
+  # Used to create an Ingress record.
+  hosts:
+    - reactioncommerce.local
+  annotations:
+    kubernetes.io/ingress.class: reactioncommerce
+    kubernetes.io/tls-acme: "true"
+  tls:
+    # Secrets must be manually created in the namespace.
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+mongodbName: 'massive-mongonetes'
+gymongonasium.mongo_db: gymongonasium
+gymongonasium.mongo_port: 27017
+gymongonasium.mongo_TIME: 33
+gymongonasium.mongo_SLEEP: 5
+gymongonasium.mongo_TABLES: 1
+gymongonasium.mongo_THREADS: 10
+gymongonasium.mongo_TABLE_SIZE: 10000
+gymongonasium.mongo_RANGE_SIZE: 100
+gymongonasium.mongo_SUM_RANGES: 1
