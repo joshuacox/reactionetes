@@ -9,7 +9,7 @@ image:
 service:
   name: reactioncommerce
   type: ClusterIP
-  externalPort: 80
+  externalPort: 3001
   internalPort: 3000
 ingress:
   enabled: false
