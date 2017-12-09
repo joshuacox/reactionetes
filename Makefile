@@ -6,11 +6,11 @@ MY_KUBE_VERSION=v1.8.0
 
 install:
 	$(eval TMP := $(shell mktemp -d --suffix=MINIKUBETMP))
-	$(eval REACTIONETES_NAME := "raucous-reactionetes")
-	$(eval MONGO_RELEASE_NAME := "massive-mongonetes")
-	$(eval REACTIONETES_REPO := "reactioncommerce/reaction")
-	$(eval REACTIONETES_TAG := "latest")
-	$(eval REACTIONETES_CLUSTER_DOMAIN := "cluster.local")
+	$(eval REACTIONETES_NAME := raucous-reactionetes)
+	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
+	$(eval REACTIONETES_REPO := reactioncommerce/reaction)
+	$(eval REACTIONETES_TAG := latest)
+	$(eval REACTIONETES_CLUSTER_DOMAIN := cluster.local)
 	$(eval REPLICAS := 1)
 	$(eval MONGO_REPLICAS := 3)
 	helm install --name $(REACTIONETES_NAME) \
@@ -25,8 +25,8 @@ install:
 	@sh ./w8s/CrashLoopBackOff.w8
 
 mongodefaultinstall:
-	$(eval MONGO_RELEASE_NAME := "massive-mongonetes")
-	$(eval MONGO_PERSISTENCE := "false")
+	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
+	$(eval MONGO_PERSISTENCE := false)
 	helm install --name $(MONGO_RELEASE_NAME) \
 		--set persistence.enabled=$(MONGO{_PERSISTENCE) \
 		stable/mongodb
@@ -34,10 +34,10 @@ mongodefaultinstall:
 
 mongoinstall:
 	$(eval TMP := $(shell mktemp -d --suffix=MINIKUBETMP))
-	$(eval MONGO_RELEASE_NAME := "massive-mongonetes")
-	$(eval MONGONETES_REPO := "mongo")
-	$(eval MONGONETES_TAG := "3.4")
-	$(eval MONGONETES_CLUSTER_DOMAIN := "cluster.local")
+	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
+	$(eval MONGONETES_REPO := mongo)
+	$(eval MONGONETES_TAG := 3.4)
+	$(eval MONGONETES_CLUSTER_DOMAIN := cluster.local)
 	$(eval REPLICAS := 1)
 	$(eval MONGO_REPLICAS := 3)
 	helm install --name $(MONGO_RELEASE_NAME) \
@@ -49,8 +49,8 @@ mongoinstall:
 	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
 
 gymongonasiuminstall:
-	$(eval MONGO_RELEASE_NAME := 'massive-mongonetes')
-	$(eval gymongonasium.mongo_db := 'gymongonasium')
+	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
+	$(eval gymongonasium.mongo_db := gymongonasium)
 	$(eval gymongonasium.mongo_port := 27017)
 	$(eval gymongonasium.mongo_TIME := 33)
 	$(eval gymongonasium.mongo_SLEEP := 5)
@@ -89,14 +89,14 @@ debug:
 autopilot: reqs .minikube.made
 	@echo 'Autopilot engaged'
 	$(eval MONGO_REPLICAS := 1)
-	$(eval MONGO_RELEASE_NAME := "massive-mongonetes")
+	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
 	$(MAKE) -e mongoinstall
 	$(MAKE) -e install
 
 .minikube.made:
 	$(eval MINIKUBE_MEMORY := 4096)
 	$(eval MINIKUBE_CPU := 4)
-	$(eval REACTIONETES_CLUSTER_DOMAIN := "cluster.local")
+	$(eval REACTIONETES_CLUSTER_DOMAIN := cluster.local)
 	minikube \
 		--kubernetes-version $(MY_KUBE_VERSION) \
 		--dns-domain $(REACTIONETES_CLUSTER_DOMAIN) \
@@ -160,9 +160,14 @@ clean:
 
 d: delete
 
+hardclean: clean
+	rm /usr/local/bin/minikube
+	rm /usr/local/bin/kubectl
+	rm /usr/local/bin/helm
+
 delete:
-	$(eval REACTIONETES_NAME := "raucous-reactionetes")
-	$(eval MONGO_RELEASE_NAME := "massive-mongonetes")
+	$(eval REACTIONETES_NAME := raucous-reactionetes)
+	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
 	helm delete --purge $(REACTIONETES_NAME)
 	helm delete --purge $(MONGO_RELEASE_NAME)
 
@@ -183,13 +188,13 @@ busybox:
 	@sh ./w8s/generic.w8 busybox
 
 dnstest: busybox
-	$(eval REACTIONETES_NAME := "raucous-reactionetes")
-	$(eval MONGO_RELEASE_NAME := "massive-mongonetes")
+	$(eval REACTIONETES_NAME := raucous-reactionetes)
+	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
 	kubectl exec -ti busybox -- nslookup $(MONGO_RELEASE_NAME)-mongodb
 	kubectl exec -ti busybox -- nslookup $(REACTIONETES_NAME)-reactioncommerce
 
 ci: autopilot
-	$(eval REACTIONETES_NAME := "raucous-reactionetes")
+	$(eval REACTIONETES_NAME := raucous-reactionetes)
 	kubectl get ep
 	make -e dnstest
 	./w8s/webpage.w8 $(REACTIONETES_NAME)
