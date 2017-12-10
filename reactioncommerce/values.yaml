@@ -39,6 +39,7 @@ resources: {}
 #reactioncommerce specific values
 reactioncommerceClusterDomain: cluster.local
 mongodbName: massive-mongonetes
+mongodbReplicaSet: rs0
 
 # reaction specific values
 reactionEmail: 'admin@localhost'

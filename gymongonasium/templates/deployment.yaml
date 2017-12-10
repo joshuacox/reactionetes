@@ -46,42 +46,42 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.verbosity
+                  key: gymongonasium.mongo_VERBOSITY
             - name: TIME
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.TIME
+                  key: gymongonasium.mongo_TIME
             - name: SLEEP
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.SLEEP
+                  key: gymongonasium.mongo_SLEEP
             - name: TABLES
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.TABLES
+                  key: gymongonasium.mongo_TABLES
             - name: TABLE_SIZE
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.TABLE_SIZE
+                  key: gymongonasium.mongo_TABLE_SIZE
             - name: RANGE_SIZE
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.RANGE_SIZE
+                  key: gymongonasium.mongo_RANGE_SIZE
             - name: THREADS
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.THREADS
+                  key: gymongonasium.mongo_THREADS
             - name: SUM_RANGES
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.SUM_RANGES
+                  key: gymongonasium.mongo_SUM_RANGES
           livenessProbe:
             httpGet:
               path: /

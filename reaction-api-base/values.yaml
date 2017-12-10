@@ -36,4 +36,5 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
-mongodbName: 'massive-mongonetes'
+mongodbName: massive-mongonetes
+mongodbReplicaSet: rs0

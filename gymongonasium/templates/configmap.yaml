@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-gymongonasium-config
 data:
-  gymongonasium.mongo_url: mongodb://{{ .Values.mongodbName }}-mongodb/{{ .Release.Name }}?replicaSet=mongodb-rs
+  gymongonasium.mongo_url: mongodb://{{ .Values.mongodbName }}-mongodb-replicaset/{{ .Release.Name }}?replicaSet={{ .Values.mongodbReplicaSet }}
   gymongonasium.mongo_host: {{ .Values.mongodbName }}-mongodb
   gymongonasium.mongo_port: {{ .Values.mongodb_port }}
   gymongonasium.mongo_db: {{ .Values.mongodb_db }}

@@ -11,7 +11,7 @@ echo "Wait on the $1 mongo cluster to settle"
 
 mongow8 () {
   echo -n "waiting on "
-  echo -n "$1-mongodb-$2"
+  echo -n "$1-mongodb-replicaset-$2"
 
   # while loop
   countone=1
@@ -19,7 +19,7 @@ mongow8 () {
   while [ $countone -lt 151 ]
   do
     echo -n '.'
-    RESULT=$(kubectl get po | grep $1-mongodb-$2 | grep Running)
+    RESULT=$(kubectl get po | grep $1-mongodb-replicaset-$2 | grep Running)
     if [ "$RESULT" ]; then
         echo "."
         echo "$RESULT"
@@ -29,7 +29,7 @@ mongow8 () {
     sleep 6
   done
 
-  echo -n "$1-mongodb-$2"
+  echo -n "$1-mongodb-replicaset-$2"
   echo " is now up and running."
 }
 
