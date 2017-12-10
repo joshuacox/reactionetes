@@ -50,9 +50,11 @@ mongoinstall:
 
 apiinstall:
 	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
+	$(eval REACTIONETES_NAME := raucous-reactionetes)
 	$(eval REACTION_API_NAME := grape-ape-api)
 	helm install --name $(REACTION_API_NAME) \
 	  --set mongodbName=$(MONGO_RELEASE_NAME) \
+	  --set reactiondbName=$(REACTIONETES_NAME) \
 		./reaction-api-base
 
 gyminstall:
@@ -98,6 +100,8 @@ autopilot: reqs .minikube.made
 	$(eval MONGO_REPLICAS := 1)
 	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
 	$(MAKE) -e mongoinstall
+	$(MAKE) -e apiinstall
+	$(MAKE) -e gyminstall
 	$(MAKE) -e install
 
 .minikube.made:
