@@ -48,7 +48,14 @@ mongoinstall:
 		./mongostateful
 	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
 
-gymongonasiuminstall:
+apiinstall:
+	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
+	$(eval REACTION_API_NAME := grape-ape-api)
+	helm install --name $(REACTION_API_NAME) \
+	  --set mongodbName=$(MONGO_RELEASE_NAME) \
+		./reaction-api-base
+
+gyminstall:
 	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
 	$(eval gymongonasium.mongo_db := gymongonasium)
 	$(eval gymongonasium.mongo_port := 27017)

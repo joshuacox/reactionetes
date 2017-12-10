@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "reactioncommerce.fullname" . }}
+  name: {{ template "reaction-api-base.fullname" . }}
   labels:
-    app: {{ template "reactioncommerce.name" . }}
+    app: {{ template "reaction-api-base.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "reactioncommerce.name" . }}
+        app: {{ template "reaction-api-base.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
