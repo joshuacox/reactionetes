@@ -8,6 +8,7 @@ install:
 	$(eval TMP := $(shell mktemp -d --suffix=MINIKUBETMP))
 	$(eval REACTIONETES_NAME := raucous-reactionetes)
 	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
+	$(eval MONGO_DB_NAME := reactionetesdb)
 	$(eval MONGO_REPLICASET := rs0)
 	$(eval REACTIONETES_REPO := reactioncommerce/reaction)
 	$(eval REACTIONETES_TAG := latest)
@@ -15,7 +16,8 @@ install:
 	$(eval REPLICAS := 1)
 	$(eval MONGO_REPLICAS := 3)
 	helm install --name $(REACTIONETES_NAME) \
-	  --set mongodbName=$(MONGO_RELEASE_NAME) \
+	  --set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
+	  --set mongodbName=$(MONGO_DB_NAME) \
 		--set replicaCount=$(REPLICAS) \
 		--set mongoReplicaCount=$(MONGO_REPLICAS) \
 		--set image.tag=$(REACTIONETES_TAG) \
@@ -71,11 +73,13 @@ mongo-replicaset-install:
 
 apiinstall:
 	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
+	$(eval MONGO_DB_NAME := reactionetesdb)
 	$(eval MONGO_REPLICASET := rs0)
 	$(eval REACTIONETES_NAME := raucous-reactionetes)
 	$(eval REACTION_API_NAME := grape-ape-api)
 	helm install --name $(REACTION_API_NAME) \
-	  --set mongodbName=$(MONGO_RELEASE_NAME) \
+	  --set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
+	  --set mongodbName=$(MONGO_DB_NAME) \
     --set mongodbReplicaSet=$(MONGO_REPLICASET) \
 	  --set reactiondbName=$(REACTIONETES_NAME) \
 		./reaction-api-base
@@ -93,7 +97,7 @@ gyminstall:
 	$(eval gymongonasium.mongo_RANGE_SIZE := 100)
 	$(eval gymongonasium.mongo_SUM_RANGES := 1)
 	helm install --name $(MONGO_RELEASE_NAME)-gymongonasium \
-    --set mongodbName=$(MONGO_RELEASE_NAME) \
+	  --set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
     --set mongodbReplicaSet=$(MONGO_REPLICASET) \
     --set gymongonasium.mongo_db=$(gymongonasium.mongo_db) \
     --set gymongonasium.mongo_port=$(gymongonasium.mongo_port) \

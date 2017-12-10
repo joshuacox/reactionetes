@@ -36,5 +36,6 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
-mongodbName: massive-mongonetes
+mongodbReleaseName: massive-mongonetes
+mongodbName: reactionetesdb
 mongodbReplicaSet: rs0

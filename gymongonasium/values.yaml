@@ -36,7 +36,7 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
-mongodbName: massive-mongonetes
+mongodbReleaseName: massive-mongonetes
 mongodbReplicaSet: rs0
 gymongonasium.mongo_db: gymongonasium
 gymongonasium.mongo_port: 27017

@@ -38,7 +38,8 @@ resources: {}
 
 #reactioncommerce specific values
 reactioncommerceClusterDomain: cluster.local
-mongodbName: massive-mongonetes
+mongodbReleaseName: massive-mongonetes
+mongodbName: reactionetesdb
 mongodbReplicaSet: rs0
 
 # reaction specific values

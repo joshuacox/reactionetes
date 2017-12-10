@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-reaction-api-base-config
 data:
-  reaction.mongo_url: mongodb://{{ .Values.mongodbName }}-mongodb-replicaset/{{ .Values.reactiondbName }}?replicaSet={{ .Values.mongodbReplicaSet }}
+  reaction.mongo_url: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }},useMongoClient=true,connectWithNoPrimary=true
+  reaction.mongo_url_with_primary: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}

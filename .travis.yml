@@ -11,7 +11,7 @@ matrix:
         - MONGO_RELEASE_NAME=travisci-mongodb-test
         - REACTIONETES_REPO=reactioncommerce/reaction
         - REACTIONETES_TAG=latest
-        - REPLICAS=2
+        - REPLICAS=1
         - MONGO_REPLICAS=3
 # Possible os x support in the future
     #- os: osx

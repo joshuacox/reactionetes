@@ -8,5 +8,6 @@ data:
   reaction.auth: {{ .Values.reactionAuth }}
   reaction.root_url: {{ .Values.reactionRoot_url }}
   reaction.hostname: {{ .Values.reactionHostname }}
-  reaction.mongo_url: mongodb://{{ .Values.mongodbName }}-mongodb-replicaset/{{ .Release.Name }}?replicaSet={{ .Values.mongodbReplicaSet }}
-  reaction.mongo_oplog_url: mongodb://{{ .Values.mongodbName }}-mongodb-replicaset/{{ .Release.Name }}-oplog?replicaSet={{ .Values.mongodbReplicaSet }}
+  reaction.mongo_url: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }},useMongoClient=true,connectWithNoPrimary=true
+  reaction.mongo_url_with_primary: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}
+  reaction.mongo_oplog_url: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}-oplog?replicaSet={{ .Values.mongodbReplicaSet }}
