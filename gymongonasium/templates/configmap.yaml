@@ -7,6 +7,7 @@ data:
   gymongonasium.mongo_host: {{ .Values.mongodbName }}-mongodb
   gymongonasium.mongo_port: {{ .Values.mongodb_port }}
   gymongonasium.mongo_db: {{ .Values.mongodb_db }}
+  gymongonasium.mongo_VERBOSITY: {{ .Values.mongodbVERBOSITY }}
   gymongonasium.mongo_TIME: {{ .Values.mongodbTIME }}
   gymongonasium.mongo_SLEEP: {{ .Values.mongodbSLEEP }}
   gymongonasium.mongo_TABLES: {{ .Values.mongodbTABLES }}

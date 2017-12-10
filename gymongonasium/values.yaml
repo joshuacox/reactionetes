@@ -39,6 +39,7 @@ resources: {}
 mongodbName: 'massive-mongonetes'
 gymongonasium.mongo_db: gymongonasium
 gymongonasium.mongo_port: 27017
+gymongonasium.mongo_VERBOSITY: 1
 gymongonasium.mongo_TIME: 33
 gymongonasium.mongo_SLEEP: 5
 gymongonasium.mongo_TABLES: 1
