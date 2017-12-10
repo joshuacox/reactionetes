@@ -194,11 +194,11 @@ reqs:
 .git/hooks/pre-commit:
 	cp .circleci/pre-commit .git/hooks/pre-commit
 
-busybox:
+dobusybox:
 	kubectl apply -f busybox/busybox.yaml
 	@sh ./w8s/generic.w8 busybox
 
-dnstest: busybox
+dnstest: dobusybox
 	$(eval REACTIONETES_NAME := raucous-reactionetes)
 	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
 	kubectl exec -ti busybox -- nslookup $(MONGO_RELEASE_NAME)-mongodb
