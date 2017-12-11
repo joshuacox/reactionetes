@@ -1,50 +1,63 @@
-MINIKUBE_WANTUPDATENOTIFICATION=false
-MINIKUBE_WANTREPORTERRORPROMPT=false
-CHANGE_MINIKUBE_NONE_USER=true
-KUBECONFIG=$(HOME)/.kube/config
-MY_KUBE_VERSION=v1.8.0
+# default release names
+$(eval REACTIONCOMMERCE_NAME := raucous-reactionetes)
+$(eval MONGO_RELEASE_NAME := massive-mongonetes)
+$(eval REACTION_API_NAME := grape-ape-api)
+# default mongo settings
+$(eval MONGO_DB_NAME := reactionetesdb)
+$(eval MONGO_REPLICASET := rs0)
+$(eval MONGO_PORT := 27017)
+$(eval MONGO_REPLICAS := 3)
+$(eval MONGONETES_INSTALL_REPO := gcr.io/google_containers/mongodb-install)
+$(eval MONGONETES_INSTALL_TAG := 0.3)
+$(eval MONGONETES_REPO := mongo)
+$(eval MONGONETES_TAG := 3.4)
+$(eval MONGONETES_CLUSTER_DOMAIN := cluster.local)
+$(eval MONGO_PERSISTENCE := false)
+$(eval MONGO_TLS := false)
+$(eval MONGO_AUTH := false)
+$(eval MONGO_PERSISTENCE_SIZE := 10Gi)
+$(eval MONGO_PERSISTENCE_ACCESSMODE := [ReadWriteOnce])
+$(eval MONGO_PERSISTENCE_ANNOTATIONS := {})
+$(eval MONGO_PERSISTENCE_STORAGECLASS := 'volume.alpha.kubernetes.io/storage-class: default')
+#default reaction settings
+$(eval REACTIONCOMMERCE_CLUSTER_DOMAIN := cluster.local)
+$(eval REACTION_REPLICAS := 1)
+$(eval REACTIONCOMMERCE_REPO := reactioncommerce/reaction)
+$(eval REACTIONCOMMERCE_TAG := latest)
+# MInikube settings
+$(eval MINIKUBE_MEMORY := 11023)
+$(eval MINIKUBE_CPU := 8)
+$(eval MINIKUBE_WANTUPDATENOTIFICATION := false)
+$(eval MINIKUBE_WANTREPORTERRORPROMPT := false)
+$(eval CHANGE_MINIKUBE_NONE_USER := true)
+$(eval KUBECONFIG := $(HOME)/.kube/config)
+$(eval MY_KUBE_VERSION := v1.8.0)
+# Gymongonasium settings
+$(eval gymongonasium.mongo_db := gymongonasium)
+$(eval gymongonasium.mongo_port := 27017)
+$(eval gymongonasium.mongo_TIME := 33)
+$(eval gymongonasium.mongo_SLEEP := 5)
+$(eval gymongonasium.mongo_TABLES := 1)
+$(eval gymongonasium.mongo_THREADS := 10)
+$(eval gymongonasium.mongo_TABLE_SIZE := 10000)
+$(eval gymongonasium.mongo_RANGE_SIZE := 100)
+$(eval gymongonasium.mongo_SUM_RANGES := 1)
 
 install:
-	$(eval TMP := $(shell mktemp -d --suffix=MINIKUBETMP))
-	$(eval REACTIONETES_NAME := raucous-reactionetes)
-	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
-	$(eval MONGO_DB_NAME := reactionetesdb)
-	$(eval MONGO_REPLICASET := rs0)
-	$(eval REACTIONETES_REPO := reactioncommerce/reaction)
-	$(eval REACTIONETES_TAG := latest)
-	$(eval REACTIONETES_CLUSTER_DOMAIN := cluster.local)
-	$(eval REPLICAS := 1)
-	$(eval MONGO_REPLICAS := 3)
-	helm install --name $(REACTIONETES_NAME) \
+	helm install --name $(REACTIONCOMMERCE_NAME) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbName=$(MONGO_DB_NAME) \
-		--set replicaCount=$(REPLICAS) \
-		--set mongoReplicaCount=$(MONGO_REPLICAS) \
-		--set image.tag=$(REACTIONETES_TAG) \
+		--set mongodbPort=$(MONGO_PORT) \
+		--set replicaCount=$(REACTION_REPLICAS) \
+		--set image.tag=$(REACTIONCOMMERCE_TAG) \
     --set mongodbReplicaSet=$(MONGO_REPLICASET) \
-		--set image.repository=$(REACTIONETES_REPO) \
-		--set reactioncommerceClusterDomain=$(REACTIONETES_CLUSTER_DOMAIN) \
+		--set image.repository=$(REACTIONCOMMERCE_REPO) \
+		--set reactioncommerceClusterDomain=$(REACTIONCOMMERCE_CLUSTER_DOMAIN) \
 		./reactioncommerce
-	@sh ./w8s/reactioncommerce.w8 $(REACTIONETES_NAME)
+	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
 	@sh ./w8s/CrashLoopBackOff.w8
 
 mongo-replicaset-install:
-	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
-	$(eval MONGO_REPLICASET := rs0)
-	$(eval MONGO_PORT := 27017)
-	$(eval MONGONETES_INSTALL_REPO := gcr.io/google_containers/mongodb-install)
-	$(eval MONGONETES_INSTALL_TAG := 0.3)
-	$(eval MONGONETES_REPO := mongo)
-	$(eval MONGONETES_TAG := 3.4)
-	$(eval MONGONETES_CLUSTER_DOMAIN := cluster.local)
-	$(eval MONGO_REPLICAS := 3)
-	$(eval MONGO_PERSISTENCE := false)
-	$(eval MONGO_TLS := false)
-	$(eval MONGO_AUTH := false)
-	$(eval MONGO_PERSISTENCE_SIZE := 10Gi)
-	$(eval MONGO_PERSISTENCE_ACCESSMODE := [ReadWriteOnce])
-	$(eval MONGO_PERSISTENCE_ANNOTATIONS := {})
-	$(eval MONGO_PERSISTENCE_STORAGECLASS := 'volume.alpha.kubernetes.io/storage-class: default')
 	helm install --name $(MONGO_RELEASE_NAME) \
 		--set replicaSet=$(MONGO_REPLICASET) \
 		--set replicas=$(MONGO_REPLICAS) \
@@ -72,11 +85,6 @@ mongo-replicaset-install:
 
 
 apiinstall:
-	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
-	$(eval MONGO_DB_NAME := reactionetesdb)
-	$(eval MONGO_REPLICASET := rs0)
-	$(eval REACTIONETES_NAME := raucous-reactionetes)
-	$(eval REACTION_API_NAME := grape-ape-api)
 	helm install --name $(REACTION_API_NAME) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbName=$(MONGO_DB_NAME) \
@@ -85,17 +93,6 @@ apiinstall:
 		./reaction-api-base
 
 gyminstall:
-	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
-	$(eval MONGO_REPLICASET := rs0)
-	$(eval gymongonasium.mongo_db := gymongonasium)
-	$(eval gymongonasium.mongo_port := 27017)
-	$(eval gymongonasium.mongo_TIME := 33)
-	$(eval gymongonasium.mongo_SLEEP := 5)
-	$(eval gymongonasium.mongo_TABLES := 1)
-	$(eval gymongonasium.mongo_THREADS := 10)
-	$(eval gymongonasium.mongo_TABLE_SIZE := 10000)
-	$(eval gymongonasium.mongo_RANGE_SIZE := 100)
-	$(eval gymongonasium.mongo_SUM_RANGES := 1)
 	helm install --name $(MONGO_RELEASE_NAME)-gymongonasium \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
@@ -126,17 +123,12 @@ debug:
 
 autopilot: reqs .minikube.made
 	@echo 'Autopilot engaged'
-	$(eval MONGO_REPLICAS := 3)
-	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
 	$(MAKE) -e mongo-replicaset-install
 	$(MAKE) -e apiinstall
 	$(MAKE) -e gyminstall
 	$(MAKE) -e install
 
 .minikube.made:
-	$(eval MINIKUBE_MEMORY := 11023)
-	$(eval MINIKUBE_CPU := 8)
-	$(eval REACTIONETES_CLUSTER_DOMAIN := cluster.local)
 	minikube \
 		--kubernetes-version $(MY_KUBE_VERSION) \
 		--dns-domain $(REACTIONETES_CLUSTER_DOMAIN) \
@@ -206,8 +198,6 @@ hardclean: clean
 	rm /usr/local/bin/helm
 
 delete:
-	$(eval REACTIONETES_NAME := raucous-reactionetes)
-	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
 	helm delete --purge $(REACTIONETES_NAME)
 	helm delete --purge $(MONGO_RELEASE_NAME)
 
@@ -228,13 +218,10 @@ dobusybox:
 	@sh ./w8s/generic.w8 busybox
 
 dnstest: dobusybox
-	$(eval REACTIONETES_NAME := raucous-reactionetes)
-	$(eval MONGO_RELEASE_NAME := massive-mongonetes)
 	kubectl exec -ti busybox -- nslookup $(MONGO_RELEASE_NAME)-mongodb-replicaset
 	kubectl exec -ti busybox -- nslookup $(REACTIONETES_NAME)-reactioncommerce
 
 ci: autopilot
-	$(eval REACTIONETES_NAME := raucous-reactionetes)
 	kubectl get ep
 	make -e dnstest
 	./w8s/webpage.w8 $(REACTIONETES_NAME)
