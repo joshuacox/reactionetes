@@ -75,6 +75,12 @@ urlinstall:
 
 mongo-replicaset-install:
 	helm install --name $(MONGO_RELEASE_NAME) \
+		--set persistentVolume.enabled=$(MONGO_PERSISTENCE) \
+		stable/mongodb-replicaset
+	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
+
+full-mongo-replicaset-install:
+	helm install --name $(MONGO_RELEASE_NAME) \
 		--set replicaSet=$(MONGO_REPLICASET) \
 		--set replicas=$(MONGO_REPLICAS) \
 		--set port=$(MONGO_PORT) \
@@ -98,7 +104,6 @@ mongo-replicaset-install:
 		--set auth.existingAdminSecret=$(MONGO_AUTH_EXISTING_ADMIN_SECRET) \
 		stable/mongodb-replicaset
 	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
-
 
 apiinstall:
 	helm install --name $(REACTION_API_NAME) \
