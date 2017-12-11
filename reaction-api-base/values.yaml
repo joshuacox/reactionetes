@@ -1,4 +1,4 @@
-# Default values for reactioncommerce
+# Default values for reaction-api-base
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
@@ -39,3 +39,5 @@ resources: {}
 mongodbReleaseName: massive-mongonetes
 mongodbName: reactionetesdb
 mongodbReplicaSet: rs0
+mongodbPort: 27017
+mongodbUrl: 'mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset-0:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-1:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-2:{{ .Values.mongodbPort }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }} '

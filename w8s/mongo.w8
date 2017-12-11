@@ -15,8 +15,8 @@ mongow8 () {
 
   # while loop
   countone=1
-  # timeout for 15 minutes
-  while [ $countone -lt 151 ]
+  # timeout for 30 minutes
+  while [ $countone -lt 301 ]
   do
     echo -n '.'
     RESULT=$(kubectl get po | grep $1-mongodb-replicaset-$2 | grep Running)

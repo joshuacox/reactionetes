@@ -1,0 +1,36 @@
+#!/bin/bash
+# This is here because for some reason there is no 'for' or 'while' loop in go templating and the range doesn't make sense when I just want to count to a variable
+
+# here's the line that stumped me
+# reaction.mongo_url_big: mongodb://{{ for $mongocount := 0; $mongocount < {{ .Values.mongodbReplicantCount }}; $mongocount++ }}{{ .Values.mongodbReleaseName }}-mongodb-replicaset-{{ $mongocount }}:{{ .Values.mongodbPort }}{{ if $mongocount < {{ .Values.mongodbReplicantCount }} - 1 }},{{ end }}{{ end }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}
+
+# some other errant lines
+#  reaction.mongo_url_no_primary: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }},useMongoClient=true,connectWithNoPrimary=true
+#  reaction.mongo_url_with_primary: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}
+#  reaction.mongo_oplog_url: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}-oplog?replicaSet={{ .Values.mongodbReplicaSet }}
+#  reaction.mongo_url_big: mongodb://{{ for $mongocount := 0; $mongocount < {{ .Values.mongodbReplicantCount }}; $mongocount++ }}{{ .Values.mongodbReleaseName }}-mongodb-replicaset-{{ $mongocount }}:{{ .Values.mongodbPort }}{{ if $mongocount < {{ .Values.mongodbReplicantCount }} - 1 }},{{ end }}{{ end }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}
+
+# Now let's just do it in bash
+MONGO_DB_COUNT=$1
+let COMMAFORE=$1-1
+
+#echo -n 'reaction.mongo_url_big: mongodb://'
+echo -n '  reaction.mongo_url: '
+echo -n 'mongodb://'
+
+# while loop
+countzero=0
+
+while [ $countzero -lt $MONGO_DB_COUNT ]
+do
+   echo -n '{{ .Values.mongodbReleaseName }}-mongodb-replicaset-'
+   echo -n "$countzero"
+   echo -n ':{{ .Values.mongodbPort }}'
+   if (( $countzero < $COMMAFORE )); then
+     echo -n ,
+   fi
+   countzero=`expr $countzero + 1`
+done
+#end while
+
+echo '/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}'

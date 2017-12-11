@@ -36,13 +36,15 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
-#reactioncommerce specific values
-reactioncommerceClusterDomain: cluster.local
+# mongo specificy values
 mongodbReleaseName: massive-mongonetes
 mongodbName: reactionetesdb
 mongodbReplicaSet: rs0
+mongodbPort: 27017
+mongodbUrl: 'mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset-0:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-1:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-2:{{ .Values.mongodbPort }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }} '
 
 # reaction specific values
+reactioncommerceClusterDomain: cluster.local
 reactionEmail: 'admin@localhost'
 reactionUser: 'admin'
 reactionAuth: 'r3@cti0n'

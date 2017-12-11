@@ -1,4 +1,4 @@
-# Default values for reactioncommerce
+# Default values for gymongonasium
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
@@ -37,9 +37,10 @@ resources: {}
   #  memory: 128Mi
 
 mongodbReleaseName: massive-mongonetes
+mongodbUrl: 'mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset-0:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-1:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-2:{{ .Values.mongodbPort }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }} '
 mongodbReplicaSet: rs0
+mongodbPort: 27017
 gymongonasium.mongo_db: gymongonasium
-gymongonasium.mongo_port: 27017
 gymongonasium.mongo_VERBOSITY: 1
 gymongonasium.mongo_TIME: 33
 gymongonasium.mongo_SLEEP: 5

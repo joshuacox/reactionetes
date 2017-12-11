@@ -34,7 +34,6 @@ $(eval KUBECONFIG := $(HOME)/.kube/config)
 $(eval MY_KUBE_VERSION := v1.8.0)
 # Gymongonasium settings
 $(eval gymongonasium.mongo_db := gymongonasium)
-$(eval gymongonasium.mongo_port := 27017)
 $(eval gymongonasium.mongo_TIME := 33)
 $(eval gymongonasium.mongo_SLEEP := 5)
 $(eval gymongonasium.mongo_TABLES := 1)
@@ -43,11 +42,28 @@ $(eval gymongonasium.mongo_TABLE_SIZE := 10000)
 $(eval gymongonasium.mongo_RANGE_SIZE := 100)
 $(eval gymongonasium.mongo_SUM_RANGES := 1)
 
+$(eval MONGO_URL := $(shell bash mongo_url $(MONGO_REPLICAS)))
+
 install:
 	helm install --name $(REACTIONCOMMERCE_NAME) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbName=$(MONGO_DB_NAME) \
 		--set mongodbPort=$(MONGO_PORT) \
+		--set replicaCount=$(REACTION_REPLICAS) \
+		--set image.tag=$(REACTIONCOMMERCE_TAG) \
+    --set mongodbReplicaSet=$(MONGO_REPLICASET) \
+		--set image.repository=$(REACTIONCOMMERCE_REPO) \
+		--set reactioncommerceClusterDomain=$(REACTIONCOMMERCE_CLUSTER_DOMAIN) \
+		./reactioncommerce
+	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
+	@sh ./w8s/CrashLoopBackOff.w8
+
+urlinstall:
+	helm install --name $(REACTIONCOMMERCE_NAME) \
+		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
+		--set mongodbName=$(MONGO_DB_NAME) \
+		--set mongodbPort=$(MONGO_PORT) \
+		--set mongodbUrl=$(MONGO_URL) \
 		--set replicaCount=$(REACTION_REPLICAS) \
 		--set image.tag=$(REACTIONCOMMERCE_TAG) \
     --set mongodbReplicaSet=$(MONGO_REPLICASET) \
@@ -89,6 +105,7 @@ apiinstall:
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbName=$(MONGO_DB_NAME) \
 		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
+		--set mongodbPort=$(MONGO_PORT) \
 		--set reactiondbName=$(REACTIONETES_NAME) \
 		./reaction-api-base
 
@@ -96,8 +113,8 @@ gyminstall:
 	helm install --name $(MONGO_RELEASE_NAME)-gymongonasium \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
+		--set mongodbPort=$(MONGO_PORT) \
 		--set gymongonasium.mongo_db=$(gymongonasium.mongo_db) \
-		--set gymongonasium.mongo_port=$(gymongonasium.mongo_port) \
 		--set gymongonasium.mongo_TIME=$(gymongonasium.mongo_TIME) \
 		--set gymongonasium.mongo_SLEEP=$(gymongonasium.mongo_SLEEP) \
 		--set gymongonasium.mongo_TABLES=$(gymongonasium.mongo_TABLES) \
