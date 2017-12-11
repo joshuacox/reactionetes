@@ -16,8 +16,8 @@ install:
 	$(eval REPLICAS := 1)
 	$(eval MONGO_REPLICAS := 3)
 	helm install --name $(REACTIONETES_NAME) \
-	  --set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
-	  --set mongodbName=$(MONGO_DB_NAME) \
+		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
+		--set mongodbName=$(MONGO_DB_NAME) \
 		--set replicaCount=$(REPLICAS) \
 		--set mongoReplicaCount=$(MONGO_REPLICAS) \
 		--set image.tag=$(REACTIONETES_TAG) \
@@ -78,10 +78,10 @@ apiinstall:
 	$(eval REACTIONETES_NAME := raucous-reactionetes)
 	$(eval REACTION_API_NAME := grape-ape-api)
 	helm install --name $(REACTION_API_NAME) \
-	  --set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
-	  --set mongodbName=$(MONGO_DB_NAME) \
-    --set mongodbReplicaSet=$(MONGO_REPLICASET) \
-	  --set reactiondbName=$(REACTIONETES_NAME) \
+		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
+		--set mongodbName=$(MONGO_DB_NAME) \
+		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
+		--set reactiondbName=$(REACTIONETES_NAME) \
 		./reaction-api-base
 
 gyminstall:
@@ -97,17 +97,17 @@ gyminstall:
 	$(eval gymongonasium.mongo_RANGE_SIZE := 100)
 	$(eval gymongonasium.mongo_SUM_RANGES := 1)
 	helm install --name $(MONGO_RELEASE_NAME)-gymongonasium \
-	  --set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
-    --set mongodbReplicaSet=$(MONGO_REPLICASET) \
-    --set gymongonasium.mongo_db=$(gymongonasium.mongo_db) \
-    --set gymongonasium.mongo_port=$(gymongonasium.mongo_port) \
-    --set gymongonasium.mongo_TIME=$(gymongonasium.mongo_TIME) \
-    --set gymongonasium.mongo_SLEEP=$(gymongonasium.mongo_SLEEP) \
-    --set gymongonasium.mongo_TABLES=$(gymongonasium.mongo_TABLES) \
-    --set gymongonasium.mongo_THREADS=$(gymongonasium.mongo_THREADS) \
-    --set gymongonasium.mongo_TABLE_SIZE=$(gymongonasium.mongo_TABLE_SIZE) \
-    --set gymongonasium.mongo_RANGE_SIZE=$(gymongonasium.mongo_RANGE_SIZE) \
-    --set gymongonasium.mongo_SUM_RANGES=$(gymongonasium.mongo_SUM_RANGES) \
+		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
+		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
+		--set gymongonasium.mongo_db=$(gymongonasium.mongo_db) \
+		--set gymongonasium.mongo_port=$(gymongonasium.mongo_port) \
+		--set gymongonasium.mongo_TIME=$(gymongonasium.mongo_TIME) \
+		--set gymongonasium.mongo_SLEEP=$(gymongonasium.mongo_SLEEP) \
+		--set gymongonasium.mongo_TABLES=$(gymongonasium.mongo_TABLES) \
+		--set gymongonasium.mongo_THREADS=$(gymongonasium.mongo_THREADS) \
+		--set gymongonasium.mongo_TABLE_SIZE=$(gymongonasium.mongo_TABLE_SIZE) \
+		--set gymongonasium.mongo_RANGE_SIZE=$(gymongonasium.mongo_RANGE_SIZE) \
+		--set gymongonasium.mongo_SUM_RANGES=$(gymongonasium.mongo_SUM_RANGES) \
 		./gymongonasium
 
 linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl /usr/local/bin/helm
@@ -171,7 +171,7 @@ installhelm:
 	cd $(TMP) \
 	&& curl -LO https://storage.googleapis.com/kubernetes-release/release/$(MY_KUBE_VERSION)/bin/linux/amd64/kubectl \
 	&& chmod +x kubectl \
- 	&& sudo mv -v kubectl /usr/local/bin/
+	&& sudo mv -v kubectl /usr/local/bin/
 	rmdir $(TMP)
 
 macminikube:
