@@ -203,6 +203,8 @@ hardclean: clean
 	rm /usr/local/bin/minikube
 	rm /usr/local/bin/kubectl
 	rm /usr/local/bin/helm
+	rm -Rf ~/.minikkube
+	rm -Rf /etc/kubernetes/*
 
 delete:
 	helm delete --purge $(REACTIONCOMMERCE_NAME)
