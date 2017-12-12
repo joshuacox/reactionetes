@@ -27,4 +27,20 @@ curl -L https://git.io/reactionetes | bash
 
 ## [Full Docs](./docs/README.md)
 
-[here](./docs/README.md)
+Main page [here](./docs/README.md)
+
+#### [autopilot](./docs/autopilot.md)
+
+#### [envvars](./docs/envvars.md)
+
+#### [manualinstall](./docs/manualinstall.md)
+
+#### [values](./docs/values.md)
+
+#### [scaling](./docs/scaling.md)
+
+#### [debug](./docs/debug.md)
+
+#### [branches](./docs/branches.md)
+
+#### [notes](./docs/notes.md)
