@@ -244,7 +244,9 @@ dnstest: dobusybox
 	kubectl exec -ti busybox -- nslookup $(MONGO_RELEASE_NAME)-mongodb-replicaset
 	kubectl exec -ti busybox -- nslookup $(REACTIONCOMMERCE_NAME)-reactioncommerce
 
-ci: autopilot
+ci: autopilot extended_tests
+
+extended_tests:
 	kubectl get ep
 	make -e dnstest
 	./w8s/webpage.w8 $(REACTIONCOMMERCE_NAME)
