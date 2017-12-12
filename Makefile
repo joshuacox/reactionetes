@@ -195,7 +195,11 @@ windowskubectl:
 
 clean:
 	-minikube delete
-	-@rm .minikube.made
+	-@rm -f .minikube.made
+	-@rm -f .reactioncommerce.rn
+	-@rm -f .mongo-replicaset.rn
+	-@rm -f .gymongonasium.rn
+	-@rm -f .reaction-api-base.rn
 
 d: delete
 
@@ -208,12 +212,17 @@ hardclean: clean
 
 delete:
 	helm delete --purge $(REACTIONCOMMERCE_NAME)
+	-@rm -f .reactioncommerce.rn
 
 fulldelete:
 	helm delete --purge $(REACTION_API_NAME)
+	-@rm -f .reaction-api-base.rn
 	helm delete --purge $(MONGO_RELEASE_NAME)-gymongonasium
+	-@rm -f .gymongonasium.rn
 	helm delete --purge $(REACTIONCOMMERCE_NAME)
+	-@rm -f .reactioncommerce.rn
 	helm delete --purge $(MONGO_RELEASE_NAME)
+	-@rm -f .mongo-replicaset.rn
 
 timeme:
 	/usr/bin/time -v ./bootstrap
