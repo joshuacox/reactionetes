@@ -8,7 +8,7 @@ $(eval MONGO_REPLICASET := rs0)
 $(eval MONGO_PORT := 27017)
 $(eval MONGO_REPLICAS := 3)
 $(eval MONGONETES_INSTALL_REPO := gcr.io/google_containers/mongodb-install)
-$(eval MONGONETES_INSTALL_TAG := 0.3)
+$(eval MONGONETES_INSTALL_TAG := 0.5)
 $(eval MONGONETES_REPO := mongo)
 $(eval MONGONETES_TAG := 3.4)
 $(eval MONGO_PERSISTENCE := false)
@@ -49,6 +49,7 @@ install:
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbName=$(MONGO_DB_NAME) \
 		--set mongodbPort=$(MONGO_PORT) \
+		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
 		--set replicaCount=$(REACTION_REPLICAS) \
 		--set image.tag=$(REACTIONCOMMERCE_TAG) \
 		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
