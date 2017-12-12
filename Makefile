@@ -130,9 +130,9 @@ debug:
 autopilot: reqs .minikube.made
 	@echo 'Autopilot engaged'
 	$(MAKE) -e mongo-replicaset-install
-	$(MAKE) -e apiinstall
-	$(MAKE) -e gyminstall
 	$(MAKE) -e install
+	$(MAKE) -e apiinstall
+	#$(MAKE) -e gyminstall
 
 .minikube.made:
 	minikube \
