@@ -206,8 +206,6 @@ hardclean: clean
 	rm -Rf /etc/kubernetes/*
 
 delete:
-	helm delete --purge $(REACTION_API_NAME)
-	helm delete --purge $(MONGO_RELEASE_NAME)-gymongonasium
 	helm delete --purge $(REACTIONCOMMERCE_NAME)
 
 fulldelete:
