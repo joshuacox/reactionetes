@@ -58,21 +58,6 @@ install:
 	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
 	@sh ./w8s/CrashLoopBackOff.w8
 
-urlinstall:
-	helm install --name $(REACTIONCOMMERCE_NAME) \
-		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
-		--set mongodbName=$(MONGO_DB_NAME) \
-		--set mongodbPort=$(MONGO_PORT) \
-		--set mongodbUrl=$(MONGO_URL) \
-		--set replicaCount=$(REACTION_REPLICAS) \
-		--set image.tag=$(REACTIONCOMMERCE_TAG) \
-    --set mongodbReplicaSet=$(MONGO_REPLICASET) \
-		--set image.repository=$(REACTIONCOMMERCE_REPO) \
-		--set reactioncommerceClusterDomain=$(REACTIONCOMMERCE_CLUSTER_DOMAIN) \
-		./reactioncommerce
-	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
-	@sh ./w8s/CrashLoopBackOff.w8
-
 mongo-replicaset-install:
 	helm install --name $(MONGO_RELEASE_NAME) \
 		--set persistentVolume.enabled=$(MONGO_PERSISTENCE) \
@@ -111,7 +96,7 @@ apiinstall:
 		--set mongodbName=$(MONGO_DB_NAME) \
 		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
 		--set mongodbPort=$(MONGO_PORT) \
-		--set reactiondbName=$(REACTIONETES_NAME) \
+		--set reactiondbName=$(REACTIONCOMMERCE_NAME) \
 		./reaction-api-base
 
 gyminstall:
@@ -220,7 +205,7 @@ hardclean: clean
 	rm /usr/local/bin/helm
 
 delete:
-	helm delete --purge $(REACTIONETES_NAME)
+	helm delete --purge $(REACTIONCOMMERCE_NAME)
 	helm delete --purge $(MONGO_RELEASE_NAME)
 
 timeme:
@@ -241,12 +226,12 @@ dobusybox:
 
 dnstest: dobusybox
 	kubectl exec -ti busybox -- nslookup $(MONGO_RELEASE_NAME)-mongodb-replicaset
-	kubectl exec -ti busybox -- nslookup $(REACTIONETES_NAME)-reactioncommerce
+	kubectl exec -ti busybox -- nslookup $(REACTIONCOMMERCE_NAME)-reactioncommerce
 
 ci: autopilot
 	kubectl get ep
 	make -e dnstest
-	./w8s/webpage.w8 $(REACTIONETES_NAME)
+	./w8s/webpage.w8 $(REACTIONCOMMERCE_NAME)
 	kubectl get all
 	kubectl get ep
 	-@ echo 'Memory consumption of all that:'
