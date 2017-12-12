@@ -51,14 +51,16 @@ install:
 		--set mongodbPort=$(MONGO_PORT) \
 		--set replicaCount=$(REACTION_REPLICAS) \
 		--set image.tag=$(REACTIONCOMMERCE_TAG) \
-    --set mongodbReplicaSet=$(MONGO_REPLICASET) \
+		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
 		--set image.repository=$(REACTIONCOMMERCE_REPO) \
 		--set reactioncommerceClusterDomain=$(REACTIONCOMMERCE_CLUSTER_DOMAIN) \
 		./reactioncommerce
 	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
 	@sh ./w8s/CrashLoopBackOff.w8
 
-mongo-replicaset-install:
+mongo-replicaset-install: full-mongo-replicaset-install
+
+mini-mongo-replicaset-install:
 	helm install --name $(MONGO_RELEASE_NAME) \
 		--set persistentVolume.enabled=$(MONGO_PERSISTENCE) \
 		stable/mongodb-replicaset
