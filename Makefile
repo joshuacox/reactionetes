@@ -44,7 +44,7 @@ $(eval GYMONGO_SUM_RANGES := 1)
 
 $(eval MONGO_URL := $(shell bash mongo_url $(MONGO_REPLICAS)))
 
-install:
+.reactioncommerce.rn:
 	helm install --name $(REACTIONCOMMERCE_NAME) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbName=$(MONGO_DB_NAME) \
@@ -56,10 +56,12 @@ install:
 		--set image.repository=$(REACTIONCOMMERCE_REPO) \
 		--set reactioncommerceClusterDomain=$(REACTIONCOMMERCE_CLUSTER_DOMAIN) \
 		./reactioncommerce
+	@echo $(REACTIONCOMMERCE_NAME) > .reactioncommerce.rn
 	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
 	@sh ./w8s/CrashLoopBackOff.w8
 
-mongo-replicaset-install: full-mongo-replicaset-install
+.mongo-replicaset.rn: full-.mongo-replicaset.rn
+	-@echo $(MONGO_RELEASE_NAME) > .mongo-replicaset.rn
 
 mini-mongo-replicaset-install:
 	helm install --name $(MONGO_RELEASE_NAME) \
@@ -93,7 +95,7 @@ full-mongo-replicaset-install:
 		stable/mongodb-replicaset
 	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
 
-apiinstall:
+.reaction-api-base.rn:
 	helm install --name $(REACTION_API_NAME) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbName=$(MONGO_DB_NAME) \
@@ -101,8 +103,9 @@ apiinstall:
 		--set mongodbPort=$(MONGO_PORT) \
 		--set reactiondbName=$(REACTIONCOMMERCE_NAME) \
 		./reaction-api-base
+	@echo $(REACTION_API_NAME) > .reaction-api-base.rn
 
-gyminstall:
+.gymongonasium.rn:
 	helm install --name $(MONGO_RELEASE_NAME)-gymongonasium \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
@@ -115,6 +118,7 @@ gyminstall:
 		--set mongodbTABLE_SIZE=$(GYMONGO_TABLE_SIZE) \
 		--set mongodbSUM_RANGES=$(GYMONGO_SUM_RANGES) \
 		./gymongonasium
+	-@echo $(MONGO_RELEASE_NAME)-gymongonasium > .gymongonasium.rn
 
 linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl /usr/local/bin/helm
 
@@ -132,12 +136,12 @@ debug:
 
 autopilot: reqs .minikube.made
 	@echo 'Autopilot engaged'
-	$(MAKE) -e mongo-replicaset-install
-	$(MAKE) -e install
+	$(MAKE) -e .mongo-replicaset.rn
+	$(MAKE) -e .reactioncommerce.rm
 
 extras:
-	$(MAKE) -e apiinstall
-	$(MAKE) -e gyminstall
+	$(MAKE) -e .reaction-api-base.rn
+	$(MAKE) -e .gymongonasium.rn
 
 .minikube.made:
 	minikube \
