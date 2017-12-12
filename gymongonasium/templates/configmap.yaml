@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-gymongonasium-config
 data:
-  mongodbhost: {{ .Values.mongodbReleaseName }}-mongodb-replicaset
+  mongodbhost: {{ .Values.mongodbReleaseName }}-mongodb-replicaset-0.{{ .Values.mongodbReleaseName }}-mongodb-replicaset
   mongodbport: {{ .Values.mongodbPort | quote }}
   mongodbdb: {{ .Values.mongodbName | quote }}
   mongodbVERBOSITY: {{ .Values.mongodbVERBOSITY | quote }}
