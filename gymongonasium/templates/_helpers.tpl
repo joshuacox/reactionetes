@@ -20,9 +20,9 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- range $mongocount, $e := until (.Values.mongodbReplicaCount|int) -}}
     {{- printf "%s-mongodb-replicaset-%d." $.Values.mongodbReleaseName $mongocount -}}
     {{- printf "%s-mongodb-replicaset:%d" $.Values.mongodbReleaseName ($.Values.mongodbPort|int) -}}
-    {{- if lt $mongocount  ( sub $.Values.mongodbReplicantCount 1 ) -}}
+    {{- if lt $mongocount  ( sub ($.Values.mongodbReplicaCount|int) 1 ) -}}
       {{- printf "," -}}
     {{- end -}}
-    {{- printf "/%s?replicaSet=%s" $.Values.mongodbName  $.Values.mongodbReplicaSet -}}
   {{- end -}}
+  {{- printf "/%s?replicaSet=%s" $.Values.mongodbName  $.Values.mongodbReplicaSet -}}
 {{- end -}}
