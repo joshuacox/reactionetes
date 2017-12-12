@@ -60,16 +60,7 @@ $(eval MONGO_URL := $(shell bash mongo_url $(MONGO_REPLICAS)))
 	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
 	@sh ./w8s/CrashLoopBackOff.w8
 
-.mongo-replicaset.rn: full-.mongo-replicaset.rn
-	-@echo $(MONGO_RELEASE_NAME) > .mongo-replicaset.rn
-
-mini-mongo-replicaset-install:
-	helm install --name $(MONGO_RELEASE_NAME) \
-		--set persistentVolume.enabled=$(MONGO_PERSISTENCE) \
-		stable/mongodb-replicaset
-	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
-
-full-mongo-replicaset-install:
+.mongo-replicaset.rn:
 	helm install --name $(MONGO_RELEASE_NAME) \
 		--set replicaSet=$(MONGO_REPLICASET) \
 		--set replicas=$(MONGO_REPLICAS) \
@@ -93,6 +84,7 @@ full-mongo-replicaset-install:
 		--set auth.adminPassword=$(MONGO_AUTH_ADMIN_PASSWORD) \
 		--set auth.existingAdminSecret=$(MONGO_AUTH_EXISTING_ADMIN_SECRET) \
 		stable/mongodb-replicaset
+	@echo $(MONGO_RELEASE_NAME) > .mongo-replicaset.rn
 	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
 
 .reaction-api-base.rn:
