@@ -11,7 +11,6 @@ $(eval MONGONETES_INSTALL_REPO := gcr.io/google_containers/mongodb-install)
 $(eval MONGONETES_INSTALL_TAG := 0.3)
 $(eval MONGONETES_REPO := mongo)
 $(eval MONGONETES_TAG := 3.4)
-$(eval MONGONETES_CLUSTER_DOMAIN := cluster.local)
 $(eval MONGO_PERSISTENCE := false)
 $(eval MONGO_TLS := false)
 $(eval MONGO_AUTH := false)
@@ -32,15 +31,16 @@ $(eval MINIKUBE_WANTREPORTERRORPROMPT := false)
 $(eval CHANGE_MINIKUBE_NONE_USER := true)
 $(eval KUBECONFIG := $(HOME)/.kube/config)
 $(eval MY_KUBE_VERSION := v1.8.0)
+$(eval MINIKUBE_CLUSTER_DOMAIN := cluster.local)
 # Gymongonasium settings
-$(eval gymongonasium.mongo_db := gymongonasium)
-$(eval gymongonasium.mongo_TIME := 33)
-$(eval gymongonasium.mongo_SLEEP := 5)
-$(eval gymongonasium.mongo_TABLES := 1)
-$(eval gymongonasium.mongo_THREADS := 10)
-$(eval gymongonasium.mongo_TABLE_SIZE := 10000)
-$(eval gymongonasium.mongo_RANGE_SIZE := 100)
-$(eval gymongonasium.mongo_SUM_RANGES := 1)
+$(eval GYMONGO_DB_NAME := gymongonasium)
+$(eval GYMONGO_TIME := 33)
+$(eval GYMONGO_SLEEP := 5)
+$(eval GYMONGO_TABLES := 1)
+$(eval GYMONGO_THREADS := 10)
+$(eval GYMONGO_TABLE_SIZE := 10000)
+$(eval GYMONGO_RANGE_SIZE := 100)
+$(eval GYMONGO_SUM_RANGES := 1)
 
 $(eval MONGO_URL := $(shell bash mongo_url $(MONGO_REPLICAS)))
 
@@ -104,14 +104,13 @@ gyminstall:
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
 		--set mongodbPort=$(MONGO_PORT) \
-		--set gymongonasium.mongo_db=$(gymongonasium.mongo_db) \
-		--set gymongonasium.mongo_TIME=$(gymongonasium.mongo_TIME) \
-		--set gymongonasium.mongo_SLEEP=$(gymongonasium.mongo_SLEEP) \
-		--set gymongonasium.mongo_TABLES=$(gymongonasium.mongo_TABLES) \
-		--set gymongonasium.mongo_THREADS=$(gymongonasium.mongo_THREADS) \
-		--set gymongonasium.mongo_TABLE_SIZE=$(gymongonasium.mongo_TABLE_SIZE) \
-		--set gymongonasium.mongo_RANGE_SIZE=$(gymongonasium.mongo_RANGE_SIZE) \
-		--set gymongonasium.mongo_SUM_RANGES=$(gymongonasium.mongo_SUM_RANGES) \
+		--set mongodbName=$(GYMONGO_DB_NAME) \
+		--set mongodbTIME=$(GYMONGO_TIME) \
+		--set mongodbSLEEP=$(GYMONGO_SLEEP) \
+		--set mongodbTABLES=$(GYMONGO_TABLES) \
+		--set mongodbTHREADS=$(GYMONGO_THREADS) \
+		--set mongodbTABLE_SIZE=$(GYMONGO_TABLE_SIZE) \
+		--set mongodbSUM_RANGES=$(GYMONGO_SUM_RANGES) \
 		./gymongonasium
 
 linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl /usr/local/bin/helm
@@ -138,7 +137,7 @@ autopilot: reqs .minikube.made
 .minikube.made:
 	minikube \
 		--kubernetes-version $(MY_KUBE_VERSION) \
-		--dns-domain $(REACTIONETES_CLUSTER_DOMAIN) \
+		--dns-domain $(MINIKUBE_CLUSTER_DOMAIN) \
 		--memory $(MINIKUBE_MEMORY) \
 		--cpus $(MINIKUBE_CPU) \
 		$(MINIKUBE_OPTS) \

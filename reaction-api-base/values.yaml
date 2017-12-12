@@ -36,6 +36,7 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+mongodbReplicaCount: 3
 mongodbReleaseName: 'massive-mongonetes'
 mongodbName: 'reactionetesdb'
 mongodbReplicaSet: 'rs0'

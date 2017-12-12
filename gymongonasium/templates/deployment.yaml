@@ -26,62 +26,62 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_url
+                  key: mongodburl
             - name: GYMONGODB_DB
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_db
+                  key: mongodbdb
             - name: GYMONGODB_HOST
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_host
+                  key: mongodbhost
             - name: GYMONGODB_PORT
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_port
+                  key: mongodbport
             - name: VERBOSITY
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_VERBOSITY
+                  key: mongodbVERBOSITY
             - name: TIME
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_TIME
+                  key: mongodbTIME
             - name: SLEEP
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_SLEEP
+                  key: mongodbSLEEP
             - name: TABLES
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_TABLES
+                  key: mongodbTABLES
             - name: TABLE_SIZE
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_TABLE_SIZE
+                  key: mongodbTABLE_SIZE
             - name: RANGE_SIZE
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_RANGE_SIZE
+                  key: mongodbRANGE_SIZE
             - name: THREADS
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_THREADS
+                  key: mongodbTHREADS
             - name: SUM_RANGES
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-gymongonasium-config
-                  key: gymongonasium.mongo_SUM_RANGES
+                  key: mongodbSUM_RANGES
           livenessProbe:
             httpGet:
               path: /
