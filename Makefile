@@ -133,8 +133,10 @@ autopilot: reqs .minikube.made
 	@echo 'Autopilot engaged'
 	$(MAKE) -e mongo-replicaset-install
 	$(MAKE) -e install
+
+extras:
 	$(MAKE) -e apiinstall
-	#$(MAKE) -e gyminstall
+	$(MAKE) -e gyminstall
 
 .minikube.made:
 	minikube \
@@ -244,4 +246,3 @@ ci: autopilot
 	kubectl get ep
 	-@ echo 'Memory consumption of all that:'
 	free -m
-	@sh ./w8s/CrashLoopBackOff.w8

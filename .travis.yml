@@ -7,10 +7,10 @@ matrix:
       - docker
       env:
         - MINIKUBE_OPTS=--vm-driver=none
-        - REACTIONETES_NAME=travisci-build-test
+        - REACTIONCOMMERCE_NAME=travisci-build-test
         - MONGO_RELEASE_NAME=travisci-mongodb-test
-        - REACTIONETES_REPO=reactioncommerce/reaction
-        - REACTIONETES_TAG=latest
+        - REACTIONCOMMERCE_REPO=reactioncommerce/reaction
+        - REACTIONCOMMERCE_TAG=latest
         - REPLICAS=1
         - MONGO_REPLICAS=3
 # Possible os x support in the future
