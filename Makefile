@@ -129,7 +129,7 @@ debug:
 autopilot: reqs .minikube.made
 	@echo 'Autopilot engaged'
 	$(MAKE) -e .mongo-replicaset.rn
-	$(MAKE) -e .reactioncommerce.rm
+	$(MAKE) -e .reactioncommerce.rn
 
 extras:
 	$(MAKE) -e .reaction-api-base.rn
