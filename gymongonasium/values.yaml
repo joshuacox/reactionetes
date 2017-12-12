@@ -36,11 +36,10 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
-mongodbReleaseName: massive-mongonetes
-mongodbUrl: 'mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset-0:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-1:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-2:{{ .Values.mongodbPort }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }} '
-mongodbReplicaSet: rs0
+mongodbReleaseName: 'massive-mongonetes'
+mongodbName: 'gymongonasium'
+mongodbReplicaSet: 'rs0'
 mongodbPort: 27017
-gymongonasium.mongo_db: gymongonasium
 gymongonasium.mongo_VERBOSITY: 1
 gymongonasium.mongo_TIME: 33
 gymongonasium.mongo_SLEEP: 5

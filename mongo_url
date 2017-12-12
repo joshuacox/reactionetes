@@ -4,11 +4,8 @@
 # here's the line that stumped me
 # reaction.mongo_url_big: mongodb://{{ for $mongocount := 0; $mongocount < {{ .Values.mongodbReplicantCount }}; $mongocount++ }}{{ .Values.mongodbReleaseName }}-mongodb-replicaset-{{ $mongocount }}:{{ .Values.mongodbPort }}{{ if $mongocount < {{ .Values.mongodbReplicantCount }} - 1 }},{{ end }}{{ end }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}
 
-# some other errant lines
-#  reaction.mongo_url_no_primary: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }},useMongoClient=true,connectWithNoPrimary=true
-#  reaction.mongo_url_with_primary: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}
-#  reaction.mongo_oplog_url: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset/{{ .Values.mongodbName }}-oplog?replicaSet={{ .Values.mongodbReplicaSet }}
-#  reaction.mongo_url_big: mongodb://{{ for $mongocount := 0; $mongocount < {{ .Values.mongodbReplicantCount }}; $mongocount++ }}{{ .Values.mongodbReleaseName }}-mongodb-replicaset-{{ $mongocount }}:{{ .Values.mongodbPort }}{{ if $mongocount < {{ .Values.mongodbReplicantCount }} - 1 }},{{ end }}{{ end }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}
+# range instead
+# reaction.mongo_url_big: mongodb://{{- range $mongocount, $e := until (.Values.mongodbReplicaCount|int) }}{{- printf "%s-mongodb-replicaset-%d:%d" .Values.mongodbReleaseName $mongocount .Values.mongodbPort }}{{ if $mongocount < {{ .Values.mongodbReplicantCount }} - 1 }}{{- printf ","}}{{ end }}{{- printf "/%s?replicaSet=%s" .Values.mongodbName  .Values.mongodbReplicaSet }}{{- end -}}
 
 # Now let's just do it in bash
 MONGO_DB_COUNT=$1

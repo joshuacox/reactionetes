@@ -3,10 +3,10 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-gymongonasium-config
 data:
-  gymongonasium.mongo_url: mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset-0:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-1:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-2:{{ .Values.mongodbPort }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}
-  gymongonasium.mongo_host: {{ .Values.mongodbReleaseName }}-mongodb
+  gymongonasium.mongo_url: {{ template "mongodb_replicaset_url" . }}
+  gymongonasium.mongo_host: {{ .Values.mongodbReleaseName }}-mongodb-replicaset
   gymongonasium.mongo_port: {{ .Values.mongodbPort }}
-  gymongonasium.mongo_db: {{ .Values.mongodb_db }}
+  gymongonasium.mongo_db: {{ .Values.mongodbName }}
   gymongonasium.mongo_VERBOSITY: {{ .Values.mongodbVERBOSITY }}
   gymongonasium.mongo_TIME: {{ .Values.mongodbTIME }}
   gymongonasium.mongo_SLEEP: {{ .Values.mongodbSLEEP }}
