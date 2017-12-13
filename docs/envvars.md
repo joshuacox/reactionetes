@@ -8,6 +8,7 @@ export MINIKUBE_CPU=24
 export MINIKUBE_MEMORY=49480
 export MINIKUBE_OPTS=--vm-driver=virtualbox
 export REACTIONCOMMERCE_NAME=my-release-name
+export MONGO_RELEASE_NAME=massive-mongonetes
 export REACTIONCOMMERCE_REPO=reactioncommerce/reaction
 export REACTIONCOMMERCE_TAG=latest
 export REPLICAS=33

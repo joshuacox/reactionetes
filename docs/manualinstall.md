@@ -30,16 +30,17 @@ can simplify installation
 ### [helm Install](https://docs.helm.sh/helm/#helm-install)
 
 the helm  [Install](https://docs.helm.sh/helm/#helm-install) command can
-be used like this:
+be used like this, you will probably want to set the release name of
+your running mongo cluster inside of k8s:
 
 ```
-helm install ./reactioncommerce
+helm install --set mongodbReleaseName=massive-mongonetes ./reactioncommerce
 ```
 
 or you can name the release
 
 ```
-helm install --name my-release-name ./reactioncommerce
+helm install --name my-release-name --set mongodbReleaseName=massive-mongonetes ./reactioncommerce
 ```
 
 Or using the `--set` option to set some of the values:
@@ -47,6 +48,7 @@ Or using the `--set` option to set some of the values:
 ```
 helm install \
   --name my-release-name \
+	--set mongodbReleaseName=massive-mongonetes \
   --set replicaCount=1 \
   --set mongoReplicaCount=10 \
   --set image.repository=joshuacox/mycustom \
