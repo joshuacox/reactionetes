@@ -46,6 +46,7 @@ $(eval GYMONGO_SUM_RANGES := 1)
 $(eval GYMONGO_RANGE_SIZE := 100)
 $(eval GYMONGO_TABLE_SIZE := 10000)
 
+default: .reactioncommerce.rn
 
 .reactioncommerce.rn:
 	helm install --name $(REACTIONCOMMERCE_NAME) \

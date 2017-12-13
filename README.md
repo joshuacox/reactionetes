@@ -31,7 +31,8 @@ curl -L https://git.io/reactionetes | bash
 Same but export a bunch of env vars beforehand
 
 Warning! Of note the 'none' driver will throw a warning, and should only be used
-on a VM that is for testing only.
+on a VM that is for testing only. By default it uses the virtualbox
+driver, there is also the kvm and kvm2 drivers.
 
 ```
 export MINIKUBE_CPU=4
@@ -48,7 +49,7 @@ curl -L https://git.io/reactionetes | bash
 
 ## Make
 
- Or using the makefile
+ Or using the makefile:
 
 ```
 REACTIONCOMMERCE_REPO=reactioncommerce/reaction \
@@ -59,7 +60,7 @@ MINIKUBE_MEMORY=60180 \
 MINIKUBE_CPU=32 \
 REACTION_REPLICAS=33 \
 MONGO_REPLICAS=225 \
-make -e
+make -e autopilot
 ```
 
 ## [Full Docs](./docs/README.md)
