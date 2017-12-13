@@ -16,10 +16,10 @@ helm install --name my-release-name --set replicaCount=30 --set mongoReplicaCoun
 or even as environment variables before calling make:
 
 ```
-REACTIONETES_REPO=reactioncommerce/reaction \
+REACTIONCOMMERCE_REPO=reactioncommerce/reaction \
 MONGO_RELEASE_NAME=massive-mongonetes \
-REACTIONETES_NAME=my-release-name \
-REACTIONETES_TAG=latest \
+REACTIONCOMMERCE_NAME=my-release-name \
+REACTIONCOMMERCE_TAG=latest \
 MINIKUBE_MEMORY=60180 \
 MINIKUBE_CPU=32 \
 REACTION_REPLICAS=33 \

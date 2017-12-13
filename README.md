@@ -26,6 +26,42 @@ The oneliner:
 curl -L https://git.io/reactionetes | bash
 ```
 
+## Exports
+
+Same but export a bunch of env vars beforehand
+
+Warning! Of note the 'none' driver will throw a warning, and should only be used
+on a VM that is for testing only.
+
+```
+export MINIKUBE_CPU=4
+export MINIKUBE_MEMORY=4096
+export MINIKUBE_OPTS=--vm-driver=none
+export REACTIONCOMMERCE_NAME=my-release-name
+export MONGO_RELEASE_NAME=massive-mongonetes
+export REACTIONCOMMERCE_REPO=reactioncommerce/reaction
+export REACTIONCOMMERCE_TAG=latest
+export REACTION_REPLICAS=3
+export MONGO_REPLICAS=11
+curl -L https://git.io/reactionetes | bash
+```
+
+## Make
+
+ Or using the makefile
+
+```
+REACTIONCOMMERCE_REPO=reactioncommerce/reaction \
+MONGO_RELEASE_NAME=massive-mongonetes \
+REACTIONCOMMERCE_NAME=my-release-name \
+REACTIONCOMMERCE_TAG=latest \
+MINIKUBE_MEMORY=60180 \
+MINIKUBE_CPU=32 \
+REACTION_REPLICAS=33 \
+MONGO_REPLICAS=225 \
+make -e
+```
+
 ## [Full Docs](./docs/README.md)
 
 Main page [here](./docs/README.md)
