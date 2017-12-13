@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-gymongonasium-config
+data:
+  mongodbhost: {{ .Values.mongodbReleaseName }}-mongodb-replicaset-0.{{ .Values.mongodbReleaseName }}-mongodb-replicaset
+  mongodbport: {{ .Values.mongodbPort | quote }}
+  mongodbdb: {{ .Values.mongodbName | quote }}
+  mongodbVERBOSITY: {{ .Values.mongodbVERBOSITY | quote }}
+  mongodbTIME: {{ .Values.mongodbTIME | quote }}
+  mongodbSLEEP: {{ .Values.mongodbSLEEP | quote  }}
+  mongodbTABLES: {{ .Values.mongodbTABLES | quote }}
+  mongodbTHREADS: {{ .Values.mongodbTHREADS | quote }}
+  mongodbTABLE_SIZE: {{ .Values.mongodbTABLE_SIZE | quote }}
+  mongodbRANGE_SIZE: {{ .Values.mongodbRANGE_SIZE | quote }}
+  mongodbSUM_RANGES: {{ .Values.mongodbSUM_RANGES | quote}}
+  mongodburl: {{ template "mongodb_replicaset_url" . }}

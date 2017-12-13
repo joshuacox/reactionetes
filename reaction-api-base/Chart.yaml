@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for Kubernetes to run the reaction-api-base
+name: reaction-api-base
+version: 0.1.0

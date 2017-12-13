@@ -6,11 +6,15 @@ jobs:
     environment:
       CHANGE_MINIKUBE_NONE_USER: true
       MINIKUBE_OPTS: "--vm-driver=none"
-      REACTIONETES_NAME: "circleci-build-test"
-      REACTIONETES_REPO: "reactioncommerce/reaction"
-      REACTIONETES_TAG: "latest"
+      REACTIONCOMMERCE_NAME: "circleci-build-test"
+      MONGO_RELEASE_NAME: "circleci-mongodb-test"
+      REACTION_API_NAME: "grape-ape-api"
+      REACTIONCOMMERCE_REPO: "reactioncommerce/reaction"
+      REACTIONCOMMERCE_TAG: "latest"
       REPLICAS: 2
       MONGO_REPLICAS: 3
+      MINIKUBE_MEMORY: 7777
+      MINIKUBE_CPU: 4
     steps:
       - checkout
 

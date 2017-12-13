@@ -1,12 +1,12 @@
 {{- if .Values.ingress.enabled -}}
-{{- $serviceName := include "reactionetes.fullname" . -}}
+{{- $serviceName := include "reactioncommerce.fullname" . -}}
 {{- $servicePort := .Values.service.externalPort -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "reactionetes.fullname" . }}
+  name: {{ template "reactioncommerce.fullname" . }}
   labels:
-    app: {{ template "reactionetes.name" . }}
+    app: {{ template "reactioncommerce.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
