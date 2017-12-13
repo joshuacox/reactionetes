@@ -11,7 +11,7 @@ export REACTIONCOMMERCE_NAME=my-release-name
 export MONGO_RELEASE_NAME=massive-mongonetes
 export REACTIONCOMMERCE_REPO=reactioncommerce/reaction
 export REACTIONCOMMERCE_TAG=latest
-export REPLICAS=33
+export REACTION_REPLICAS=33
 export MONGO_REPLICAS=108
 curl -L https://git.io/reactionetes | bash
 ```
