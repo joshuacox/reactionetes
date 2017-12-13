@@ -1,11 +1,11 @@
 #!/bin/bash
-# This is here because for some reason there is no 'for' or 'while' loop in go templating and the range doesn't make sense when I just want to count to a variable
-
-# here's the line that stumped me
-# reaction.mongo_url_big: mongodb://{{ for $mongocount := 0; $mongocount < {{ .Values.mongodbReplicantCount }}; $mongocount++ }}{{ .Values.mongodbReleaseName }}-mongodb-replicaset-{{ $mongocount }}:{{ .Values.mongodbPort }}{{ if $mongocount < {{ .Values.mongodbReplicantCount }} - 1 }},{{ end }}{{ end }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }}
-
-# range instead
-# reaction.mongo_url_big: mongodb://{{- range $mongocount, $e := until (.Values.mongodbReplicaCount|int) }}{{- printf "%s-mongodb-replicaset-%d:%d" .Values.mongodbReleaseName $mongocount .Values.mongodbPort }}{{ if $mongocount < {{ .Values.mongodbReplicantCount }} - 1 }}{{- printf ","}}{{ end }}{{- printf "/%s?replicaSet=%s" .Values.mongodbName  .Values.mongodbReplicaSet }}{{- end -}}
+if [ $# -ne 1 ]; then
+  # Print usage
+  echo 'Error! wrong number of arguments'
+  echo 'usage:'
+  echo 'mongo_url number-of-replicants'
+  exit 1
+fi
 
 # Now let's just do it in bash
 MONGO_DB_COUNT=$1
@@ -22,6 +22,7 @@ while [ $countzero -lt $MONGO_DB_COUNT ]
 do
    echo -n '{{ .Values.mongodbReleaseName }}-mongodb-replicaset-'
    echo -n "$countzero"
+   echo -n '.{{ .Values.mongodbReleaseName }}-mongodb-replicaset'
    echo -n ':{{ .Values.mongodbPort }}'
    if (( $countzero < $COMMAFORE )); then
      echo -n ,

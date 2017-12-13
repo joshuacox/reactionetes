@@ -48,7 +48,7 @@ Or using the `--set` option to set some of the values:
 ```
 helm install \
   --name my-release-name \
-	--set mongodbReleaseName=massive-mongonetes \
+  --set mongodbReleaseName=massive-mongonetes \
   --set replicaCount=1 \
   --set mongoReplicaCount=10 \
   --set image.repository=joshuacox/mycustom \
