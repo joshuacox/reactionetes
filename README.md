@@ -11,6 +11,7 @@ Spin up a Kubernetes stack dedicated to Reaction Commerce PDQ
 ```
 helm install \
   --name my-release-name \
+	--set mongodbReleaseName=massive-mongonetes \
   --set replicaCount=1 \
   --set mongoReplicaCount=3 \
   --set image.repository=reactioncommerce/reaction \
