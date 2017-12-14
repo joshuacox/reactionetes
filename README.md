@@ -63,6 +63,10 @@ MONGO_REPLICAS=225 \
 make -e autopilot
 ```
 
+### Asciinema
+
+[![asciicast](https://asciinema.org/a/152704.png)](https://asciinema.org/a/152704)
+
 ## [Full Docs](./docs/README.md)
 
 Main page [here](./docs/README.md)

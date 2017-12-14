@@ -27,8 +27,8 @@ curl -L https://git.io/reactionetes | bash
 ```
 
 That merely performs the
-[autopilot](#autopilot)
-recipe using the [bootstrap](./bootstrap) file.
+[autopilot](./autopilot.md)
+recipe using the [bootstrap](../bootstrap) file.
 
 This script automagically attempts to determine your OS and tries to
 install the minikube and kubectl appropriate for your OS.
@@ -58,6 +58,10 @@ it may take some time depending mainly on your internet connection and
 how fast you can download all the necessary images.  The first time
 being the worst as you have to download kubectl and minikube, AND all
 the docker images to spin up kubernetes.
+
+### Asciinema
+
+[![asciicast](https://asciinema.org/a/152704.png)](https://asciinema.org/a/152704)
 
 ### Detailed Docs
 
