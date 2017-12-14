@@ -61,7 +61,7 @@ the docker images to spin up kubernetes.
 
 ### Asciinema
 
-[![asciicast](https://asciinema.org/a/152704.png)](https://asciinema.org/a/152704)
+[![asciicast](https://asciinema.org/a/qKtakcqwuUEgJTA9CBj4tRUxW.png)](https://asciinema.org/a/qKtakcqwuUEgJTA9CBj4tRUxW)
 
 ### Detailed Docs
 
