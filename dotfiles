@@ -1,0 +1,56 @@
+#!/bin/bash
+
+chkdir () {
+  if [ ! -w $1 ] ; then
+    sudo mkdir -p $1
+    sudo chown $USER. $1
+  fi
+  if [ ! -w $1 ] ; then
+    errror
+    echo "Cannot write to $1, please check your permissions"
+    exit 2
+  fi
+}
+
+# these vars are used by the following functions
+LINE_TO_ADD=''
+TARGET_FILE_FOR_ADD=~/.profile
+
+check_if_line_exists()
+{
+  echo "Checking for '$LINE_TO_ADD'  in $TARGET_FILE_FOR_ADD"
+  grep -qsFx "$LINE_TO_ADD" $TARGET_FILE_FOR_ADD
+}
+
+add_line_to()
+{
+  echo "Adding '$LINE_TO_ADD'  to $TARGET_FILE_FOR_ADD"
+  TARGET_FILE=$TARGET_FILE_FOR_ADD
+    [ -w "$TARGET_FILE" ] || TARGET_FILE=$TARGET_FILE_FOR_ADD
+    printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"
+}
+
+dotfiles_install () {
+  echo 'Adjusting dotfiles'
+  touch ~/.zshrc
+  touch ~/.bashrc
+  touch ~/.bash_profile
+  touch ~/.profile
+  LINE_TO_ADD='source ~/.bashrc &>/dev/null'
+  TARGET_FILE_FOR_ADD=~/.bash_profile
+  check_if_line_exists || add_line_to
+  LINE_TO_ADD="source ~/.profile"
+  TARGET_FILE_FOR_ADD=~/.zshrc
+  check_if_line_exists || add_line_to
+  TARGET_FILE_FOR_ADD=~/.bashrc
+  check_if_line_exists || add_line_to
+
+  # here we'll make a bin dir in $HOME and add it to path
+  chkdir $HOME/bin
+  LINE_TO_ADD='PATH="$HOME/bin:$PATH"'
+  TARGET_FILE_FOR_ADD=~/.profile
+  check_if_line_exists || add_line_to
+}
+
+dotfiles_install
+
