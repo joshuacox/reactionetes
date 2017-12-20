@@ -47,7 +47,7 @@ dotfiles_install () {
 
   # here we'll make a bin dir in $HOME and add it to path
   chkdir $HOME/bin
-  LINE_TO_ADD='export PATH=~/bin:$PATH'
+  LINE_TO_ADD='PATH="$HOME/bin:$PATH"'
   TARGET_FILE_FOR_ADD=~/.profile
   check_if_line_exists || add_line_to
 }
