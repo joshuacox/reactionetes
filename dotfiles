@@ -50,8 +50,7 @@ dotfiles_install () {
   LINE_TO_ADD='export PATH=~/bin:$PATH'
   TARGET_FILE_FOR_ADD=~/.profile
   check_if_line_exists || add_line_to
-
-  source ~/.bash_profile
 }
 
 dotfiles_install
+

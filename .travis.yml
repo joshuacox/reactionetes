@@ -39,7 +39,12 @@ script:
 # /bin/sh points to dash on trusty, which can cause some of the tests to fail
   - ls -alh `which sh`
 # switching to bash
+  - touch ~/.bashrc ~/.bash_profile ~/.zshrc ~/.profile
   - /usr/bin/time -v make -e run_dotfiles
+  - echo '# bashrc'; cat ~/.bashrc
+  - echo '# zshrc'; cat ~/.zshrc
+  - echo '# bash_profile'; cat ~/.bash_profile
+  - echo '# profile'; cat ~/.profile
 
   - /usr/bin/time -v make -e linuxreqs
 

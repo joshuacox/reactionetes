@@ -37,7 +37,12 @@ jobs:
             - homebin-v1-{{ arch }}-{{ .Branch }}
             - homebin-v1
 
+      - run: touch ~/.bashrc ~/.bash_profile ~/.zshrc ~/.profile
       - run: /usr/bin/time -v make -e run_dotfiles
+      - run: echo '# bashrc'; cat ~/.bashrc
+      - run: echo '# zshrc'; cat ~/.zshrc
+      - run: echo '# bash_profile'; cat ~/.bash_profile
+      - run: echo '# profile'; cat ~/.profile
       - run: /usr/bin/time -v make -e linuxreqs
 
       - save_cache:
