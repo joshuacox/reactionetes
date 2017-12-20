@@ -33,14 +33,14 @@ jobs:
 
       - restore_cache:
           keys:
-            - nsenter-cache--{{ arch }}-{{ .Branch }}-{{ .Revision }}
-            - nsenter-cache--{{ arch }}-{{ .Branch }}
-            - nsenter-cache
+            - nsenter--{{ arch }}-{{ .Branch }}-{{ .Revision }}
+            - nsenter--{{ arch }}-{{ .Branch }}
+            - nsenter
 
       - run: make /usr/local/bin/nsenter
 
       - save_cache:
-          key: nsenter-cache--{{ arch }}-{{ .Branch }}-{{ .Revision }}
+          key: nsenter--{{ arch }}-{{ .Branch }}-{{ .Revision }}
           paths:
             - /usr/local/bin/nsenter
 
