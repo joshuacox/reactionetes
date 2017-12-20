@@ -86,3 +86,16 @@ Main page [here](./docs/README.md)
 #### [branches](./docs/branches.md)
 
 #### [notes](./docs/notes.md)
+
+### Discussion
+
+Feel free to open an
+[issue](https://github.com/joshuacox/reactionetes/issues)
+here at github.
+
+There is also a
+[forum post](https://forums.reactioncommerce.com/t/kubernetes-and-reaction/648)
+at the reaction commerce forums.
+
+I appreciate feedback and suggestions!
+
