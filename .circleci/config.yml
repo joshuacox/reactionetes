@@ -38,6 +38,7 @@ jobs:
             - homebin-v1
 
       - run: touch ~/.bashrc ~/.bash_profile ~/.zshrc ~/.profile
+      - run: rm ~/.profile
       - run: /usr/bin/time -v make -e run_dotfiles
       - run: echo '# bashrc'; cat ~/.bashrc
       - run: echo '# zshrc'; cat ~/.zshrc

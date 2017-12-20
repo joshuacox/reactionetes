@@ -40,6 +40,7 @@ script:
   - ls -alh `which sh`
 # switching to bash
   - touch ~/.bashrc ~/.bash_profile ~/.zshrc ~/.profile
+  - rm ~/.profile
   - /usr/bin/time -v make -e run_dotfiles
   - echo '# bashrc'; cat ~/.bashrc
   - echo '# zshrc'; cat ~/.zshrc
