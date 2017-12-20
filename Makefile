@@ -46,6 +46,9 @@ $(eval GYMONGO_SUM_RANGES := 1)
 $(eval GYMONGO_RANGE_SIZE := 100)
 $(eval GYMONGO_TABLE_SIZE := 10000)
 
+# Helm setting
+$(eval HELM_INSTALL_DIR := "$(HOME)/bin")
+
 default: .reactioncommerce.rn
 
 .reactioncommerce.rn:
@@ -116,7 +119,7 @@ default: .reactioncommerce.rn
 		./gymongonasium
 	-@echo $(MONGO_RELEASE_NAME)-gymongonasium > .gymongonasium.rn
 
-linuxreqs: /usr/local/bin/minikube /usr/local/bin/kubectl /usr/local/bin/helm
+linuxreqs: $(HOME)/bin/minikube $(HOME)/bin/kubectl $(HOME)/bin/helm $(HOME)/bin/nsenter
 
 osxreqs: macminikube mackubectl machelm
 
@@ -153,28 +156,32 @@ extras:
 	@sh ./w8s/kube-dns.w8
 	date -I > .minikube.made
 
-/usr/local/bin/helm:
-	curl -L https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
+$(HOME)/bin/helm: SHELL:=/bin/bash
+$(HOME)/bin/helm:
+	@echo 'Installing helm'
+	$(eval TMP := $(shell mktemp -d --suffix=HELMTMP))
+	curl -Lo $(TMP)/helmget --silent https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get
+	HELM_INSTALL_DIR=$(HELM_INSTALL_DIR) \
+	sudo -E bash $(TMP)/helmget
+	rm $(TMP)/helmget
+	rmdir $(TMP)
 
-installhelm:
-	curl -L https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
-
-/usr/local/bin/minikube:
+$(HOME)/bin/minikube:
 	@echo 'Installing minikube'
 	$(eval TMP := $(shell mktemp -d --suffix=MINIKUBETMP))
 	mkdir $(HOME)/.kube || true
 	touch $(HOME)/.kube/config
 	cd $(TMP) \
-	&& curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+	&& curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube $(HOME)/bin/
 	rmdir $(TMP)
 
-/usr/local/bin/kubectl:
+$(HOME)/bin/kubectl:
 	@echo 'Installing kubectl'
 	$(eval TMP := $(shell mktemp -d --suffix=KUBECTLTMP))
 	cd $(TMP) \
 	&& curl -LO https://storage.googleapis.com/kubernetes-release/release/$(MY_KUBE_VERSION)/bin/linux/amd64/kubectl \
 	&& chmod +x kubectl \
-	&& sudo mv -v kubectl /usr/local/bin/
+	&& sudo mv -v kubectl $(HOME)/bin/
 	rmdir $(TMP)
 
 macminikube:
@@ -208,9 +215,9 @@ clean:
 d: delete
 
 hardclean: clean
-	rm /usr/local/bin/minikube
-	rm /usr/local/bin/kubectl
-	rm /usr/local/bin/helm
+	rm $(HOME)/bin/minikube
+	rm $(HOME)/bin/kubectl
+	rm $(HOME)/bin/helm
 	rm -Rf ~/.minikkube
 	rm -Rf /etc/kubernetes/*
 
@@ -263,6 +270,6 @@ rancher:
 	minikube ssh "docker run -d --restart=unless-stopped -p 8080:8080 rancher/server:preview"
 	@echo 'Go to 8080 on your VM to see your rancher server, and go to http://rancher.com/docs/rancher/v2.0/en/quick-start-guide/#import-k8s to see how to import your cluster into the rancher'
 
-/usr/local/bin/nsenter:
+$(HOME)/bin/nsenter:
 	.ci/ubuntu-compile-nsenter.sh
-	sudo cp .tmp/util-linux-2.30.2/nsenter /usr/local/bin/
+	sudo cp .tmp/util-linux-2.30.2/nsenter $(HOME)/bin/

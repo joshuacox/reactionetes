@@ -33,30 +33,15 @@ jobs:
 
       - restore_cache:
           keys:
-            - nsenter-v1-{{ arch }}-{{ .Branch }}-{{ .Revision }}
-            - nsenter-v1-{{ arch }}-{{ .Branch }}
-            - nsenter-v1
-
-      - run: make /usr/local/bin/nsenter
-
-      - save_cache:
-          key: nsenter-v1-{{ arch }}-{{ .Branch }}-{{ .Revision }}
-          paths:
-            - /usr/local/bin/nsenter
-
-      - restore_cache:
-          keys:
-            - linuxreqs-cache--{{ arch }}-{{ .Branch }}-{{ .Revision }}
-            - linuxreqs-cache--{{ arch }}-{{ .Branch }}
-            - linuxreqs-cache
+            - homebin-v1-{{ arch }}-{{ .Branch }}-{{ .Revision }}
+            - homebin-v1-{{ arch }}-{{ .Branch }}
+            - homebin-v1
 
       - run: /usr/bin/time -v make -e linuxreqs
 
       - save_cache:
-          key: linuxreqs-cache--{{ arch }}-{{ .Branch }}-{{ .Revision }}
+          key: homebin-v1-{{ arch }}-{{ .Branch }}-{{ .Revision }}
           paths:
-            - /usr/local/bin/minikube
-            - /usr/local/bin/kubectl
-            - /usr/local/bin/helm
+            - $(HOME)/bin
 
       - run: /usr/bin/time -v make -e ci

@@ -39,6 +39,47 @@ chkdir () {
   fi
 }
 
+# these vars are used by the following functions
+LINE_TO_ADD=''
+TARGET_FILE_FOR_ADD=~/.profile
+
+check_if_line_exists()
+{
+  echo "Checking for '$LINE_TO_ADD'  in $TARGET_FILE_FOR_ADD"
+  grep -qsFx "$LINE_TO_ADD" $TARGET_FILE_FOR_ADD
+}
+
+add_line_to()
+{
+  echo "Adding '$LINE_TO_ADD'  to $TARGET_FILE_FOR_ADD"
+  TARGET_FILE=$TARGET_FILE_FOR_ADD
+    [ -w "$TARGET_FILE" ] || TARGET_FILE=$TARGET_FILE_FOR_ADD
+    printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"
+}
+
+dotfiles_install () {
+  echo 'Adjusting dotfiles'
+  touch ~/.zshrc
+  touch ~/.bashrc
+  touch ~/.bash_profile
+  touch ~/.profile
+  LINE_TO_ADD="source ~/.bashrc"
+  TARGET_FILE_FOR_ADD=~/.bash_profile
+  check_if_line_exists || add_line_to
+  LINE_TO_ADD="source ~/.profile"
+  TARGET_FILE_FOR_ADD=~/.zshrc
+  check_if_line_exists || add_line_to
+  TARGET_FILE_FOR_ADD=~/.bashrc
+  check_if_line_exists || add_line_to
+
+  # here we'll make a bin dir in $HOME and add it to path
+  chkdir $HOME/bin
+  LINE_TO_ADD='export PATH=~/bin:$PATH'
+  TARGET_FILE_FOR_ADD=~/.profile
+  check_if_line_exists || add_line_to
+
+  source ~/.bash_profile
+}
 
 # taking some cues directly from the meteor install script
 
@@ -54,8 +95,6 @@ run_it () {
 ## NOTE sh NOT bash. This script should be POSIX sh only, since we don't
 ## know what shell the user has. Debian uses 'dash' for 'sh', for
 ## example.
-
-PREFIX="/usr/local"
 
 set -e
 set -u
@@ -129,6 +168,8 @@ cd $TMP_DIR
 echo 'Cloning the latest reactionetes repo'
 git clone --depth 1 https://github.com/joshuacox/reactionetes.git
 cd reactionetes
+
+dotfiles_install
 
 # make reqs
 if [ "$PLATFORM" = "os.linux.x86_64" ] ; then
