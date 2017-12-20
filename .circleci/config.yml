@@ -16,32 +16,45 @@ jobs:
       MINIKUBE_MEMORY: 7777
       MINIKUBE_CPU: 4
     steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+
       - checkout
+
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
 
       - run: .circleci/install.sh
 
       - restore_cache:
           keys:
-            - nsenter-cache--{{ arch }}-{{ .Branch }}-{{ checksum "/usr/bin/nsenter" }}
+            - nsenter-cache--{{ arch }}-{{ .Branch }}-{{ .Revision }}
             - nsenter-cache--{{ arch }}-{{ .Branch }}
             - nsenter-cache
 
-      - run: .ci/ubuntu-compile-nsenter.sh && sudo cp .tmp/util-linux-2.30.2/nsenter /usr/bin/
+      - run: .ci/ubuntu-compile-nsenter.sh
+      - run: sudo cp .tmp/util-linux-2.30.2/nsenter /usr/bin/
 
       - save_cache:
-          key: nsenter-cache--{{ arch }}-{{ .Branch }}-{{ checksum "/usr/bin/nsenter" }}
+          key: nsenter-cache--{{ arch }}-{{ .Branch }}-{{ .Revision }}
           paths:
             - /usr/bin/nsenter
 
       - restore_cache:
           keys:
+            - linuxreqs-cache--{{ arch }}-{{ .Branch }}-{{ .Revision }}
             - linuxreqs-cache--{{ arch }}-{{ .Branch }}
             - linuxreqs-cache
 
       - run: /usr/bin/time -v make -e linuxreqs
 
       - save_cache:
-          key: linuxreqs-cache--{{ arch }}-{{ .Branch }}
+          key: linuxreqs-cache--{{ arch }}-{{ .Branch }}-{{ .Revision }}
           paths:
             - /usr/local/bin/minikube
             - /usr/local/bin/kubectl
