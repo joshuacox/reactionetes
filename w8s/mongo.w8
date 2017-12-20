@@ -26,7 +26,7 @@ mongow8 () {
         break
     fi
     countone=`expr $countone + 1`
-    sleep 6
+    sleep 3
   done
 
   echo -n "$1-mongodb-replicaset-$2"

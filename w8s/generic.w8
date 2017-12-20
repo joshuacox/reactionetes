@@ -23,7 +23,7 @@ do
       break
   fi
   countone=`expr $countone + 1`
-  sleep 6
+  sleep 3
 done
 
 echo "$1 is now up and running"

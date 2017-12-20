@@ -7,6 +7,7 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 echo -n "Wait on $1 Reaction Commerce to become available"
+sleep 2
 
 # while loop
 countone=1
@@ -21,7 +22,7 @@ do
       break
   fi
   countone=`expr $countone + 1`
-  sleep 6
+  sleep 3
 done
 
 echo "$1 Reaction Commerce is now up and running."
