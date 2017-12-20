@@ -28,7 +28,8 @@ curl -L https://git.io/reactionetes | bash
 
 That merely performs the
 [autopilot](./autopilot.md)
-recipe using the [bootstrap](../bootstrap) file.
+recipe using the
+[bootstrap](https://github.com/joshuacox/reactionetes/blob/master/bootstrap) file.
 
 This script automagically attempts to determine your OS and tries to
 install the minikube and kubectl appropriate for your OS.
