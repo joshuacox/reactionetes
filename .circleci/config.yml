@@ -37,6 +37,12 @@ jobs:
             - homebin-v2-{{ arch }}-{{ .Branch }}
             - homebin-v2
 
+      - restore_cache:
+          keys:
+            - minikube-v1-{{ arch }}-{{ .Branch }}-{{ .Revision }}
+            - minikube-v1-{{ arch }}-{{ .Branch }}
+            - minikube-v1
+
       - run: touch ~/.bashrc ~/.bash_profile ~/.zshrc ~/.profile
       - run: rm ~/.profile
       - run: /usr/bin/time -v make -e run_dotfiles
@@ -52,3 +58,8 @@ jobs:
             - /home/circleci/bin
 
       - run: /usr/bin/time -v make -e ci
+
+      - save_cache:
+          key: minikube-v1-{{ arch }}-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - /home/circleci/.minikube
