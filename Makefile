@@ -273,3 +273,6 @@ rancher:
 $(HOME)/bin/nsenter:
 	.ci/ubuntu-compile-nsenter.sh
 	sudo cp .tmp/util-linux-2.30.2/nsenter $(HOME)/bin/
+
+run_dotfiles:
+	bash dotfiles

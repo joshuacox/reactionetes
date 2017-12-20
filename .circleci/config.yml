@@ -37,6 +37,7 @@ jobs:
             - homebin-v1-{{ arch }}-{{ .Branch }}
             - homebin-v1
 
+      - run: /usr/bin/time -v make -e run_dotfiles
       - run: /usr/bin/time -v make -e linuxreqs
 
       - save_cache:
