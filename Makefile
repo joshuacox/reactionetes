@@ -162,6 +162,7 @@ $(HOME)/bin/helm:
 	$(eval TMP := $(shell mktemp -d --suffix=HELMTMP))
 	curl -Lo $(TMP)/helmget --silent https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get
 	HELM_INSTALL_DIR=$(HELM_INSTALL_DIR) \
+  PATH=~/bin:$(PATH)' \
 	sudo -E bash -l $(TMP)/helmget
 	rm $(TMP)/helmget
 	rmdir $(TMP)
