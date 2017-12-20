@@ -261,5 +261,8 @@ extended_tests:
 
 rancher:
 	minikube ssh "docker run -d --restart=unless-stopped -p 8080:8080 rancher/server:preview"
-	@echo 'Go to 8080 on your VM to see your rancher server, and go to http://rancher.com/docs/rancher/v2.0/en/quick-start-guide/#import-k8s to see how to import your cluster into the rancher"
+	@echo 'Go to 8080 on your VM to see your rancher server, and go to http://rancher.com/docs/rancher/v2.0/en/quick-start-guide/#import-k8s to see how to import your cluster into the rancher'
 
+/usr/local/bin/nsenter:
+	.ci/ubuntu-compile-nsenter.sh
+	sudo cp .tmp/util-linux-2.30.2/nsenter /usr/local/bin/

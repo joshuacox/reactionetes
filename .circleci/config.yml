@@ -37,13 +37,12 @@ jobs:
             - nsenter-cache--{{ arch }}-{{ .Branch }}
             - nsenter-cache
 
-      - run: .ci/ubuntu-compile-nsenter.sh
-      - run: sudo cp .tmp/util-linux-2.30.2/nsenter /usr/bin/
+      - run: make /usr/local/bin/nsenter
 
       - save_cache:
           key: nsenter-cache--{{ arch }}-{{ .Branch }}-{{ .Revision }}
           paths:
-            - /usr/bin/nsenter
+            - /usr/local/bin/nsenter
 
       - restore_cache:
           keys:
