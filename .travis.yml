@@ -5,6 +5,9 @@ matrix:
       sudo: required
       services:
       - docker
+      cache:
+        directories:
+        - $HOME/bin
       env:
         - MINIKUBE_MEMORY=7777
         - MINIKUBE_CPU=4
