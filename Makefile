@@ -26,7 +26,7 @@ $(eval MONGONETES_INSTALL_TAG := 0.5)
 $(eval MONGONETES_REPO := mongo)
 $(eval MONGONETES_TAG := 3.4)
 
-# MInikube settings
+# Minikube settings
 $(eval MINIKUBE_CPU := 8)
 $(eval MINIKUBE_MEMORY := 11023)
 $(eval MY_KUBE_VERSION := v1.8.0)
@@ -258,3 +258,8 @@ extended_tests:
 	kubectl get ep
 	-@ echo 'Memory consumption of all that:'
 	free -m
+
+rancher:
+	minikube ssh "docker run -d --restart=unless-stopped -p 8080:8080 rancher/server:preview"
+	@echo 'Go to 8080 on your VM to see your rancher server, and go to http://rancher.com/docs/rancher/v2.0/en/quick-start-guide/#import-k8s to see how to import your cluster into the rancher"
+
