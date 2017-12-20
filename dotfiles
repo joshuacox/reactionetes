@@ -36,7 +36,7 @@ dotfiles_install () {
   touch ~/.bashrc
   touch ~/.bash_profile
   touch ~/.profile
-  LINE_TO_ADD="source ~/.bashrc"
+  LINE_TO_ADD='source ~/.bashrc &>/dev/null'
   TARGET_FILE_FOR_ADD=~/.bash_profile
   check_if_line_exists || add_line_to
   LINE_TO_ADD="source ~/.profile"
