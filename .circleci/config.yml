@@ -20,6 +20,29 @@ jobs:
 
       - run: .circleci/install.sh
 
+      - restore_cache:
+          keys:
+            - nsenter-cache--{{ arch }}-{{ .Branch }}-{{ checksum "nsenter" }}
+            - nsenter-cache--{{ arch }}-{{ .Branch }}
+            - nsenter-cache
+
+      - run: .ci/ubuntu-compile-nsenter.sh && sudo cp .tmp/util-linux-2.30.2/nsenter /usr/bin/
+
+      - save_cache:
+          key: nsenter-cache--{{ arch }}-{{ .Branch }}-{{ checksum "nsenter" }}
+            - /usr/bin/nsenter
+
+      - restore_cache:
+          keys:
+            - linuxreqs-cache--{{ arch }}-{{ .Branch }}
+            - linuxreqs-cache
+
       - run: /usr/bin/time -v make -e linuxreqs
+
+      - save_cache:
+          key: linuxreqs-cache--{{ arch }}-{{ .Branch }}
+            - /usr/local/bin/minikube
+            - /usr/local/bin/kubectl
+            - /usr/local/bin/helm
 
       - run: /usr/bin/time -v make -e ci
