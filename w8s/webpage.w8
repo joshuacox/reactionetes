@@ -6,16 +6,18 @@ if [ $# -ne 1 ]; then
   echo 'w8/webpage.w8 what-release-name-to-wait-for'
   exit 1
 fi
-sleep 3
+sleep 1
 export TARGET_KUBE_CMD_OPTS="--namespace default -l app=reactioncommerce,release=$1 -o jsonpath='{ .items[0].metadata.name }'"
 echo  "kubectl get pods $TARGET_KUBE_CMD_OPTS"
 export POD_NAME=$(echo "kubectl get pods $TARGET_KUBE_CMD_OPTS" | bash)
 echo "kubectl port-forward $POD_NAME 3001:3000 &"
 kubectl port-forward $POD_NAME 3001:3000 &
-sleep 3
+sleep 5
 
 echo -n "Wait on Reactionetes to become available and serve a page"
-sleep 3
+sleep 8
+printf '.'
+sleep 5
 printf '.'
 sleep 3
 printf '.'
