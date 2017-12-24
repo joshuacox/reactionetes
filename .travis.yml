@@ -7,7 +7,6 @@ matrix:
       - docker
       cache:
         directories:
-        - $HOME/bin
         - $HOME/.minikube
         - $HOME/.r8s
       env:

@@ -15,6 +15,7 @@ jobs:
       MONGO_REPLICAS: 3
       MINIKUBE_MEMORY: 7777
       MINIKUBE_CPU: 4
+      HOME: /opt/circleci
     steps:
       - restore_cache:
           keys:
