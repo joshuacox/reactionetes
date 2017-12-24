@@ -124,7 +124,7 @@ default: .reactioncommerce.rn
 		./gymongonasium
 	-@echo $(MONGO_RELEASE_NAME)-gymongonasium > .gymongonasium.rn
 
-linuxreqs: $(R8S_BIN) minikube kubectl helm nsenter
+linuxreqs: $(R8S_BIN) run_dotfiles minikube kubectl helm nsenter
 
 osxreqs: macminikube mackubectl machelm macnsenter
 
