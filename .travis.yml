@@ -9,6 +9,7 @@ matrix:
         directories:
         - $HOME/bin
         - $HOME/.minikube
+        - $HOME/.r8s
       env:
         - MINIKUBE_MEMORY=7777
         - MINIKUBE_CPU=4
