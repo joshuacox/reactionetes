@@ -1,5 +1,17 @@
 #!/bin/sh
 # Installs minikube, kubectl, and reactionetes into a minikube cluster
+: ${R8S_DIR:=$HOME/.r8s}
+: ${R8S_BIN:=$R8S_DIR/bin}
+: ${VERBOSITY:=0}
+# Check for config env file
+if [ -e $R8S_DIR/env ]; then
+  source $R8S_DIR/env
+  if [ $VERBOSITY -gt '0' ]; then
+    ls -al $R8S_DIR/env
+    env file found and sourced
+  fi
+fi
+
 
 errror () {
   echo "-------------------------------------------------------------"
@@ -154,8 +166,6 @@ elif [ "$PLATFORM" = "os.osx.x86_64" ] ; then
 elif [ "$PLATFORM" = "os.windows.x86_64" ] ; then
   make windowsreqs
 fi
-
-scripts/nsenter.sh
 
 check_cmd helm
 check_cmd kubectl

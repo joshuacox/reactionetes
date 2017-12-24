@@ -304,7 +304,7 @@ $(R8S_BIN)/nsenter: $(R8S_BIN)
 	sudo cp .tmp/util-linux-2.30.2/nsenter $(R8S_BIN)/
 
 run_dotfiles:
-	bash scripts/dotfiles
+	@scripts/dotfiles
 
 $(R8S_BIN):
 	mkdir -p $(R8S_BIN)
