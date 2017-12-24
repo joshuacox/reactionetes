@@ -17,8 +17,8 @@ do
       break
   fi
   countone=`expr $countone + 1`
-  sleep 6
+  sleep 3
 done
 
 echo "Kube-DNS is now up and running"
-sleep 3
+sleep 1
