@@ -1,4 +1,7 @@
 #!/bin/bash
+: ${R8S_DIR:=$HOME/.r8s}
+: ${R8S_BIN:=$R8S_DIR/bin}
+: ${VERBOSITY:=0}
 
 chkdir () {
   if [ ! -w $1 ] ; then
@@ -18,13 +21,17 @@ TARGET_FILE_FOR_ADD=~/.profile
 
 check_if_line_exists()
 {
-  echo "Checking for '$LINE_TO_ADD'  in $TARGET_FILE_FOR_ADD"
+  if [[ $VERBOSITY -gt '7' ]]; then
+    echo "Checking for '$LINE_TO_ADD'  in $TARGET_FILE_FOR_ADD"
+  fi
   grep -qsFx "$LINE_TO_ADD" $TARGET_FILE_FOR_ADD
 }
 
 add_line_to()
 {
-  echo "Adding '$LINE_TO_ADD'  to $TARGET_FILE_FOR_ADD"
+  if [[ $VERBOSITY -gt '5' ]]; then
+    echo "Adding '$LINE_TO_ADD'  to $TARGET_FILE_FOR_ADD"
+  fi
   TARGET_FILE=$TARGET_FILE_FOR_ADD
     [ -w "$TARGET_FILE" ] || TARGET_FILE=$TARGET_FILE_FOR_ADD
     printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"
@@ -46,8 +53,8 @@ dotfiles_install () {
   check_if_line_exists || add_line_to
 
   # here we'll make a bin dir in $HOME and add it to path
-  chkdir $HOME/bin
-  LINE_TO_ADD='PATH="$HOME/bin:$PATH"'
+  chkdir $R8S_BIN
+  LINE_TO_ADD='PATH="$R8S_BIN:$PATH"'
   TARGET_FILE_FOR_ADD=~/.profile
   check_if_line_exists || add_line_to
 }

@@ -1,3 +1,8 @@
+# Reactionetes Makefile
+# Install location
+$(eval R8S_DIR := $(HOME)/.r8s)
+$(eval R8S_BIN := $(R8S_DIR)/bin)
+
 # Release Names
 $(eval REACTIONCOMMERCE_NAME := raucous-reactionetes)
 $(eval MONGO_RELEASE_NAME := massive-mongonetes)
@@ -47,7 +52,7 @@ $(eval GYMONGO_RANGE_SIZE := 100)
 $(eval GYMONGO_TABLE_SIZE := 10000)
 
 # Helm setting
-$(eval HELM_INSTALL_DIR := "$(HOME)/bin")
+$(eval HELM_INSTALL_DIR := "$(R8S_BIN)")
 
 default: .reactioncommerce.rn
 
@@ -119,11 +124,11 @@ default: .reactioncommerce.rn
 		./gymongonasium
 	-@echo $(MONGO_RELEASE_NAME)-gymongonasium > .gymongonasium.rn
 
-linuxreqs: $(HOME)/bin/minikube $(HOME)/bin/kubectl $(HOME)/bin/helm $(HOME)/bin/nsenter
+linuxreqs: $(R8S_BIN) minikube kubectl helm nsenter
 
-osxreqs: macminikube mackubectl machelm
+osxreqs: macminikube mackubectl machelm macnsenter
 
-windowsreqs:  windowsminikube windowskubectl
+windowsreqs:  windowsminikube windowskubectl osxnsenter
 
 debug:
 	$(eval TMP := $(shell mktemp -d --suffix=DDEBUGTMP))
@@ -156,8 +161,11 @@ extras:
 	@sh ./w8s/kube-dns.w8
 	date -I > .minikube.made
 
-$(HOME)/bin/helm: SHELL:=/bin/bash
-$(HOME)/bin/helm:
+helm: $(R8S_BIN)
+	@scripts/r8snstaller helm
+
+$(R8S_BIN)/helm: SHELL:=/bin/bash
+$(R8S_BIN)/helm:
 	@echo 'Installing helm'
 	$(eval TMP := $(shell mktemp -d --suffix=HELMTMP))
 	curl -Lo $(TMP)/helmget --silent https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get
@@ -166,22 +174,28 @@ $(HOME)/bin/helm:
 	rm $(TMP)/helmget
 	rmdir $(TMP)
 
-$(HOME)/bin/minikube:
+minikube: $(R8S_BIN)
+	@scripts/r8snstaller minikube
+
+$(R8S_BIN)/minikube:
 	@echo 'Installing minikube'
 	$(eval TMP := $(shell mktemp -d --suffix=MINIKUBETMP))
 	mkdir $(HOME)/.kube || true
 	touch $(HOME)/.kube/config
 	cd $(TMP) \
-	&& curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube $(HOME)/bin/
+	&& curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube $(R8S_BIN)/
 	rmdir $(TMP)
 
-$(HOME)/bin/kubectl:
+kubectl: $(R8S_BIN)
+	@scripts/r8snstaller kubectl
+
+$(R8S_BIN)/kubectl:
 	@echo 'Installing kubectl'
 	$(eval TMP := $(shell mktemp -d --suffix=KUBECTLTMP))
 	cd $(TMP) \
 	&& curl -LO https://storage.googleapis.com/kubernetes-release/release/$(MY_KUBE_VERSION)/bin/linux/amd64/kubectl \
 	&& chmod +x kubectl \
-	&& sudo mv -v kubectl $(HOME)/bin/
+	&& sudo mv -v kubectl $(R8S_BIN)/
 	rmdir $(TMP)
 
 macminikube:
@@ -193,8 +207,12 @@ mackubectl:
 	brew install kubectl
 
 machelm:
-	@echo 'Installing kubectl'
+	@echo 'Installing helm'
 	brew install kubernetes-helm
+
+macnsenter:
+	@echo 'Installing nsenter'
+	brew install kubernetes-nsenter
 
 windowsminikube:
 	@echo 'Installing minikube'
@@ -203,6 +221,14 @@ windowsminikube:
 windowskubectl:
 	@echo 'Installing kubectl'
 	choco install kubernetes-cli
+
+windowshelm:
+	@echo 'Installing helm'
+	choco install helm
+
+windowsnsenter:
+	@echo 'Installing nsenter'
+	choco install nsenter
 
 clean:
 	-minikube delete
@@ -215,9 +241,9 @@ clean:
 d: delete
 
 hardclean: clean
-	rm $(HOME)/bin/minikube
-	rm $(HOME)/bin/kubectl
-	rm $(HOME)/bin/helm
+	rm $(R8S_BIN)/minikube
+	rm $(R8S_BIN)/kubectl
+	rm $(R8S_BIN)/helm
 	rm -Rf ~/.minikkube
 	rm -Rf /etc/kubernetes/*
 
@@ -270,9 +296,15 @@ rancher:
 	minikube ssh "docker run -d --restart=unless-stopped -p 8080:8080 rancher/server:preview"
 	@echo 'Go to 8080 on your VM to see your rancher server, and go to http://rancher.com/docs/rancher/v2.0/en/quick-start-guide/#import-k8s to see how to import your cluster into the rancher'
 
-$(HOME)/bin/nsenter:
+nsenter: $(R8S_BIN)
+	@scripts/r8snstaller nsenter
+
+$(R8S_BIN)/nsenter: $(R8S_BIN)
 	.ci/ubuntu-compile-nsenter.sh
-	sudo cp .tmp/util-linux-2.30.2/nsenter $(HOME)/bin/
+	sudo cp .tmp/util-linux-2.30.2/nsenter $(R8S_BIN)/
 
 run_dotfiles:
-	bash dotfiles
+	bash scripts/dotfiles
+
+$(R8S_BIN):
+	mkdir -p $(R8S_BIN)
