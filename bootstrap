@@ -170,6 +170,7 @@ fi
 check_cmd helm
 check_cmd kubectl
 check_cmd minikube
+check_cmd nsenter
 
 make -e autopilot
 
@@ -192,6 +193,5 @@ check_cmd git
 check_cmd curl
 check_cmd uname
 check_cmd socat
-check_cmd nsenter
 
 run_it
