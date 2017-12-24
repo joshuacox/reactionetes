@@ -19,7 +19,19 @@ curl -L https://git.io/reactionetes | bash
 Or you can find out more variables to set if you look at the top of the Makefile you can see various
 sections like these:
 
+# Install location
+
+These can alter the location of where minikube, kubectl, helm, and
+nsenter are installed to:
+
+```
+$(eval R8S_DIR := $(HOME)/.r8s)
+$(eval R8S_BIN := $(R8S_DIR)/bin)
+```
+
 # default release names
+
+These are the default release names for each of the helm charts:
 
 ```
 $(eval REACTIONCOMMERCE_NAME := raucous-reactionetes)
@@ -28,6 +40,8 @@ $(eval REACTION_API_NAME := grape-ape-api)
 ```
 
 # default mongo settings
+
+These are the default settings for the mongo cluster:
 
 ```
 $(eval MONGO_DB_NAME := reactionetesdb)
@@ -49,6 +63,8 @@ $(eval MONGO_PERSISTENCE_STORAGECLASS := 'volume.alpha.kubernetes.io/storage-cla
 
 #default reaction settings
 
+These are the default settings for the Reaction Commerce cluster
+
 ```
 $(eval REACTIONCOMMERCE_CLUSTER_DOMAIN := cluster.local)
 $(eval REACTION_REPLICAS := 1)
@@ -56,7 +72,9 @@ $(eval REACTIONCOMMERCE_REPO := reactioncommerce/reaction)
 $(eval REACTIONCOMMERCE_TAG := latest)
 ```
 
-# MInikube settings
+# Minikube settings
+
+These are the default settings for the Minikube cluster
 
 ```
 $(eval MINIKUBE_MEMORY := 11023)
@@ -70,6 +88,8 @@ $(eval MINIKUBE_CLUSTER_DOMAIN := cluster.local)
 ```
 
 # Gymongonasium settings
+
+These are the default settings for the gymongonasium stress test:
 
 ```
 $(eval GYMONGO_DB_NAME := gymongonasium)
