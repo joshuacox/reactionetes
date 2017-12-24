@@ -46,11 +46,7 @@ script:
   - touch ~/.bashrc ~/.bash_profile ~/.zshrc ~/.profile
   - rm ~/.profile
   - /usr/bin/time -v make -e run_dotfiles
-  - echo '# bashrc'; cat ~/.bashrc
-  - echo '# zshrc'; cat ~/.zshrc
-  - echo '# bash_profile'; cat ~/.bash_profile
-  - echo '# profile'; cat ~/.profile
-
+  - bash .ci/envtest.sh
   - /usr/bin/time -v make -e linuxreqs
-
-  - /usr/bin/time -v make -e ci
+    #- /bin/bash -l -c "source /home/travis/.profile && /usr/bin/time -v make -e ci"
+  - /bin/bash -l -c "/usr/bin/time -v make -e ci"
