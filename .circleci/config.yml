@@ -55,7 +55,7 @@ jobs:
           paths:
             - /home/circleci/.r8s
 
-      - run: /usr/bin/time -v make -e ci
+      - run: /bin/bash -l -c "source /opt/circleci/.profile && /usr/bin/time -v make -e ci"
 
       - save_cache:
           key: minikube-v1-{{ arch }}-{{ .Branch }}-{{ .Revision }}
