@@ -54,7 +54,7 @@ dotfiles_install () {
 
   # here we'll make a bin dir in $HOME and add it to path
   chkdir $R8S_BIN
-  LINE_TO_ADD="PATH='$R8S_BIN:$PATH'"
+  LINE_TO_ADD="$(printf "export PATH=%s:\$PATH" $R8S_BIN)"
   TARGET_FILE_FOR_ADD=$HOME/.profile
   check_if_line_exists || add_line_to
 }
