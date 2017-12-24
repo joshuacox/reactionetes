@@ -51,6 +51,7 @@ jobs:
       - run: echo '# zshrc'; cat ~/.zshrc
       - run: echo '# bash_profile'; cat ~/.bash_profile
       - run: echo '# profile'; cat ~/.profile
+      - run: bash .ci/envtest.sh
       - run: /usr/bin/time -v make -e linuxreqs
 
       - save_cache:
