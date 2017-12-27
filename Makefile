@@ -7,6 +7,8 @@ $(eval R8S_BIN := $(R8S_DIR)/bin)
 $(eval REACTIONCOMMERCE_NAME := raucous-reactionetes)
 $(eval MONGO_RELEASE_NAME := massive-mongonetes)
 $(eval REACTION_API_NAME := grape-ape-api)
+$(eval GYMONGONASIUM_NAME := ginormous-gymongonasium)
+$(eval PROMETHEUS_NAME := pyromaniac-prometheus)
 
 # Reaction Commerce settings
 $(eval REACTIONCOMMERCE_REPO := reactioncommerce/reaction)
@@ -50,6 +52,17 @@ $(eval GYMONGO_THREADS := 10)
 $(eval GYMONGO_SUM_RANGES := 1)
 $(eval GYMONGO_RANGE_SIZE := 100)
 $(eval GYMONGO_TABLE_SIZE := 10000)
+
+# Prometheus settings
+$(eval PROMETHEUS_ALERTMANAGER_ENABLED := true)
+$(eval PROMETHEUS_ALERTMANAGER_NAME := pyralertmanager)
+$(eval PROMETHEUS_ALERTMANAGER_REPLICAS := 3)
+$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_ENABLED := true)
+$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_EXISTINGCLAIM := "")
+$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_MOUNTPATH := /data)
+$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SIZE := 2Gi)
+#$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_STORAGECLASS := "")
+$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SUBPATH := "")
 
 # Helm setting
 $(eval HELM_INSTALL_DIR := "$(R8S_BIN)")
@@ -110,7 +123,7 @@ default: .reactioncommerce.rn
 	@echo $(REACTION_API_NAME) > .reaction-api-base.rn
 
 .gymongonasium.rn:
-	helm install --name $(MONGO_RELEASE_NAME)-gymongonasium \
+	helm install --name $(GYMONGONASIUM_NAME) \
 		--set mongodbName=$(GYMONGO_DB_NAME) \
 		--set mongodbPort=$(MONGO_PORT) \
 		--set mongodbTIME=$(GYMONGO_TIME) \
@@ -122,7 +135,21 @@ default: .reactioncommerce.rn
 		--set mongodbSUM_RANGES=$(GYMONGO_SUM_RANGES) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		./gymongonasium
-	-@echo $(MONGO_RELEASE_NAME)-gymongonasium > .gymongonasium.rn
+	-@echo $(GYMONGONASIUM_NAME) > .gymongonasium.rn
+
+.prometheus.rn:
+	helm install --name $(PROMETHEUS_NAME) \
+		--set alertmanager.enabled=$(PROMETHEUS_ALERTMANAGER_ENABLED) \
+		--set alertmanager.name=$(PROMETHEUS_ALERTMANAGER_NAME) \
+		--set alertmanager.replicaCount=$(PROMETHEUS_ALERTMANAGER_REPLIOAS) \
+		--set alertmanager.persistentVoluem.enabled=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_ENABLED) \
+		--set alertmanager.persistentVolume.existingClaim=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_EXISTINGCLAIM) \
+		--set alertmanager.persistentVolume.mountPath=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_MOUNTPATH) \
+		--set alertmanager.persistentVolume.size=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SIZE) \
+		--set alertmanager.persistentVolume.storageClass=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_STORAGECLASS) \
+		--set alertmanager.persistentVolume.subPath=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SUBPATH) \
+		stable/prometheus
+	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
 
 linuxreqs: $(R8S_BIN) run_dotfiles minikube kubectl helm nsenter
 
@@ -146,6 +173,7 @@ autopilot: reqs .minikube.made
 extras:
 	$(MAKE) -e .reaction-api-base.rn
 	$(MAKE) -e .gymongonasium.rn
+	$(MAKE) -e .prometheus.rn
 
 .minikube.made:
 	minikube \
@@ -237,6 +265,7 @@ clean:
 	-@rm -f .mongo-replicaset.rn
 	-@rm -f .gymongonasium.rn
 	-@rm -f .reaction-api-base.rn
+	-@rm -f .prometheus.rn
 
 d: delete
 
