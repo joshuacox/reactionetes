@@ -42,22 +42,17 @@ dotfiles_install () {
   touch $HOME/.zshrc
   touch $HOME/.bashrc
   touch $HOME/.bash_profile
-  touch $HOME/.profile
   LINE_TO_ADD='source $HOME/.bashrc &>/dev/null'
   TARGET_FILE_FOR_ADD=$HOME/.bash_profile
-  check_if_line_exists || add_line_to
-  LINE_TO_ADD="source $HOME/.profile"
-  TARGET_FILE_FOR_ADD=$HOME/.zshrc
-  check_if_line_exists || add_line_to
-  TARGET_FILE_FOR_ADD=$HOME/.bashrc
   check_if_line_exists || add_line_to
 
   # here we'll make a bin dir in $HOME and add it to path
   chkdir $R8S_BIN
   LINE_TO_ADD="$(printf "export PATH=%s:\$PATH" $R8S_BIN)"
-  TARGET_FILE_FOR_ADD=$HOME/.profile
+  TARGET_FILE_FOR_ADD=$HOME/.bashrc
+  check_if_line_exists || add_line_to
+  TARGET_FILE_FOR_ADD=$HOME/.zshrc
   check_if_line_exists || add_line_to
 }
 
 dotfiles_install
-
