@@ -31,7 +31,7 @@ jobs:
       - run: /usr/bin/time -v make -e run_dotfiles
       - run: bash .ci/envtest.sh
       - run: /usr/bin/time -v make -e linuxreqs
-      - run: /bin/bash -l -c "source /opt/circleci/.profile && /usr/bin/time -v make -e ci"
+      - run: /bin/bash -l -c "source /opt/circleci/.bashrc && /usr/bin/time -v make -e ci"
 
       - save_cache:
           key: r8s-v3-{{ arch }}-{{ .Branch }}-{{ .Revision }}

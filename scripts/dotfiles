@@ -42,6 +42,7 @@ dotfiles_install () {
   touch $HOME/.zshrc
   touch $HOME/.bashrc
   touch $HOME/.bash_profile
+  touch $HOME/.profile
   LINE_TO_ADD='source $HOME/.bashrc &>/dev/null'
   TARGET_FILE_FOR_ADD=$HOME/.bash_profile
   check_if_line_exists || add_line_to
