@@ -34,8 +34,8 @@ $(eval MONGONETES_REPO := mongo)
 $(eval MONGONETES_TAG := 3.4)
 
 # Minikube settings
-$(eval MINIKUBE_CPU := 8)
-$(eval MINIKUBE_MEMORY := 11023)
+$(eval MINIKUBE_CPU := 2)
+$(eval MINIKUBE_MEMORY := 3333)
 $(eval MY_KUBE_VERSION := v1.8.0)
 $(eval CHANGE_MINIKUBE_NONE_USER := true)
 $(eval KUBECONFIG := $(HOME)/.kube/config)
