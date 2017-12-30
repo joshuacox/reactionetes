@@ -27,7 +27,6 @@ jobs:
 
       - run: .circleci/install.sh
       - run: touch $HOME/.bashrc $HOME/.bash_profile $HOME/.zshrc $HOME/.profile
-      - run: rm $HOME/.profile
       - run: /usr/bin/time -v make -e run_dotfiles
       - run: bash .ci/envtest.sh
       - run: /usr/bin/time -v make -e linuxreqs
