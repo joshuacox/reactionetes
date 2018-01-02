@@ -3,6 +3,8 @@
 there are a few environment variable you can set beforehand as well like
 this:
 
+## Exports
+
 ```
 export MINIKUBE_CPU=24
 export MINIKUBE_MEMORY=49480
@@ -14,6 +16,30 @@ export REACTIONCOMMERCE_TAG=latest
 export REACTION_REPLICAS=33
 export MONGO_REPLICAS=108
 curl -L https://git.io/reactionetes | bash
+```
+
+## Make
+
+ Or using the makefile:
+
+```
+REACTIONCOMMERCE_REPO=reactioncommerce/reaction \
+MONGO_RELEASE_NAME=massive-mongonetes \
+REACTIONCOMMERCE_NAME=my-release-name \
+REACTIONCOMMERCE_TAG=latest \
+MINIKUBE_MEMORY=60180 \
+MINIKUBE_CPU=32 \
+REACTION_REPLICAS=33 \
+MONGO_REPLICAS=225 \
+make -e autopilot
+```
+
+## Config file
+
+Or they can be saved, by default in `~/.r8s/env` e.g.
+
+```
+echo "export MINIKUBE_OPTS=--vm-driver=none" >> ~/.r8s/env
 ```
 
 Or you can find out more variables to set if you look at the top of the Makefile you can see various
