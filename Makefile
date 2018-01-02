@@ -70,6 +70,8 @@ $(eval HELM_INSTALL_DIR := "$(R8S_BIN)")
 
 default: .reactioncommerce.rn
 
+reactioncommerce: .reactioncommerce.rn
+
 .reactioncommerce.rn:
 	helm install --name $(REACTIONCOMMERCE_NAME) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
@@ -85,6 +87,8 @@ default: .reactioncommerce.rn
 	@echo $(REACTIONCOMMERCE_NAME) > .reactioncommerce.rn
 	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
 	@sh ./w8s/CrashLoopBackOff.w8
+
+mongo-replicaset: .mongo-replicaset.rn
 
 .mongo-replicaset.rn:
 	helm install --name $(MONGO_RELEASE_NAME) \
@@ -123,6 +127,8 @@ default: .reactioncommerce.rn
 		./reaction-api-base
 	@echo $(REACTION_API_NAME) > .reaction-api-base.rn
 
+gymongonasium: .gymongonasium.rn
+
 .gymongonasium.rn:
 	helm install --name $(GYMONGONASIUM_NAME) \
 		--set mongodbName=$(GYMONGO_DB_NAME) \
@@ -138,7 +144,16 @@ default: .reactioncommerce.rn
 		./gymongonasium
 	-@echo $(GYMONGONASIUM_NAME) > .gymongonasium.rn
 
+prometheus: .prometheus.rn
+
 .prometheus.rn:
+	$(eval TMP := $(shell mktemp -d --suffix=PROMTMP))
+	cd $(TMP) \
+		&& git clone --depth=1 git@github.com:coreos/prometheus-operator.git
+	cd $(TMP)/prometheus-operator \
+		&& kubectl apply -f bundle.yaml
+
+.default.prometheus.rn:
 	helm install --name $(PROMETHEUS_NAME) \
 		--set alertmanager.enabled=$(PROMETHEUS_ALERTMANAGER_ENABLED) \
 		--set alertmanager.name=$(PROMETHEUS_ALERTMANAGER_NAME) \
@@ -151,6 +166,10 @@ default: .reactioncommerce.rn
 		--set alertmanager.persistentVolume.subPath=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SUBPATH) \
 		stable/prometheus
 	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
+
+.monitoring.ns:
+	kubectl create ns monitoring
+	date -I > .monitoring.ns
 
 linuxreqs: $(R8S_BIN) run_dotfiles minikube kubectl helm nsenter
 
@@ -168,13 +187,13 @@ debug:
 
 autopilot: reqs .minikube.made
 	@echo 'Autopilot engaged'
-	$(MAKE) -e .mongo-replicaset.rn
-	$(MAKE) -e .reactioncommerce.rn
+	$(MAKE) -e mongo-replicaset
+	$(MAKE) -e reactioncommerce
 
 extras:
-	$(MAKE) -e .reaction-api-base.rn
-	$(MAKE) -e .gymongonasium.rn
-	$(MAKE) -e .prometheus.rn
+	$(MAKE) -e reaction-api-base
+	$(MAKE) -e gymongonasium
+	$(MAKE) -e prometheus
 
 .minikube.made:
 	minikube \
