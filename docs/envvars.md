@@ -39,7 +39,7 @@ make -e autopilot
 Or they can be saved, by default in `~/.r8s/env` e.g.
 
 ```
-echo "export MINIKUBE_DRIVER=none" >> ~/.r8s/env
+echo "MINIKUBE_DRIVER=none" >> ~/.r8s/env
 ```
 
 Or you can find out more variables to set if you look at the top of the Makefile you can see various
