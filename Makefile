@@ -36,7 +36,7 @@ $(eval MONGONETES_TAG := 3.4)
 # Minikube settings
 $(eval MINIKUBE_CPU := 2)
 $(eval MINIKUBE_MEMORY := 3333)
-$(eval MINIKUBE_DRIVER := none)
+$(eval MINIKUBE_DRIVER := virtualbox)
 $(eval MY_KUBE_VERSION := v1.8.0)
 $(eval CHANGE_MINIKUBE_NONE_USER := true)
 $(eval KUBECONFIG := $(HOME)/.kube/config)
