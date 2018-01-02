@@ -8,7 +8,7 @@ this:
 ```
 export MINIKUBE_CPU=24
 export MINIKUBE_MEMORY=49480
-export MINIKUBE_OPTS=--vm-driver=virtualbox
+export MINIKUBE_DRIVER=virtualbox
 export REACTIONCOMMERCE_NAME=my-release-name
 export MONGO_RELEASE_NAME=massive-mongonetes
 export REACTIONCOMMERCE_REPO=reactioncommerce/reaction
@@ -39,7 +39,7 @@ make -e autopilot
 Or they can be saved, by default in `~/.r8s/env` e.g.
 
 ```
-echo "export MINIKUBE_OPTS=--vm-driver=none" >> ~/.r8s/env
+echo "export MINIKUBE_DRIVER=none" >> ~/.r8s/env
 ```
 
 Or you can find out more variables to set if you look at the top of the Makefile you can see various

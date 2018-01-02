@@ -36,6 +36,7 @@ $(eval MONGONETES_TAG := 3.4)
 # Minikube settings
 $(eval MINIKUBE_CPU := 2)
 $(eval MINIKUBE_MEMORY := 3333)
+$(eval MINIKUBE_DRIVER := none)
 $(eval MY_KUBE_VERSION := v1.8.0)
 $(eval CHANGE_MINIKUBE_NONE_USER := true)
 $(eval KUBECONFIG := $(HOME)/.kube/config)
@@ -181,6 +182,7 @@ extras:
 		--dns-domain $(MINIKUBE_CLUSTER_DOMAIN) \
 		--memory $(MINIKUBE_MEMORY) \
 		--cpus $(MINIKUBE_CPU) \
+    --vm-driver=$(MINIKUBE_DRIVER) \
 		$(MINIKUBE_OPTS) \
 		start
 	@sh ./w8s/kubectl.w8
