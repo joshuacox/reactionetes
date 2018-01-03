@@ -69,11 +69,14 @@ $(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SIZE := 2Gi)
 #$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_STORAGECLASS := "")
 $(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SUBPATH := "")
 
-# Helm setting
+# Helm settings
 $(eval HELM_INSTALL_DIR := "$(R8S_BIN)")
 
+# Default
 default: .reactioncommerce.rn
 
+# Named Releases
+## Reaction Commerce
 reactioncommerce: .reactioncommerce.rn
 
 .reactioncommerce.rn: .r8s.ns
@@ -93,9 +96,26 @@ reactioncommerce: .reactioncommerce.rn
 	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
 	@sh ./w8s/CrashLoopBackOff.w8
 
+### Reaction Commerce API base
+.reaction-api-base.rn:
+	helm install --name $(REACTION_API_NAME) \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		--set mongodbPort=$(MONGO_PORT) \
+		--set mongodbName=$(MONGO_DB_NAME) \
+		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
+		--set reactiondbName=$(REACTIONCOMMERCE_NAME) \
+		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
+		./reaction-api-base
+	@echo $(REACTION_API_NAME) > .reaction-api-base.rn
+
+## Mongo
 mongo-replicaset: .mongo-replicaset.rn
 
-.mongo-replicaset.rn: .r8s.ns
+.mongo-replicaset.rn: .r8s.ns mongo-official
+	@echo $(MONGO_RELEASE_NAME) > .mongo-replicaset.rn
+	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
+
+mongo-official:
 	helm install --name $(MONGO_RELEASE_NAME) \
 		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set replicaSet=$(MONGO_REPLICASET) \
@@ -120,19 +140,34 @@ mongo-replicaset: .mongo-replicaset.rn
 		--set persistentVolume.annotations=$(MONGO_PERSISTENCE_ANNOTATIONS) \
 		--set persistentVolume.storageClass=$(MONGO_PERSISTENCE_STORAGECLASS) \
 		stable/mongodb-replicaset
-	@echo $(MONGO_RELEASE_NAME) > .mongo-replicaset.rn
-	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
 
-.reaction-api-base.rn:
-	helm install --name $(REACTION_API_NAME) \
+mongo-promexport:
+	helm install --name $(MONGO_RELEASE_NAME) \
 		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
-		--set mongodbPort=$(MONGO_PORT) \
-		--set mongodbName=$(MONGO_DB_NAME) \
-		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
-		--set reactiondbName=$(REACTIONCOMMERCE_NAME) \
-		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
-		./reaction-api-base
-	@echo $(REACTION_API_NAME) > .reaction-api-base.rn
+		--set replicaSet=$(MONGO_REPLICASET) \
+		--set replicas=$(MONGO_REPLICAS) \
+		--set port=$(MONGO_PORT) \
+		--set tls.enabled=$(MONGO_TLS) \
+		--set tls.cakey=$(MONGO_TLS_CAKEY) \
+		--set tls.cacert=$(MONGO_TLS_CACERT) \
+		--set auth.enabled=$(MONGO_AUTH) \
+		--set auth.key=$(MONGO_AUTH_KEY) \
+		--set image.tag=$(MONGONETES_TAG) \
+		--set image.name=$(MONGONETES_REPO) \
+		--set installImage.tag=$(MONGONETES_INSTALL_TAG) \
+		--set installImage.name=$(MONGONETES_INSTALL_REPO) \
+		--set auth.adminUser=$(MONGO_AUTH_ADMIN_USER) \
+		--set auth.adminPassword=$(MONGO_AUTH_ADMIN_PASSWORD) \
+		--set auth.existingKeySecret=$(MONGO_AUTH_EXISTING_KEY_SECRET) \
+		--set auth.existingAdminSecret=$(MONGO_AUTH_EXISTING_ADMIN_SECRET) \
+		--set persistentVolume.enabled=$(MONGO_PERSISTENCE) \
+		--set persistentVolume.size=$(MONGO_PERSISTENCE_SIZE) \
+		--set persistentVolume.accessMode=$(MONGO_PERSISTENCE_ACCESSMODE) \
+		--set persistentVolume.annotations=$(MONGO_PERSISTENCE_ANNOTATIONS) \
+		--set persistentVolume.storageClass=$(MONGO_PERSISTENCE_STORAGECLASS) \
+		submodules/charts/stable/mongodb-replicaset
+
+## Gymongonasium
 
 gymongonasium: .gymongonasium.rn
 
@@ -152,12 +187,16 @@ gymongonasium: .gymongonasium.rn
 		./gymongonasium
 	-@echo $(GYMONGONASIUM_NAME) > .gymongonasium.rn
 
+## Monitoring
+
 monitoring: .monitoring.ns .prometheus.rn
 
 view-monitoring:
 		kubectl \
 			--namespace=$(MONITORING_NAMESPACE) \
 			get pods
+
+### Prometheus
 
 prometheus: .prometheus.rn view-monitoring
 
@@ -188,62 +227,15 @@ prometheus: .prometheus.rn view-monitoring
 		&& helm install --name kube-prometheus \
 			--namespace=$(MONITORING_NAMESPACE) \
 			helm/kube-prometheus
-	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
-
-# 797 https://github.com/coreos/prometheus-operator/pull/797
-# prom2
-
-prom2: ci .prom2.rn view-monitoring
 	@sh ./w8s/generic.w8 prometheus-operator $(MONITORING_NAMESPACE)
 	@sh ./w8s/generic.w8 alertmanager-kube-prometheus $(MONITORING_NAMESPACE)
 	@sh ./w8s/generic.w8 kube-prometheus-exporter-kube-state $(MONITORING_NAMESPACE)
 	@sh ./w8s/generic.w8 kube-prometheus-exporter-node $(MONITORING_NAMESPACE)
 	@sh ./w8s/generic.w8 kube-prometheus-grafana $(MONITORING_NAMESPACE)
 	@sh ./w8s/generic.w8 prometheus-kube-prometheus $(MONITORING_NAMESPACE)
-
-.prom2.rn: .monitoring.ns
-	helm repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
-	$(eval TMP := $(shell mktemp -d --suffix=PROMTMP))
-	cd $(TMP) \
-		&& git clone https://github.com/gianrubio/prometheus-operator.git
-	cd $(TMP)/prometheus-operator \
-		&& git checkout helm-prometheus-2.0 \
-		&& kubectl apply -f scripts/minikube-rbac.yaml \
-		&& bash -c "sed -ie 's/    repository/#    repository/g' $(TMP)/prometheus-operator/helm/*/requirements.yaml" \
-		&& bash -c "sed -ie 's/#e2e-repository/repository/g' $(TMP)/prometheus-operator/helm/*/requirements.yaml" \
-		&& helm dep update helm/kube-prometheus \
-		&& helm install --name prometheus-operator \
-			--namespace=$(MONITORING_NAMESPACE) \
-			helm/prometheus-operator \
-		&& helm install --name kube-prometheus \
-			--namespace=$(MONITORING_NAMESPACE) \
-			helm/kube-prometheus
-		-@echo $(PROMETHEUS_NAME) > .prometheus.rn
-
-#.prometheus.rn: .monitoring.ns
-.prometheus-bundle.rn: .monitoring.ns
-	$(eval TMP := $(shell mktemp -d --suffix=PROMTMP))
-	cd $(TMP) \
-		&& git clone --depth=1 git@github.com:coreos/prometheus-operator.git
-	cd $(TMP)/prometheus-operator \
-		&& kubectl apply \
-			--namespace=$(MONITORING_NAMESPACE) \
-			-f bundle.yaml
 	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
 
-# This is the default prometheus from the incubator and is superseded by the operator versions above
-.prometheus-default.rn:
-	helm install --name $(PROMETHEUS_NAME) \
-		--set alertmanager.enabled=$(PROMETHEUS_ALERTMANAGER_ENABLED) \
-		--set alertmanager.name=$(PROMETHEUS_ALERTMANAGER_NAME) \
-		--set alertmanager.replicaCount=$(PROMETHEUS_ALERTMANAGER_REPLIOAS) \
-		--set alertmanager.persistentVoluem.enabled=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_ENABLED) \
-		--set alertmanager.persistentVolume.existingClaim=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_EXISTINGCLAIM) \
-		--set alertmanager.persistentVolume.mountPath=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_MOUNTPATH) \
-		--set alertmanager.persistentVolume.size=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SIZE) \
-		--set alertmanager.persistentVolume.storageClass=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_STORAGECLASS) \
-		--set alertmanager.persistentVolume.subPath=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SUBPATH) \
-		stable/prometheus
+# Namespaces
 
 .monitoring.ns:
 	kubectl create ns monitoring
@@ -252,6 +244,8 @@ prom2: ci .prom2.rn view-monitoring
 .r8s.ns:
 	kubectl create ns $(REACTIONCOMMERCE_NAMESPACE)
 	date -I > .r8s.ns
+
+# Requirements
 
 linuxreqs: $(R8S_BIN) run_dotfiles minikube kubectl helm nsenter
 
@@ -419,7 +413,7 @@ dnstest: dobusybox
 		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		-- nslookup $(REACTIONCOMMERCE_NAME)-reactioncommerce
 
-ci: autopilot extended_tests
+ci: autopilot prometheus extended_tests
 
 extended_tests:
 	kubectl \
