@@ -1,4 +1,5 @@
 #!/bin/sh
+: ${REACTIONCOMMERCE_NAMESPACE:=r8s}
 if [ $# -ne 1 ]; then
   # Print usage
   echo 'Error! wrong number of arguments'
@@ -15,7 +16,7 @@ countone=1
 while [ $countone -lt 151 ]
 do
   echo -n '.'
-  RESULT=$(kubectl get po | grep $1-reactioncommerce | grep Running)
+  RESULT=$(kubectl get po --namespace=$REACTIONCOMMERCE_NAMESPACE | grep $1-reactioncommerce | grep Running)
   if [ "$RESULT" ]; then
       echo ""
       echo "$RESULT"

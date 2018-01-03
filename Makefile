@@ -3,6 +3,10 @@
 $(eval R8S_DIR := $(HOME)/.r8s)
 $(eval R8S_BIN := $(R8S_DIR)/bin)
 
+# Namespaces
+$(eval REACTIONCOMMERCE_NAMESPACE := r8s)
+$(eval MONITORING_NAMESPACE := monitoring)
+
 # Release Names
 $(eval REACTIONCOMMERCE_NAME := raucous-reactionetes)
 $(eval MONGO_RELEASE_NAME := massive-mongonetes)
@@ -72,8 +76,9 @@ default: .reactioncommerce.rn
 
 reactioncommerce: .reactioncommerce.rn
 
-.reactioncommerce.rn:
+.reactioncommerce.rn: .r8s.ns
 	helm install --name $(REACTIONCOMMERCE_NAME) \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbName=$(MONGO_DB_NAME) \
 		--set mongodbPort=$(MONGO_PORT) \
@@ -90,8 +95,9 @@ reactioncommerce: .reactioncommerce.rn
 
 mongo-replicaset: .mongo-replicaset.rn
 
-.mongo-replicaset.rn:
+.mongo-replicaset.rn: .r8s.ns
 	helm install --name $(MONGO_RELEASE_NAME) \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set replicaSet=$(MONGO_REPLICASET) \
 		--set replicas=$(MONGO_REPLICAS) \
 		--set port=$(MONGO_PORT) \
@@ -119,6 +125,7 @@ mongo-replicaset: .mongo-replicaset.rn
 
 .reaction-api-base.rn:
 	helm install --name $(REACTION_API_NAME) \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set mongodbPort=$(MONGO_PORT) \
 		--set mongodbName=$(MONGO_DB_NAME) \
 		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
@@ -131,6 +138,7 @@ gymongonasium: .gymongonasium.rn
 
 .gymongonasium.rn:
 	helm install --name $(GYMONGONASIUM_NAME) \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set mongodbName=$(GYMONGO_DB_NAME) \
 		--set mongodbPort=$(MONGO_PORT) \
 		--set mongodbTIME=$(GYMONGO_TIME) \
@@ -144,16 +152,52 @@ gymongonasium: .gymongonasium.rn
 		./gymongonasium
 	-@echo $(GYMONGONASIUM_NAME) > .gymongonasium.rn
 
-prometheus: .prometheus.rn
+prometheus: .prometheus.rn monitoring
 
-.prometheus.rn:
+# https://itnext.io/kubernetes-monitoring-with-prometheus-in-15-minutes-8e54d1de2e13
+.prometheus.rn: .monitoring.ns
+	helm repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+	git submodule update --init
+	cd submodules/prometheus-operator \
+		&& kubectl apply -f scripts/minikube-rbac.yaml \
+		&& helm install --name prometheus-operator \
+			--set rbacEnable=true \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/prometheus-operator \
+		&& helm install --name prometheus \
+			--set serviceMonitorsSelector.app=prometheus \
+			--set ruleSelector.app=prometheus \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/prometheus \
+		&& helm install --name alertmanager \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/alertmanager \
+		&& helm install --name grafana \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/grafana
+	cd submodules/prometheus-operator/helm/kube-prometheus \
+		&& helm dep update
+	cd submodules/prometheus-operator \
+		&& helm install --name kube-prometheus \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/kube-prometheus
+	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
+
+monitoring:
+	kubectl get pods -n monitoring
+
+#.prometheus.rn: .monitoring.ns
+.prometheus-bundle.rn: .monitoring.ns
 	$(eval TMP := $(shell mktemp -d --suffix=PROMTMP))
 	cd $(TMP) \
 		&& git clone --depth=1 git@github.com:coreos/prometheus-operator.git
 	cd $(TMP)/prometheus-operator \
-		&& kubectl apply -f bundle.yaml
+		&& kubectl apply \
+			--namespace=$(MONITORING_NAMESPACE) \
+			-f bundle.yaml
+	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
 
-.default.prometheus.rn:
+.prometheus-default.rn:
 	helm install --name $(PROMETHEUS_NAME) \
 		--set alertmanager.enabled=$(PROMETHEUS_ALERTMANAGER_ENABLED) \
 		--set alertmanager.name=$(PROMETHEUS_ALERTMANAGER_NAME) \
@@ -165,11 +209,14 @@ prometheus: .prometheus.rn
 		--set alertmanager.persistentVolume.storageClass=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_STORAGECLASS) \
 		--set alertmanager.persistentVolume.subPath=$(PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SUBPATH) \
 		stable/prometheus
-	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
 
 .monitoring.ns:
 	kubectl create ns monitoring
 	date -I > .monitoring.ns
+
+.r8s.ns:
+	kubectl create ns $(REACTIONCOMMERCE_NAMESPACE)
+	date -I > .r8s.ns
 
 linuxreqs: $(R8S_BIN) run_dotfiles minikube kubectl helm nsenter
 
@@ -187,13 +234,13 @@ debug:
 
 autopilot: reqs .minikube.made
 	@echo 'Autopilot engaged'
-	$(MAKE) -e mongo-replicaset
-	$(MAKE) -e reactioncommerce
+	$(MAKE) -e .mongo-replicaset.rn
+	$(MAKE) -e .reactioncommerce.rn
 
 extras:
-	$(MAKE) -e reaction-api-base
-	$(MAKE) -e gymongonasium
-	$(MAKE) -e prometheus
+	$(MAKE) -e .reaction-api-base.rn
+	$(MAKE) -e .gymongonasium.rn
+	$(MAKE) -e .prometheus.rn
 
 .minikube.made:
 	minikube \
@@ -201,7 +248,7 @@ extras:
 		--dns-domain $(MINIKUBE_CLUSTER_DOMAIN) \
 		--memory $(MINIKUBE_MEMORY) \
 		--cpus $(MINIKUBE_CPU) \
-    --vm-driver=$(MINIKUBE_DRIVER) \
+		--vm-driver=$(MINIKUBE_DRIVER) \
 		$(MINIKUBE_OPTS) \
 		start
 	@sh ./w8s/kubectl.w8
@@ -287,6 +334,8 @@ clean:
 	-@rm -f .gymongonasium.rn
 	-@rm -f .reaction-api-base.rn
 	-@rm -f .prometheus.rn
+	-@rm -f .r8s.ns
+	-@rm -f .monitoring.ns
 
 d: delete
 

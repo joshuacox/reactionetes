@@ -1,4 +1,5 @@
 #!/bin/bash
+: ${REACTIONCOMMERCE_NAMESPACE:=r8s}
 if [ $# -ne 1 ]; then
   # Print usage
   echo 'Error! wrong number of arguments'
@@ -9,7 +10,7 @@ fi
 sleep 1
 export TARGET_KUBE_CMD_OPTS="--namespace default -l app=reactioncommerce,release=$1 -o jsonpath='{ .items[0].metadata.name }'"
 echo  "kubectl get pods $TARGET_KUBE_CMD_OPTS"
-export POD_NAME=$(echo "kubectl get pods $TARGET_KUBE_CMD_OPTS" | bash)
+export POD_NAME=$(echo "kubectl get pods --namespace=$REACTIONCOMMERCE_NAMESPACE $TARGET_KUBE_CMD_OPTS" | bash)
 echo "kubectl port-forward $POD_NAME 3001:3000 &"
 kubectl port-forward $POD_NAME 3001:3000 &
 sleep 5

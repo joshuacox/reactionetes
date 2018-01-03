@@ -1,4 +1,5 @@
 #!/bin/sh
+: ${REACTIONCOMMERCE_NAMESPACE:=r8s}
 
 echo -n "wait on the K8S cluster to become available"
 sleep 3
@@ -9,7 +10,7 @@ countone=1
 while [ $countone -lt 151 ]
 do
    echo -n '.'
-   kubectl get po &> /dev/null
+   kubectl get po --namespace=$REACTIONCOMMERCE_NAMESPACE &> /dev/null
    if [ $? -ne 1 ]; then
       sleep 6
       break
