@@ -194,6 +194,12 @@ prometheus: .prometheus.rn view-monitoring
 # prom2
 
 prom2: ci .prom2.rn view-monitoring
+	@sh ./w8s/generic.w8 prometheus-operator $(MONITORING_NAMESPACE)
+	@sh ./w8s/generic.w8 alertmanager-kube-prometheus $(MONITORING_NAMESPACE)
+	@sh ./w8s/generic.w8 kube-prometheus-exporter-kube-state $(MONITORING_NAMESPACE)
+	@sh ./w8s/generic.w8 kube-prometheus-exporter-node $(MONITORING_NAMESPACE)
+	@sh ./w8s/generic.w8 kube-prometheus-grafana $(MONITORING_NAMESPACE)
+	@sh ./w8s/generic.w8 prometheus-kube-prometheus $(MONITORING_NAMESPACE)
 
 .prom2.rn: .monitoring.ns
 	$(eval TMP := $(shell mktemp -d --suffix=PROMTMP))
