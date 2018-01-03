@@ -202,6 +202,7 @@ prom2: ci .prom2.rn view-monitoring
 	@sh ./w8s/generic.w8 prometheus-kube-prometheus $(MONITORING_NAMESPACE)
 
 .prom2.rn: .monitoring.ns
+	helm repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
 	$(eval TMP := $(shell mktemp -d --suffix=PROMTMP))
 	cd $(TMP) \
 		&& git clone https://github.com/gianrubio/prometheus-operator.git
