@@ -1,10 +1,9 @@
 #!/bin/sh
-: ${REACTIONCOMMERCE_NAMESPACE:=r8s}
-if [ $# -ne 1 ]; then
+if [ $# -ne 2 ]; then
   # Print usage
   echo 'Error! wrong number of arguments'
   echo 'usage:'
-  echo 'w8/generic.w8 what-to-wait-for'
+  echo 'w8/generic.w8 what-to-wait-for in-what-namespace'
   exit 1
 fi
 
@@ -17,7 +16,7 @@ countone=1
 while [ $countone -lt 151 ]
 do
   echo -n '.'
-  RESULT=$(kubectl get po --namespace=$REACTIONCOMMERCE_NAMESPACE | grep $1 | grep Running)
+  RESULT=$(kubectl get po --namespace=$2 | grep $1 | grep Running)
   if [ "$RESULT" ]; then
       echo '.'
       echo "$RESULT"

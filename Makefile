@@ -373,8 +373,8 @@ reqs:
 	cp .circleci/pre-commit .git/hooks/pre-commit
 
 dobusybox:
-	kubectl apply -f busybox/busybox.yaml
-	@sh ./w8s/generic.w8 busybox
+	kubectl apply -n $(REACTIONCOMMERCE_NAMESPACE) -f busybox/busybox.yaml
+	@sh ./w8s/generic.w8 busybox $(REACTIONCOMMERCE_NAMESPACE)
 
 dnstest: dobusybox
 	kubectl exec -ti busybox -- nslookup $(MONGO_RELEASE_NAME)-mongodb-replicaset
