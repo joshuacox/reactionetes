@@ -24,7 +24,7 @@ jobs:
             - r8s-v3
 
       - checkout
-      - git submodule update --init
+      - run: git submodule update --init
 
       - run: .circleci/install.sh
       - run: touch $HOME/.bashrc $HOME/.bash_profile $HOME/.zshrc $HOME/.profile
