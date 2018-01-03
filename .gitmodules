@@ -1,3 +1,3 @@
 [submodule "submodules/prometheus-operator"]
 	path = submodules/prometheus-operator
-	url = git@github.com:coreos/prometheus-operator.git
+	url = https://github.com/coreos/prometheus-operator.git
