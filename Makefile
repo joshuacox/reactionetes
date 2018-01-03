@@ -415,7 +415,7 @@ dnstest: dobusybox
 		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		-- nslookup $(REACTIONCOMMERCE_NAME)-reactioncommerce
 
-ci: autopilot prometheus extended_tests
+ci: autopilot extended_tests
 
 extended_tests:
 	kubectl \
