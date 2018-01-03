@@ -152,7 +152,14 @@ gymongonasium: .gymongonasium.rn
 		./gymongonasium
 	-@echo $(GYMONGONASIUM_NAME) > .gymongonasium.rn
 
-prometheus: .prometheus.rn monitoring
+monitoring: .monitoring.ns .prometheus.rn
+
+view-monitoring:
+		kubectl \
+			--namespace=$(MONITORING_NAMESPACE) \
+			get pods
+
+prometheus: .prometheus.rn view-monitoring
 
 # https://itnext.io/kubernetes-monitoring-with-prometheus-in-15-minutes-8e54d1de2e13
 .prometheus.rn: .monitoring.ns
@@ -183,8 +190,25 @@ prometheus: .prometheus.rn monitoring
 			helm/kube-prometheus
 	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
 
-monitoring:
-	kubectl get pods -n monitoring
+# 797 https://github.com/coreos/prometheus-operator/pull/797
+# prom2
+.prom2.rn: .monitoring.ns
+	$(eval TMP := $(shell mktemp -d --suffix=PROMTMP))
+	cd $(TMP) \
+		&& git clone https://github.com/gianrubio/prometheus-operator.git
+	cd $(TMP)/prometheus-operator \
+		&& git checkout helm-prometheus-2.0 \
+		&& kubectl apply -f scripts/minikube-rbac.yaml \
+		&& bash -c "sed -ie 's/    repository/#    repository/g' $(TMP)/prometheus-operator/helm/*/requirements.yaml" \
+		&& bash -c "sed -ie 's/#e2e-repository/repository/g' $(TMP)/prometheus-operator/helm/*/requirements.yaml" \
+		&& helm dep update helm/kube-prometheus \
+		&& helm install --name prometheus-operator \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/prometheus-operator \
+		&& helm install --name kube-prometheus \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/kube-prometheus
+		-@echo $(PROMETHEUS_NAME) > .prometheus.rn
 
 #.prometheus.rn: .monitoring.ns
 .prometheus-bundle.rn: .monitoring.ns
@@ -197,6 +221,7 @@ monitoring:
 			-f bundle.yaml
 	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
 
+# This is the default prometheus from the incubator and is superseded by the operator versions above
 .prometheus-default.rn:
 	helm install --name $(PROMETHEUS_NAME) \
 		--set alertmanager.enabled=$(PROMETHEUS_ALERTMANAGER_ENABLED) \
