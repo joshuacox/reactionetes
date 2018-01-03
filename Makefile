@@ -170,7 +170,6 @@ mongo-promexport:
 		submodules/charts/stable/mongodb-replicaset
 
 ## Gymongonasium
-
 gymongonasium: .gymongonasium.rn
 
 .gymongonasium.rn:
@@ -190,7 +189,6 @@ gymongonasium: .gymongonasium.rn
 	-@echo $(GYMONGONASIUM_NAME) > .gymongonasium.rn
 
 ## Monitoring
-
 monitoring: .monitoring.ns .prometheus.rn
 
 view-monitoring:
@@ -199,7 +197,6 @@ view-monitoring:
 			get pods
 
 ### Prometheus
-
 prometheus: .prometheus.rn view-monitoring
 
 # https://itnext.io/kubernetes-monitoring-with-prometheus-in-15-minutes-8e54d1de2e13
@@ -238,7 +235,6 @@ prometheus: .prometheus.rn view-monitoring
 	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
 
 # Namespaces
-
 .monitoring.ns:
 	kubectl create ns monitoring
 	date -I > .monitoring.ns
@@ -248,7 +244,6 @@ prometheus: .prometheus.rn view-monitoring
 	date -I > .r8s.ns
 
 # Requirements
-
 linuxreqs: $(R8S_BIN) run_dotfiles minikube kubectl helm nsenter
 
 osxreqs: macminikube mackubectl machelm macnsenter
@@ -424,10 +419,10 @@ extended_tests:
 	make -e dnstest
 	./w8s/webpage.w8 $(REACTIONCOMMERCE_NAME)
 	kubectl \
-		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		--all-namespaces \
 		get all
 	kubectl \
-		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		--all-namespaces \
 		get ep
 	-@ echo 'Memory consumption of all that:'
 	free -m
