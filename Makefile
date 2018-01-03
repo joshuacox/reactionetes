@@ -143,6 +143,7 @@ mongo-official:
 		stable/mongodb-replicaset
 
 mongo-promexport:
+	git submodule update --init
 	helm install --name $(MONGO_RELEASE_NAME) \
 		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set replicaSet=$(MONGO_REPLICASET) \
