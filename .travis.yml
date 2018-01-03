@@ -51,3 +51,5 @@ script:
   - /usr/bin/time -v make -e linuxreqs
     #- /bin/bash -l -c "source /home/travis/.profile && /usr/bin/time -v make -e ci"
   - /bin/bash -l -c "/usr/bin/time -v make -e ci"
+  - /bin/bash -l -c "/usr/bin/time -v make -e .prom2.rn"
+  - /bin/bash -l -c "/usr/bin/time -v make -e view-monitoring"

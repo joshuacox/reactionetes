@@ -31,6 +31,8 @@ jobs:
       - run: bash .ci/envtest.sh
       - run: /usr/bin/time -v make -e linuxreqs
       - run: /bin/bash -l -c "source /opt/circleci/.bashrc && /usr/bin/time -v make -e ci"
+      - run: /bin/bash -l -c "source /opt/circleci/.bashrc && /usr/bin/time -v make -e .prom2.rn"
+      - run: /bin/bash -l -c "source /opt/circleci/.bashrc && /usr/bin/time -v make -e view-monitoring"
 
       - save_cache:
           key: r8s-v3-{{ arch }}-{{ .Branch }}-{{ .Revision }}
