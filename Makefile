@@ -192,6 +192,9 @@ prometheus: .prometheus.rn view-monitoring
 
 # 797 https://github.com/coreos/prometheus-operator/pull/797
 # prom2
+
+prom2: ci .prom2.rn view-monitoring
+
 .prom2.rn: .monitoring.ns
 	$(eval TMP := $(shell mktemp -d --suffix=PROMTMP))
 	cd $(TMP) \
