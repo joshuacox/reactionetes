@@ -377,17 +377,27 @@ dobusybox:
 	@sh ./w8s/generic.w8 busybox $(REACTIONCOMMERCE_NAMESPACE)
 
 dnstest: dobusybox
-	kubectl exec -ti busybox -- nslookup $(MONGO_RELEASE_NAME)-mongodb-replicaset
-	kubectl exec -ti busybox -- nslookup $(REACTIONCOMMERCE_NAME)-reactioncommerce
+	kubectl exec -ti busybox \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		-- nslookup $(MONGO_RELEASE_NAME)-mongodb-replicaset
+	kubectl exec -ti busybox \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		-- nslookup $(REACTIONCOMMERCE_NAME)-reactioncommerce
 
 ci: autopilot extended_tests
 
 extended_tests:
-	kubectl get ep
+	kubectl \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		get ep
 	make -e dnstest
 	./w8s/webpage.w8 $(REACTIONCOMMERCE_NAME)
-	kubectl get all
-	kubectl get ep
+	kubectl \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		get all
+	kubectl \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		get ep
 	-@ echo 'Memory consumption of all that:'
 	free -m
 
