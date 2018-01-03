@@ -111,7 +111,8 @@ reactioncommerce: .reactioncommerce.rn
 ## Mongo
 mongo-replicaset: .mongo-replicaset.rn
 
-.mongo-replicaset.rn: .r8s.ns mongo-official
+#.mongo-replicaset.rn: .r8s.ns mongo-official
+.mongo-replicaset.rn: .r8s.ns mongo-promexport
 	@echo $(MONGO_RELEASE_NAME) > .mongo-replicaset.rn
 	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
 
