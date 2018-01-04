@@ -410,7 +410,7 @@ dnstest: dobusybox
 		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		-- nslookup $(REACTIONCOMMERCE_NAME)-reactioncommerce
 
-ci: autopilot prometheus extended_tests
+ci: autopilot extended_tests
 
 extended_tests:
 	kubectl \
@@ -419,10 +419,10 @@ extended_tests:
 	make -e dnstest
 	./w8s/webpage.w8 $(REACTIONCOMMERCE_NAME)
 	kubectl \
-		--all-namespaces \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		get all
 	kubectl \
-		--all-namespaces \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		get ep
 	-@ echo 'Memory consumption of all that:'
 	free -m
