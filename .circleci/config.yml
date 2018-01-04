@@ -19,9 +19,9 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - r8s-v3-{{ arch }}-{{ .Branch }}-{{ .Revision }}
-            - r8s-v3-{{ arch }}-{{ .Branch }}
-            - r8s-v3
+            - r8s-v4-{{ arch }}-{{ .Branch }}-{{ .Revision }}
+            - r8s-v4-{{ arch }}-{{ .Branch }}
+            - r8s-v4
 
       - checkout
       - run: git submodule update --init
@@ -34,8 +34,8 @@ jobs:
       - run: /bin/bash -l -c "source /opt/circleci/.bashrc && /usr/bin/time -v make -e ci"
 
       - save_cache:
-          key: r8s-v3-{{ arch }}-{{ .Branch }}-{{ .Revision }}
+          key: r8s-v4-{{ arch }}-{{ .Branch }}-{{ .Revision }}
           paths:
-            - /home/circleci/.r8s
+            - /opt/circleci/.r8s
             - /home/circleci/.minikube
             - ".git"
