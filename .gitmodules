@@ -1,0 +1,6 @@
+[submodule "submodules/prometheus-operator"]
+	path = submodules/prometheus-operator
+	url = https://github.com/coreos/prometheus-operator.git
+[submodule "submodules/charts"]
+	path = submodules/charts
+	url = https://github.com/reactioncommerce/charts.git

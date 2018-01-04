@@ -13,7 +13,7 @@ matrix:
       env:
         - MINIKUBE_MEMORY=7777
         - MINIKUBE_CPU=4
-        - MINIKUBE_OPTS=--vm-driver=none
+        - MINIKUBE_DRIVER=none
         - REACTIONCOMMERCE_NAME=travisci-build-test
         - MONGO_RELEASE_NAME=travisci-mongodb-test
         - REACTION_API_NAME=grape-ape-api
@@ -41,9 +41,7 @@ before_install:
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
 
 script:
-# /bin/sh points to dash on trusty, which can cause some of the tests to fail
-  - ls -alh `which sh`
-# switching to bash
+  - git submodule update --init
   - touch ~/.bashrc ~/.bash_profile ~/.zshrc ~/.profile
   - rm ~/.profile
   - /usr/bin/time -v make -e run_dotfiles

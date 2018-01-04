@@ -5,7 +5,7 @@ jobs:
     machine: true
     environment:
       CHANGE_MINIKUBE_NONE_USER: true
-      MINIKUBE_OPTS: "--vm-driver=none"
+      MINIKUBE_DRIVER: "none"
       REACTIONCOMMERCE_NAME: "circleci-build-test"
       MONGO_RELEASE_NAME: "circleci-mongodb-test"
       REACTION_API_NAME: "grape-ape-api"
@@ -19,23 +19,23 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - r8s-v3-{{ arch }}-{{ .Branch }}-{{ .Revision }}
-            - r8s-v3-{{ arch }}-{{ .Branch }}
-            - r8s-v3
+            - r8s-v4-{{ arch }}-{{ .Branch }}-{{ .Revision }}
+            - r8s-v4-{{ arch }}-{{ .Branch }}
+            - r8s-v4
 
       - checkout
+      - run: git submodule update --init
 
       - run: .circleci/install.sh
       - run: touch $HOME/.bashrc $HOME/.bash_profile $HOME/.zshrc $HOME/.profile
-      - run: rm $HOME/.profile
       - run: /usr/bin/time -v make -e run_dotfiles
       - run: bash .ci/envtest.sh
       - run: /usr/bin/time -v make -e linuxreqs
-      - run: /bin/bash -l -c "source /opt/circleci/.profile && /usr/bin/time -v make -e ci"
+      - run: /bin/bash -l -c "source /opt/circleci/.bashrc && /usr/bin/time -v make -e ci"
 
       - save_cache:
-          key: r8s-v3-{{ arch }}-{{ .Branch }}-{{ .Revision }}
+          key: r8s-v4-{{ arch }}-{{ .Branch }}-{{ .Revision }}
           paths:
-            - /home/circleci/.r8s
+            - /opt/circleci/.r8s
             - /home/circleci/.minikube
             - ".git"

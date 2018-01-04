@@ -3,10 +3,16 @@
 $(eval R8S_DIR := $(HOME)/.r8s)
 $(eval R8S_BIN := $(R8S_DIR)/bin)
 
+# Namespaces
+$(eval REACTIONCOMMERCE_NAMESPACE := r8s)
+$(eval MONITORING_NAMESPACE := monitoring)
+
 # Release Names
 $(eval REACTIONCOMMERCE_NAME := raucous-reactionetes)
 $(eval MONGO_RELEASE_NAME := massive-mongonetes)
 $(eval REACTION_API_NAME := grape-ape-api)
+$(eval GYMONGONASIUM_NAME := ginormous-gymongonasium)
+$(eval PROMETHEUS_NAME := pyromaniac-prometheus)
 
 # Reaction Commerce settings
 $(eval REACTIONCOMMERCE_REPO := reactioncommerce/reaction)
@@ -32,8 +38,9 @@ $(eval MONGONETES_REPO := mongo)
 $(eval MONGONETES_TAG := 3.4)
 
 # Minikube settings
-$(eval MINIKUBE_CPU := 8)
-$(eval MINIKUBE_MEMORY := 11023)
+$(eval MINIKUBE_CPU := 2)
+$(eval MINIKUBE_MEMORY := 3333)
+$(eval MINIKUBE_DRIVER := virtualbox)
 $(eval MY_KUBE_VERSION := v1.8.0)
 $(eval CHANGE_MINIKUBE_NONE_USER := true)
 $(eval KUBECONFIG := $(HOME)/.kube/config)
@@ -51,13 +58,30 @@ $(eval GYMONGO_SUM_RANGES := 1)
 $(eval GYMONGO_RANGE_SIZE := 100)
 $(eval GYMONGO_TABLE_SIZE := 10000)
 
-# Helm setting
+# Prometheus settings
+$(eval PROMETHEUS_ALERTMANAGER_ENABLED := true)
+$(eval PROMETHEUS_ALERTMANAGER_NAME := pyralertmanager)
+$(eval PROMETHEUS_ALERTMANAGER_REPLICAS := 3)
+$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_ENABLED := true)
+$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_EXISTINGCLAIM := "")
+$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_MOUNTPATH := /data)
+$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SIZE := 2Gi)
+#$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_STORAGECLASS := "")
+$(eval PROMETHEUS_ALERTMANAGER_PERSISTENTVOLUME_SUBPATH := "")
+
+# Helm settings
 $(eval HELM_INSTALL_DIR := "$(R8S_BIN)")
 
+# Default
 default: .reactioncommerce.rn
 
-.reactioncommerce.rn:
+# Named Releases
+## Reaction Commerce
+reactioncommerce: .reactioncommerce.rn
+
+.reactioncommerce.rn: .r8s.ns
 	helm install --name $(REACTIONCOMMERCE_NAME) \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		--set mongodbName=$(MONGO_DB_NAME) \
 		--set mongodbPort=$(MONGO_PORT) \
@@ -72,8 +96,29 @@ default: .reactioncommerce.rn
 	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
 	@sh ./w8s/CrashLoopBackOff.w8
 
-.mongo-replicaset.rn:
+### Reaction Commerce API base
+.reaction-api-base.rn:
+	helm install --name $(REACTION_API_NAME) \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		--set mongodbPort=$(MONGO_PORT) \
+		--set mongodbName=$(MONGO_DB_NAME) \
+		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
+		--set reactiondbName=$(REACTIONCOMMERCE_NAME) \
+		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
+		./reaction-api-base
+	@echo $(REACTION_API_NAME) > .reaction-api-base.rn
+
+## Mongo
+mongo-replicaset: .mongo-replicaset.rn
+
+#.mongo-replicaset.rn: .r8s.ns mongo-promexport
+.mongo-replicaset.rn: .r8s.ns mongo-official
+	@echo $(MONGO_RELEASE_NAME) > .mongo-replicaset.rn
+	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
+
+mongo-official:
 	helm install --name $(MONGO_RELEASE_NAME) \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set replicaSet=$(MONGO_REPLICASET) \
 		--set replicas=$(MONGO_REPLICAS) \
 		--set port=$(MONGO_PORT) \
@@ -96,21 +141,40 @@ default: .reactioncommerce.rn
 		--set persistentVolume.annotations=$(MONGO_PERSISTENCE_ANNOTATIONS) \
 		--set persistentVolume.storageClass=$(MONGO_PERSISTENCE_STORAGECLASS) \
 		stable/mongodb-replicaset
-	@echo $(MONGO_RELEASE_NAME) > .mongo-replicaset.rn
-	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
 
-.reaction-api-base.rn:
-	helm install --name $(REACTION_API_NAME) \
-		--set mongodbPort=$(MONGO_PORT) \
-		--set mongodbName=$(MONGO_DB_NAME) \
-		--set mongodbReplicaSet=$(MONGO_REPLICASET) \
-		--set reactiondbName=$(REACTIONCOMMERCE_NAME) \
-		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
-		./reaction-api-base
-	@echo $(REACTION_API_NAME) > .reaction-api-base.rn
+mongo-promexport:
+	git submodule update --init
+	helm install --name $(MONGO_RELEASE_NAME) \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		--set replicaSet=$(MONGO_REPLICASET) \
+		--set replicas=$(MONGO_REPLICAS) \
+		--set port=$(MONGO_PORT) \
+		--set tls.enabled=$(MONGO_TLS) \
+		--set tls.cakey=$(MONGO_TLS_CAKEY) \
+		--set tls.cacert=$(MONGO_TLS_CACERT) \
+		--set auth.enabled=$(MONGO_AUTH) \
+		--set auth.key=$(MONGO_AUTH_KEY) \
+		--set image.tag=$(MONGONETES_TAG) \
+		--set image.name=$(MONGONETES_REPO) \
+		--set installImage.tag=$(MONGONETES_INSTALL_TAG) \
+		--set installImage.name=$(MONGONETES_INSTALL_REPO) \
+		--set auth.adminUser=$(MONGO_AUTH_ADMIN_USER) \
+		--set auth.adminPassword=$(MONGO_AUTH_ADMIN_PASSWORD) \
+		--set auth.existingKeySecret=$(MONGO_AUTH_EXISTING_KEY_SECRET) \
+		--set auth.existingAdminSecret=$(MONGO_AUTH_EXISTING_ADMIN_SECRET) \
+		--set persistentVolume.enabled=$(MONGO_PERSISTENCE) \
+		--set persistentVolume.size=$(MONGO_PERSISTENCE_SIZE) \
+		--set persistentVolume.accessMode=$(MONGO_PERSISTENCE_ACCESSMODE) \
+		--set persistentVolume.annotations=$(MONGO_PERSISTENCE_ANNOTATIONS) \
+		--set persistentVolume.storageClass=$(MONGO_PERSISTENCE_STORAGECLASS) \
+		submodules/charts/stable/mongodb-replicaset
+
+## Gymongonasium
+gymongonasium: .gymongonasium.rn
 
 .gymongonasium.rn:
-	helm install --name $(MONGO_RELEASE_NAME)-gymongonasium \
+	helm install --name $(GYMONGONASIUM_NAME) \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set mongodbName=$(GYMONGO_DB_NAME) \
 		--set mongodbPort=$(MONGO_PORT) \
 		--set mongodbTIME=$(GYMONGO_TIME) \
@@ -122,8 +186,64 @@ default: .reactioncommerce.rn
 		--set mongodbSUM_RANGES=$(GYMONGO_SUM_RANGES) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
 		./gymongonasium
-	-@echo $(MONGO_RELEASE_NAME)-gymongonasium > .gymongonasium.rn
+	-@echo $(GYMONGONASIUM_NAME) > .gymongonasium.rn
 
+## Monitoring
+monitoring: .monitoring.ns .prometheus.rn
+
+view-monitoring:
+		kubectl \
+			--namespace=$(MONITORING_NAMESPACE) \
+			get pods
+
+### Prometheus
+prometheus: .prometheus.rn view-monitoring
+
+# https://itnext.io/kubernetes-monitoring-with-prometheus-in-15-minutes-8e54d1de2e13
+.prometheus.rn: .monitoring.ns
+	helm repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+	git submodule update --init
+	cd submodules/prometheus-operator \
+		&& kubectl apply -f scripts/minikube-rbac.yaml \
+		&& helm install --name prometheus-operator \
+			--set rbacEnable=true \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/prometheus-operator \
+		&& helm install --name prometheus \
+			--set serviceMonitorsSelector.app=prometheus \
+			--set ruleSelector.app=prometheus \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/prometheus \
+		&& helm install --name alertmanager \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/alertmanager \
+		&& helm install --name grafana \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/grafana
+	cd submodules/prometheus-operator/helm/kube-prometheus \
+		&& helm dep update
+	cd submodules/prometheus-operator \
+		&& helm install --name kube-prometheus \
+			--namespace=$(MONITORING_NAMESPACE) \
+			helm/kube-prometheus
+	@sh ./w8s/generic.w8 prometheus-operator $(MONITORING_NAMESPACE)
+	@sh ./w8s/generic.w8 alertmanager-kube-prometheus $(MONITORING_NAMESPACE)
+	@sh ./w8s/generic.w8 kube-prometheus-exporter-kube-state $(MONITORING_NAMESPACE)
+	@sh ./w8s/generic.w8 kube-prometheus-exporter-node $(MONITORING_NAMESPACE)
+	@sh ./w8s/generic.w8 kube-prometheus-grafana $(MONITORING_NAMESPACE)
+	@sh ./w8s/generic.w8 prometheus-kube-prometheus $(MONITORING_NAMESPACE)
+	-@echo $(PROMETHEUS_NAME) > .prometheus.rn
+
+# Namespaces
+.monitoring.ns:
+	kubectl create ns monitoring
+	date -I > .monitoring.ns
+
+.r8s.ns:
+	kubectl create ns $(REACTIONCOMMERCE_NAMESPACE)
+	date -I > .r8s.ns
+
+# Requirements
 linuxreqs: $(R8S_BIN) run_dotfiles minikube kubectl helm nsenter
 
 osxreqs: macminikube mackubectl machelm macnsenter
@@ -146,6 +266,7 @@ autopilot: reqs .minikube.made
 extras:
 	$(MAKE) -e .reaction-api-base.rn
 	$(MAKE) -e .gymongonasium.rn
+	$(MAKE) -e .prometheus.rn
 
 .minikube.made:
 	minikube \
@@ -153,6 +274,7 @@ extras:
 		--dns-domain $(MINIKUBE_CLUSTER_DOMAIN) \
 		--memory $(MINIKUBE_MEMORY) \
 		--cpus $(MINIKUBE_CPU) \
+		--vm-driver=$(MINIKUBE_DRIVER) \
 		$(MINIKUBE_OPTS) \
 		start
 	@sh ./w8s/kubectl.w8
@@ -237,6 +359,9 @@ clean:
 	-@rm -f .mongo-replicaset.rn
 	-@rm -f .gymongonasium.rn
 	-@rm -f .reaction-api-base.rn
+	-@rm -f .prometheus.rn
+	-@rm -f .r8s.ns
+	-@rm -f .monitoring.ns
 
 d: delete
 
@@ -274,21 +399,31 @@ reqs:
 	cp .circleci/pre-commit .git/hooks/pre-commit
 
 dobusybox:
-	kubectl apply -f busybox/busybox.yaml
-	@sh ./w8s/generic.w8 busybox
+	kubectl apply -n $(REACTIONCOMMERCE_NAMESPACE) -f busybox/busybox.yaml
+	@sh ./w8s/generic.w8 busybox $(REACTIONCOMMERCE_NAMESPACE)
 
 dnstest: dobusybox
-	kubectl exec -ti busybox -- nslookup $(MONGO_RELEASE_NAME)-mongodb-replicaset
-	kubectl exec -ti busybox -- nslookup $(REACTIONCOMMERCE_NAME)-reactioncommerce
+	kubectl exec -ti busybox \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		-- nslookup $(MONGO_RELEASE_NAME)-mongodb-replicaset
+	kubectl exec -ti busybox \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		-- nslookup $(REACTIONCOMMERCE_NAME)-reactioncommerce
 
 ci: autopilot extended_tests
 
 extended_tests:
-	kubectl get ep
+	kubectl \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		get ep
 	make -e dnstest
 	./w8s/webpage.w8 $(REACTIONCOMMERCE_NAME)
-	kubectl get all
-	kubectl get ep
+	kubectl \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		get all
+	kubectl \
+		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
+		get ep
 	-@ echo 'Memory consumption of all that:'
 	free -m
 

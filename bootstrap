@@ -181,8 +181,6 @@ trap - EXIT
 # End run it wrapper
 }
 
-chkdir /usr/local
-chkdir /usr/local/bin
 chkdir /etc/kubernetes
 chkdir /var/lib/localkube
 chkdir /var/lib/localkube/certs

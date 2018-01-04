@@ -1,4 +1,4 @@
-export MINIKUBE_OPTS=--vm-driver=virtualbox
+export MINIKUBE_DRIVER=virtualbox
 export MINIKUBE_CPU=4
 export MINIKUBE_MEMORY=8192
 export REACTIONCOMMERCE_NAME=my-release-name

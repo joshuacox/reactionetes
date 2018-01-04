@@ -1,4 +1,5 @@
 #!/bin/sh
+: ${REACTIONCOMMERCE_NAMESPACE:=r8s}
 
 echo -n "waiting for no CrashLoopBackOff"
 sleep 2
@@ -9,7 +10,7 @@ countone=1
 while [ $countone -lt 151 ]
 do
   echo -n '.'
-  RESULT=$(kubectl get po | grep CrashLoopBackOff)
+  RESULT=$(kubectl get po --namespace=$REACTIONCOMMERCE_NAMESPACE | grep CrashLoopBackOff)
   if [ ! "$RESULT" ]; then
       break
   fi

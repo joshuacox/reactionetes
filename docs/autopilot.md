@@ -22,7 +22,7 @@ curl -L https://git.io/reactionetes | bash
 or specify your own minikube opts:
 
 ```
-export MINIKUBE_OPTS=--vm-driver=kvm
+export MINIKUBE_DRIVER=kvm
 curl -L https://git.io/reactionetes | bash
 ```
 
@@ -30,6 +30,6 @@ or on a VM that has docker installed you can run without the
 virtualization driver
 
 ```
-export MINIKUBE_OPTS=--vm-driver=none
+export MINIKUBE_DRIVER=none
 curl -L https://git.io/reactionetes | bash
 ```

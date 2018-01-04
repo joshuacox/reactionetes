@@ -1,4 +1,4 @@
-export MINIKUBE_OPTS=--vm-driver=kvm
+export MINIKUBE_DRIVER=kvm
 export REACTIONCOMMERCE_NAME=my-release-name
 export REPLICAS=1
 export MONGO_REPLICAS=3

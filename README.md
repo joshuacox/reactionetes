@@ -37,7 +37,7 @@ driver, there is also the kvm and kvm2 drivers.
 ```
 export MINIKUBE_CPU=4
 export MINIKUBE_MEMORY=4096
-export MINIKUBE_OPTS=--vm-driver=none
+export MINIKUBE_DRIVER=none
 export REACTIONCOMMERCE_NAME=my-release-name
 export MONGO_RELEASE_NAME=massive-mongonetes
 export REACTIONCOMMERCE_REPO=reactioncommerce/reaction

@@ -1,4 +1,5 @@
 #!/bin/sh
+: ${REACTIONCOMMERCE_NAMESPACE:=r8s}
 if [ $# -ne 2 ]; then
   # Print usage
   echo 'Error! wrong number of arguments'
@@ -19,7 +20,7 @@ mongow8 () {
   while [ $countone -lt 301 ]
   do
     echo -n '.'
-    RESULT=$(kubectl get po | grep $1-mongodb-replicaset-$2 | grep Running)
+    RESULT=$(kubectl get po --namespace=$REACTIONCOMMERCE_NAMESPACE | grep $1-mongodb-replicaset-$2 | grep Running)
     if [ "$RESULT" ]; then
         echo "."
         echo "$RESULT"
