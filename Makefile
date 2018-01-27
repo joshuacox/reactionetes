@@ -75,17 +75,15 @@ $(eval HELM_INSTALL_DIR := "$(R8S_BIN)")
 # Default
 default: .reactioncommerce.rn
 
-<<<<<<< HEAD
 reactioncommerce: .reactioncommerce.rn
 
 .reactioncommerce.rn:
-=======
+
 # Named Releases
 ## Reaction Commerce
 reactioncommerce: .reactioncommerce.rn
 
 .reactioncommerce.rn: .r8s.ns
->>>>>>> d7cebdcd21d5b1e8b807bc270e8001b8ee6dd456
 	helm install --name $(REACTIONCOMMERCE_NAME) \
 		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set mongodbReleaseName=$(MONGO_RELEASE_NAME) \
@@ -102,11 +100,10 @@ reactioncommerce: .reactioncommerce.rn
 	@sh ./w8s/reactioncommerce.w8 $(REACTIONCOMMERCE_NAME)
 	@sh ./w8s/CrashLoopBackOff.w8
 
-<<<<<<< HEAD
 mongo: .mongo-replicaset.rn
 
 .mongo-replicaset.rn:
-=======
+
 ### Reaction Commerce API base
 .reaction-api-base.rn:
 	helm install --name $(REACTION_API_NAME) \
@@ -128,7 +125,6 @@ mongo-replicaset: .mongo-replicaset.rn
 	@sh ./w8s/mongo.w8 $(MONGO_RELEASE_NAME) $(MONGO_REPLICAS)
 
 mongo-official:
->>>>>>> d7cebdcd21d5b1e8b807bc270e8001b8ee6dd456
 	helm install --name $(MONGO_RELEASE_NAME) \
 		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
 		--set replicaSet=$(MONGO_REPLICASET) \
