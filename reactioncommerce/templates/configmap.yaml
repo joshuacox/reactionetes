@@ -8,4 +8,8 @@ data:
   reaction.auth: {{ .Values.reactionAuth }}
   reaction.root_url: {{ .Values.reactionRoot_url }}
   reaction.hostname: {{ .Values.reactionHostname }}
+  {{- if eq .Values.mongodbUrl ""}}
   reaction.mongo_url: {{ template "mongodb_replicaset_url" . }}
+  {{- else}}
+  reaction.mongo_url: {{ .Values.mongodbUrl }}
+  {{- end}}
