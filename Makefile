@@ -75,10 +75,6 @@ $(eval HELM_INSTALL_DIR := "$(R8S_BIN)")
 # Default
 default: .reactioncommerce.rn
 
-reactioncommerce: .reactioncommerce.rn
-
-.reactioncommerce.rn:
-
 # Named Releases
 ## Reaction Commerce
 reactioncommerce: .reactioncommerce.rn
