@@ -42,7 +42,7 @@ mongodbReleaseName: 'massive-mongonetes'
 mongodbName: 'reactionetesdb'
 mongodbReplicaSet: 'rs0'
 mongodbPort: 27017
-mongodbUrl: 'mongodb://{{ .Values.mongodbReleaseName }}-mongodb-replicaset-0:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-1:{{ .Values.mongodbPort }},{{ .Values.mongodbReleaseName }}-mongodb-replicaset-2:{{ .Values.mongodbPort }}/{{ .Values.mongodbName }}?replicaSet={{ .Values.mongodbReplicaSet }} '
+mongodbUrl: ''
 
 # reaction specific values
 reactioncommerceClusterDomain: 'cluster.local'
