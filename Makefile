@@ -38,10 +38,10 @@ $(eval MONGONETES_REPO := mongo)
 $(eval MONGONETES_TAG := 3.4)
 
 # Minikube settings
-$(eval MINIKUBE_CPU := 2)
-$(eval MINIKUBE_MEMORY := 3333)
+$(eval MINIKUBE_CPU := 4)
+$(eval MINIKUBE_MEMORY := 4096)
 $(eval MINIKUBE_DRIVER := virtualbox)
-$(eval MY_KUBE_VERSION := v1.8.0)
+$(eval MY_KUBE_VERSION := v1.14.1)
 $(eval CHANGE_MINIKUBE_NONE_USER := true)
 $(eval KUBECONFIG := $(HOME)/.kube/config)
 $(eval MINIKUBE_WANTREPORTERRORPROMPT := false)
@@ -123,7 +123,7 @@ mongo-replicaset: .mongo-replicaset.rn
 mongo-official:
 	helm install --name $(MONGO_RELEASE_NAME) \
 		--namespace=$(REACTIONCOMMERCE_NAMESPACE) \
-		--set replicaSet=$(MONGO_REPLICASET) \
+		--set replicaSetName=$(MONGO_REPLICASET) \
 		--set replicas=$(MONGO_REPLICAS) \
 		--set port=$(MONGO_PORT) \
 		--set tls.enabled=$(MONGO_TLS) \
