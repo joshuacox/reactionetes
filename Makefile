@@ -35,7 +35,7 @@ $(eval MONGO_PERSISTENCE_STORAGECLASS := 'volume.alpha.kubernetes.io/storage-cla
 $(eval MONGONETES_INSTALL_REPO := gcr.io/google_containers/mongodb-install)
 $(eval MONGONETES_INSTALL_TAG := 0.5)
 $(eval MONGONETES_REPO := mongo)
-$(eval MONGONETES_TAG := 3.4)
+$(eval MONGONETES_TAG := 3.6)
 
 # Minikube settings
 $(eval MINIKUBE_CPU := 4)
