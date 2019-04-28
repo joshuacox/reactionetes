@@ -50,4 +50,6 @@ script:
   - bash .ci/envtest.sh
   - /usr/bin/time -v make -e linuxreqs
     #- /bin/bash -l -c "source /home/travis/.profile && /usr/bin/time -v make -e ci"
+  - mkdir -p /home/travis/.docker
+  - touch /home/travis/.docker/config.json
   - /bin/bash -l -c "/usr/bin/time -v make -e ci"
